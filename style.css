@@ -36,10 +36,15 @@ h1,
 h2,
 h3,
 p {
-    margin-bottom: 36px;
+    margin-bottom: 24px;
 }
 
 h1,
 h2 {
     font-weight: 700;
+}
+
+section {
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
