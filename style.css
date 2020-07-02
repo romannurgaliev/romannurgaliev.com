@@ -58,7 +58,7 @@ body {
 
     h1 {
 color: white;
-font-size: 6em;
+font-size: 5em;
 font-weight: 700;
 letter-spacing: -2px;
 text-align: center;
@@ -70,4 +70,13 @@ transform: translate(-50%) translateY(-50%);
 
     nav {
         margin: 8px;
+    }
+
+    a {
+        color: white;
+    }
+
+    a:hover {
+        color: #ff4d00;
+        cursor: pointer;
     }
