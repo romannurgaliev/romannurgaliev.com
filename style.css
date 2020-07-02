@@ -7,11 +7,10 @@ body {
 
 
     .button {
-        background-color: #fafafa;
-        border: none;
-        color: darkgray;
-        padding: 12px 24px;
-        border-radius: 24px;
+        border: solid white 2px;
+        color: white;
+        padding: 11px 20px 13px 20px;
+        border-radius: 25px;
         text-align: center;
         letter-spacing: -0.3px;
         text-decoration: none;
@@ -19,12 +18,25 @@ body {
         float: left;
         font-size: 20px;
         font-weight: 500;
-        margin: 4px 2px;
+        margin: 3px;
         cursor: pointer;
+        transition-duration: 0.4s;
     }
+
+    .button:hover {
+        background-color: white;
+        border: solid white 2px;
+        color: #000;
+
+      }
+      
+
+
+
 
     .home {
         background-color: #ff4d00;
+        border: solid #ff4d00 2px;
         color: white;
     }
 
@@ -54,4 +66,8 @@ position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%) translateY(-50%);
+    }
+
+    nav {
+        margin: 8px;
     }
