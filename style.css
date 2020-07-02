@@ -52,7 +52,7 @@ body {
         color: white;
     }
 
-    h1 {
+    h1, h2 {
 font-size: 5em;
 font-weight: 700;
 letter-spacing: -2px;
@@ -62,6 +62,11 @@ top: 50%;
 left: 50%;
 transform: translate(-50%) translateY(-50%);
     }
+
+    h2 {
+        font-size: 4xem;
+    }
+
 
     nav {
         margin: 8px;
