@@ -1,82 +1,100 @@
+:root {
+    /* CSS переменные для повторяющихся значений */
+    --main-bg-color: #fafafa;
+    --main-text-color: rgba(36, 36, 36, 1);
+    --secondary-text-color: rgba(36, 36, 36, .5);
+    --accent-color: #ff4d00;
+    --main-font-size: 20px;
+    --large-font-size: 5em;
+    --medium-font-size: 4em;
+}
+
+/* Основные стили для body */
 body {
     padding: 0;
     margin: 0;
-    background-color: #fafafa;
-    color: rgba(36, 36, 36, 1);
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+/* Стили для кнопок */
+.button {
+    color: var(--secondary-text-color);
+    border: solid var(--secondary-text-color) 2px;
+    padding: 11px 20px 13px;
+    /* Сокращенное свойство для padding */
+    border-radius: 25px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    display: block;
+    float: left;
+    font-size: var(--main-font-size);
+    font-weight: 500;
+    margin: 3px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
 
-    .button {
-        color: rgba(36, 36, 36, .5);
-        border: solid  rgba(36, 36, 36, .5) 2px;
-        padding: 11px 20px 13px 20px;
-        border-radius: 25px;
-        text-align: center;
-        letter-spacing: -0.3px;
-        text-decoration: none;
-        display: block;
-        float: left;
-        font-size: 20px;
-        font-weight: 500;
-        margin: 3px;
-        cursor: pointer;
-        transition-duration: 0.3s;
-    }
+.button:hover {
+    color: var(--main-text-color);
+    border-color: var(--main-text-color);
+}
 
-    .button:hover {
-        color: rgba(36, 36, 36, 1);
-        border: solid  rgba(36, 36, 36, 1) 2px;;
+/* Стиль для кнопки "домой" */
+.home {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
 
-      }
-      
-    .home {
-        background-color: #ff4d00;
-        border: solid #ff4d00 2px;
-        color: white;
-    }
+/* Стили для центрирования содержимого */
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
 
-    .parent {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        
+.child {
+    text-align: center;
+    font-size: var(--main-font-size);
+    font-weight: 500;
+    color: white;
+}
 
-    }
-    
-    .child {
-        text-align: center;   /* If we want the child's content horiz centered */
-        font-size: 20px;
-        font-weight: 500;
-        color: white;
-    }
+/* Общие стили для h1 и h2 */
+h1,
+h2 {
+    font-weight: 700;
+    letter-spacing: -2px;
+    text-align: center;
+    width: 100%;
+    /* Более гибкий подход вместо абсолютного позиционирования */
+}
 
-    h1, h2 {
-font-size: 5em;
-font-weight: 700;
-letter-spacing: -2px;
-text-align: center;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%) translateY(-50%);
-    }
+/* Специфические стили для h1 */
+h1 {
+    font-size: var(--large-font-size);
+}
 
-    h2 {
-        font-size: 4xem;
-    }
+/* Специфические стили для h2 */
+h2 {
+    font-size: var(--medium-font-size);
+}
 
+/* Стили для навигации */
+nav {
+    margin: 8px;
+}
 
-    nav {
-        margin: 8px;
-    }
+/* Стили для ссылок */
+a {
+    color: var(--main-text-color);
+}
 
-    a {
-        color: rgba(36, 36, 36, 1);
-    }
-
-    a:hover {
-        color: #ff4d00;
-        cursor: pointer;
-    }
+a:hover {
+    color: var(--accent-color);
+    cursor: pointer;
+}
