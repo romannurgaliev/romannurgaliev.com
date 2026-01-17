@@ -1,100 +1,64 @@
-:root {
-    /* CSS переменные для повторяющихся значений */
-    --main-bg-color: #fafafa;
-    --main-text-color: rgba(36, 36, 36, 1);
-    --secondary-text-color: rgba(36, 36, 36, .5);
-    --accent-color: #ff4d00;
-    --main-font-size: 20px;
-    --large-font-size: 5em;
-    --medium-font-size: 4em;
-}
-
-/* Основные стили для body */
 body {
     padding: 0;
     margin: 0;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #fff;
+    color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Стили для кнопок */
-.button {
-    color: var(--secondary-text-color);
-    border: solid var(--secondary-text-color) 2px;
-    padding: 11px 20px 13px;
-    /* Сокращенное свойство для padding */
-    border-radius: 25px;
-    text-align: center;
-    letter-spacing: -0.3px;
-    text-decoration: none;
-    display: block;
-    float: left;
-    font-size: var(--main-font-size);
-    font-weight: 500;
-    margin: 3px;
-    cursor: pointer;
-    transition-duration: 0.3s;
+.main-container {
+    max-width: 550px; /* Еще уже для большей концентрации */
+    margin: 100px auto;
+    padding: 0 24px;
 }
 
-.button:hover {
-    color: var(--main-text-color);
-    border-color: var(--main-text-color);
-}
-
-/* Стиль для кнопки "домой" */
-.home {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    color: white;
-}
-
-/* Стили для центрирования содержимого */
-.parent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-}
-
-.child {
-    text-align: center;
-    font-size: var(--main-font-size);
-    font-weight: 500;
-    color: white;
-}
-
-/* Общие стили для h1 и h2 */
-h1,
-h2 {
-    font-weight: 700;
-    letter-spacing: -2px;
-    text-align: center;
-    width: 100%;
-    /* Более гибкий подход вместо абсолютного позиционирования */
-}
-
-/* Специфические стили для h1 */
-h1 {
-    font-size: var(--large-font-size);
-}
-
-/* Специфические стили для h2 */
-h2 {
-    font-size: var(--medium-font-size);
-}
-
-/* Стили для навигации */
 nav {
-    margin: 8px;
+    margin-bottom: 80px;
+    display: flex;
+    justify-content: space-between;
 }
 
-/* Стили для ссылок */
-a {
-    color: var(--main-text-color);
+nav a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #111;
 }
 
-a:hover {
-    color: var(--accent-color);
-    cursor: pointer;
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+p { margin-bottom: 20px; }
+
+.item {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.meta { color: #888; margin: 0; }
+
+.muted { color: #888; }
+
+a { color: inherit; text-underline-offset: 3px; }
+
+footer {
+    margin-top: 80px;
+    font-size: 14px;
 }
