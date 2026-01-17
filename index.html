@@ -8,48 +8,85 @@
 </head>
 <body>
 
-    <div class="main-container">
-        <nav>
-            <a href="index.html">Roman Nurgaliev</a>
-            <a href="mailto:romannurgaliev@gmail.com" class="muted">Contact</a>
-        </nav>
+   <div class="main-container">
+    <nav>
+        <span class="logo">Roman Nurgaliev</span>
+        <a href="mailto:romannurgaliev@gmail.com" class="muted">Contact</a>
+    </nav>
 
-        <main>
-            <section id="intro">
-                <h1>Product Designer focusing on complex systems and financial interfaces.</h1>
-                <p>Currently based in Almaty, designing tools for high-stakes environments where clarity and precision are paramount.</p>
-            </section>
+    <main>
+        <section id="intro">
+            <h1>Product Designer focusing on complex systems.</h1>
+            
+            <div class="controls">
+                <span class="muted">View as:</span>
+                <button class="control-btn active" id="btn-prose" onclick="setView('prose')">Prose</button>
+                <button class="control-btn" id="btn-list" onclick="setView('list')">List</button>
+            </div>
 
-            <section id="experience">
-                <h2>Experience</h2>
-                <div class="item">
-                    <p class="meta">2024 — Present</p>
-                    <p>Product Designer · Fintech</p>
+            <div id="view-prose" class="content-block">
+                <p>Based in Almaty, I design interfaces for high-stakes environments where precision is a requirement, not a feature. Over the years, I've moved from founding roles in healthtech at <strong>Antara</strong> to navigating the complexities of fintech and trading interfaces.</p>
+                <p>I believe that good design in complex systems isn't about simplicity, but about making the inherent complexity manageable and clear.</p>
+            </div>
+
+            <div id="view-list" class="content-block hidden">
+                <div class="timeline-item">
+                    <span class="year">2024 — Present</span>
+                    <span class="role">Product Designer · Fintech</span>
                 </div>
-                <div class="item">
-                    <p class="meta">2021 — 2024</p>
-                    <p>Founding Product Designer · Antara Health</p>
+                <div class="timeline-item">
+                    <span class="year">2021 — 2024</span>
+                    <span class="role">Founding Designer · Antara Health</span>
                 </div>
-                <div class="item">
-                    <p class="meta">2019 — 2020</p>
-                    <p>UX Designer · True Engineering</p>
+                <div class="timeline-item">
+                    <span class="year">2019 — 2020</span>
+                    <span class="role">UX Designer · True Engineering</span>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="about">
-                <h2>Beyond Design</h2>
-                <p>Film photography (Olympus Superzoom), skiing at Shymbulak, and exploring electronic music.</p>
-            </section>
-        </main>
+        <section id="beyond">
+            <h2>Beyond Design</h2>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-label">Photography</span>
+                    <p>Capturing the world through an <strong>Olympus Superzoom</strong>, focusing on film aesthetics over pixels.</p>
+                </div>
+                <div class="card">
+                    <span class="card-label">Mountains</span>
+                    <p>Practicing turns and finding focus at <strong>Shymbulak</strong> during the winter months.</p>
+                </div>
+                <div class="card">
+                    <span class="card-label">Sound</span>
+                    <p>Deeply influenced by the atmospheric and textured electronic music of <strong>Burial</strong>.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <footer>
-            <p class="muted">
-                <a href="https://linkedin.com/in/romannurgaliev" target="_blank">LinkedIn</a> · 
-                <a href="https://band.link/designtakoy" target="_blank">Podcast</a>
-            </p>
-            <p class="muted">&copy; 2026</p>
-        </footer>
-    </div>
+    <footer>
+        <p class="muted">&copy; 2026 · <a href="https://linkedin.com/in/romannurgaliev">LinkedIn</a> · <a href="https://band.link/designtakoy">Podcast</a></p>
+    </footer>
+</div>
+
+<script>
+function setView(view) {
+    // Переключаем видимость блоков
+    document.getElementById('view-prose').classList.toggle('hidden', view !== 'prose');
+    document.getElementById('view-list').classList.toggle('hidden', view !== 'list');
+    
+    // Переключаем активное состояние кнопок
+    document.getElementById('btn-prose').classList.toggle('active', view === 'prose');
+    document.getElementById('btn-list').classList.toggle('active', view === 'list');
+
+    // Меняем цвет фона как у Расмуса (мягкий переход)
+    if (view === 'list') {
+        document.body.style.backgroundColor = "#fdf2f2"; // Нежно-розовый
+    } else {
+        document.body.style.backgroundColor = "#f0f4f2"; // Нежно-зеленый
+    }
+}
+</script>
 
 </body>
 </html>
