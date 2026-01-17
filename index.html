@@ -8,39 +8,74 @@
 </head>
 <body>
 
-   <div class="main-container">
+<div class="main-container">
     <nav>
         <span class="logo">Roman Nurgaliev</span>
         <a href="mailto:romannurgaliev@gmail.com" class="muted">Contact</a>
     </nav>
 
     <main>
-        <section id="intro">
-            <h1>Product Designer focusing on complex systems.</h1>
+        <section id="hero">
+            <h1>Product Designer focusing on high-stakes systems.</h1>
             
-            <div class="controls">
-                <span class="muted">View as:</span>
-                <button class="control-btn active" id="btn-prose" onclick="setView('prose')">Prose</button>
-                <button class="control-btn" id="btn-list" onclick="setView('list')">List</button>
+            <div class="control-group">
+                <div class="controls">
+                    <span class="muted">Format:</span>
+                    <button class="control-btn active" id="btn-prose" onclick="setView('prose')">Prose</button>
+                    <button class="control-btn" id="btn-list" onclick="setView('list')">List</button>
+                </div>
+                <div class="controls" id="length-controls">
+                    <span class="muted">Length:</span>
+                    <button class="control-btn active" id="btn-short" onclick="setLength('short')">Short</button>
+                    <button class="control-btn" id="btn-long" onclick="setLength('long')">Long</button>
+                </div>
             </div>
 
             <div id="view-prose" class="content-block">
-                <p>Based in Almaty, I design interfaces for high-stakes environments where precision is a requirement, not a feature. Over the years, I've moved from founding roles in healthtech at <strong>Antara</strong> to navigating the complexities of fintech and trading interfaces.</p>
-                <p>I believe that good design in complex systems isn't about simplicity, but about making the inherent complexity manageable and clear.</p>
+                <div id="bio-short">
+                    <p>Founding Product Designer specializing in high-stakes systems. Currently designing institutional trading terminals and cross-margin risk simulators at <strong>Brighty</strong> (2026). Expertise in high-density data visualization and launching products from 0 to 1 in Fintech, Web3, and Healthtech.</p>
+                </div>
+                <div id="bio-long" class="hidden">
+                    <p>Product designer with over 6 years of experience building mission-critical interfaces. I specialize in reducing cognitive load in complex environments where UI decisions directly impact financial risks or human health.</p>
+                    <p><strong>Current focus:</strong> Designing the core infrastructure for <strong>Brighty</strong>, including trading dashboards and real-time risk management tools.</p>
+                    <p><strong>Track record:</strong> Scaled a virtual-first healthtech platform for thousands of patients in Kenya (Antara Health) and designed specialized developer tools for the TON ecosystem (DeDust.io).</p>
+                    <p><strong>Industry leadership:</strong> For 4 years, I produced and hosted <strong>«Design Takoy»</strong>, a leading industry podcast, deconstructing product strategies and design processes for a professional audience.</p>
+                </div>
             </div>
 
             <div id="view-list" class="content-block hidden">
-                <div class="timeline-item">
-                    <span class="year">2024 — Present</span>
-                    <span class="role">Product Designer · Fintech</span>
-                </div>
-                <div class="timeline-item">
-                    <span class="year">2021 — 2024</span>
-                    <span class="role">Founding Designer · Antara Health</span>
-                </div>
-                <div class="timeline-item">
-                    <span class="year">2019 — 2020</span>
-                    <span class="role">UX Designer · True Engineering</span>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">Oct 2025 — Present</div>
+                        <div class="details">
+                            <strong>Product Designer · Brighty</strong>
+                            <ul>
+                                <li>Designing high-density interfaces for institutional trading.</li>
+                                <li>Building interactive simulators for cross-margin risk management.</li>
+                                <li>Impact: Streamlining complex financial data to support rapid, low-error decision-making.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">Mar 2025 — Sep 2025</div>
+                        <div class="details">
+                            <strong>Product Designer · DeDust.io</strong>
+                            <ul>
+                                <li>Led the design of specialized tools for smart-contract engineers.</li>
+                                <li>Impact: Shifted focus from general users to mission-critical infrastructure for developers.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">Feb 2021 — May 2024</div>
+                        <div class="details">
+                            <strong>Founding Designer · Antara Health (Kenya)</strong>
+                            <ul>
+                                <li>Built the product from scratch: patient apps and clinical dashboards.</li>
+                                <li>Scale: High-quality primary care for thousands of patients across emerging markets.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -50,15 +85,11 @@
             <div class="grid">
                 <div class="card">
                     <span class="card-label">Photography</span>
-                    <p>Capturing the world through an <strong>Olympus Superzoom</strong>, focusing on film aesthetics over pixels.</p>
+                    <p>Documenting through an <strong>Olympus Superzoom</strong>, focusing on film aesthetics.</p>
                 </div>
                 <div class="card">
                     <span class="card-label">Mountains</span>
-                    <p>Practicing turns and finding focus at <strong>Shymbulak</strong> during the winter months.</p>
-                </div>
-                <div class="card">
-                    <span class="card-label">Sound</span>
-                    <p>Deeply influenced by the atmospheric and textured electronic music of <strong>Burial</strong>.</p>
+                    <p>Finding focus at <strong>Shymbulak</strong>, Almaty, during the winter season.</p>
                 </div>
             </div>
         </section>
@@ -70,21 +101,26 @@
 </div>
 
 <script>
+let currentView = 'prose';
+let currentLength = 'short';
+
 function setView(view) {
-    // Переключаем видимость блоков
+    currentView = view;
     document.getElementById('view-prose').classList.toggle('hidden', view !== 'prose');
     document.getElementById('view-list').classList.toggle('hidden', view !== 'list');
+    document.getElementById('length-controls').style.visibility = (view === 'prose') ? 'visible' : 'hidden';
     
-    // Переключаем активное состояние кнопок
     document.getElementById('btn-prose').classList.toggle('active', view === 'prose');
     document.getElementById('btn-list').classList.toggle('active', view === 'list');
+}
 
-    // Меняем цвет фона как у Расмуса (мягкий переход)
-    if (view === 'list') {
-        document.body.style.backgroundColor = "#fdf2f2"; // Нежно-розовый
-    } else {
-        document.body.style.backgroundColor = "#f0f4f2"; // Нежно-зеленый
-    }
+function setLength(length) {
+    currentLength = length;
+    document.getElementById('bio-short').classList.toggle('hidden', length !== 'short');
+    document.getElementById('bio-long').classList.toggle('hidden', length !== 'long');
+    
+    document.getElementById('btn-short').classList.toggle('active', length === 'short');
+    document.getElementById('btn-long').classList.toggle('active', length === 'long');
 }
 </script>
 
