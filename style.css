@@ -549,6 +549,8 @@ body.two-col {
   aspect-ratio: 16 / 9;
   background-color: #D0CEC9;
   transition: opacity 0.15s ease;
+  object-fit: cover;
+  display: block;
 }
 
 .case-card:hover .case-card-thumb {
