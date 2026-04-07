@@ -603,7 +603,6 @@ body.two-col {
   padding: 16px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
 .case-header {
@@ -614,34 +613,42 @@ body.two-col {
 }
 
 .case-title {
-  font-size: 0.9rem;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text);
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .case-year {
-  font-size: 0.8rem;
+  font-size: 13px;
   color: var(--text-muted);
+  font-weight: 400;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .case-desc {
-  font-size: 0.8rem;
+  font-size: 13px;
   color: var(--text-muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
   line-height: 1.5;
-  margin-top: 0;
+  margin-top: 4px;
 }
 
 .case-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 2px;
+  margin-top: 8px;
 }
 
 .case-tags span {
   font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--text-muted);
   border: 1px solid var(--text-muted);
   border-radius: 4px;
