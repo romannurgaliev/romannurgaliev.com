@@ -3,53 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="view-transition" content="same-origin">
   <title>Work — Roman Nurgaliev</title>
   <meta name="description" content="Selected work by Roman Nurgaliev, Product Designer.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="two-col">
 
-  <header class="site-header animate">
-    <a href="/" class="name">Roman Nurgaliev</a>
-    <nav>
-      <ul class="site-nav">
-        <li><a href="work.html">Work</a></li>
-        <li><a href="https://www.linkedin.com/in/romannurgaliev/" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="mailto:romannurgaliev@gmail.com">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <aside class="sidebar animate">
+    <div class="sidebar-top">
+      <p class="sidebar-name">Roman Nurgaliev</p>
+      <p class="sidebar-role">Designer</p>
 
-  <main class="container">
+      <p class="sidebar-companies">Brighty · DeDust · Antara Health · donuts.tg</p>
 
-    <section id="work" style="border-top: none; padding-top: 72px;">
-      <h1 class="hero-title animate delay-1">Work</h1>
+      <nav class="sidebar-nav">
+        <a href="work.html" class="active">Work</a>
+        <a href="cv.html">CV</a>
+        <a href="mailto:romannurgaliev@gmail.com">Contact</a>
+      </nav>
+    </div>
 
-      <ul class="work-list animate delay-2">
+    <a class="sidebar-email" href="mailto:romannurgaliev@gmail.com">romannurgaliev@gmail.com</a>
+  </aside>
 
-        <li class="work-item">
-          <p class="work-item-year">2021 – 2024</p>
-          <a href="work/antara-health.html" class="work-item-title">Clinical Dashboards &amp; Patient App — Antara Health</a>
-          <p class="work-item-desc">Founding design work for a primary care startup in Kenya — from zero to a functioning product used by clinicians.</p>
-          <a href="work/antara-health.html" class="work-item-arrow">View case →</a>
-        </li>
+  <main class="content animate delay-1">
 
-      </ul>
+    <a class="case-card" href="#">
+      <div class="case-card-thumb"></div>
+      <div class="case-card-meta">
+        <div class="case-card-info">
+          <span class="case-card-title">Brighty — Trading Terminal &amp; B2B Platform</span>
+          <span class="case-card-desc">Sole designer on a crypto-fiat trading terminal and B2B settlement platform.</span>
+        </div>
+        <span class="case-card-year">2025–2026</span>
+      </div>
+    </a>
 
-    </section>
+    <a class="case-card" href="#">
+      <div class="case-card-thumb"></div>
+      <div class="case-card-meta">
+        <div class="case-card-info">
+          <span class="case-card-title">DeDust.io — TON Blockchain Explorer</span>
+          <span class="case-card-desc">Developer-focused blockchain explorer with raw transaction data and flat-trace debugging tools.</span>
+        </div>
+        <span class="case-card-year">2025</span>
+      </div>
+    </a>
+
+    <a class="case-card" href="#">
+      <div class="case-card-thumb"></div>
+      <div class="case-card-meta">
+        <div class="case-card-info">
+          <span class="case-card-title">donuts.tg — Crypto Payment Gateway</span>
+          <span class="case-card-desc">B2B merchant dashboard for a TON-based crypto payment gateway with compliance flows.</span>
+        </div>
+        <span class="case-card-year">2024</span>
+      </div>
+    </a>
+
+    <a class="case-card" href="work/antara-health.html">
+      <div class="case-card-thumb"></div>
+      <div class="case-card-meta">
+        <div class="case-card-info">
+          <span class="case-card-title">Antara Health — Healthcare Platform</span>
+          <span class="case-card-desc">Patient app and clinical dashboards for a virtual-first primary care platform in Kenya.</span>
+        </div>
+        <span class="case-card-year">2021–2024</span>
+      </div>
+    </a>
 
   </main>
-
-  <footer class="site-footer animate delay-3">
-    <span>© 2026 Roman Nurgaliev</span>
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/romannurgaliev/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://band.link/designtakoy" target="_blank" rel="noopener">Podcast</a>
-    </div>
-  </footer>
 
 </body>
 </html>
