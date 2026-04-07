@@ -539,7 +539,8 @@ body.two-col {
 
 /* Case cards */
 .case-card {
-  display: block;
+  display: flex;
+  flex-direction: column-reverse;
   text-decoration: none;
   color: inherit;
 }
