@@ -544,8 +544,7 @@ body.two-col {
   color: inherit;
 }
 
-.case-thumb-area {
-  position: relative;
+.case-thumb {
   width: 100%;
   height: 480px;
   background: #1A1A1A;
@@ -553,25 +552,11 @@ body.two-col {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.case-thumb-label {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  z-index: 1;
-}
-
-.case-card:hover .case-thumb-area {
-  opacity: 0.9;
-}
-
-.case-thumb-area {
   transition: opacity 0.15s ease;
+}
+
+.case-card:hover .case-thumb {
+  opacity: 0.9;
 }
 
 /* Single image */
@@ -612,47 +597,49 @@ body.two-col {
   min-width: 0;
 }
 
-.case-card-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 16px 24px;
-}
-
-.case-card-info {
+/* Card meta */
+.case-meta {
+  padding: 16px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.case-card-title {
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.case-title {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text);
 }
 
-.case-card-desc {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-.case-card-year {
+.case-year {
   font-size: 0.8rem;
   color: var(--text-muted);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-.case-card-tags {
+.case-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 0;
+}
+
+.case-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
-.case-card-tags span {
+.case-tags span {
   font-size: 11px;
   color: var(--text-muted);
   border: 1px solid var(--text-muted);
