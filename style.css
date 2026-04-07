@@ -588,6 +588,23 @@ body.two-col {
   flex-shrink: 0;
 }
 
+.case-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.case-card-tags span {
+  font-size: 11px;
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+  border-radius: 4px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
 /* CV */
 .cv {
   padding: 48px;
