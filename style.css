@@ -590,6 +590,27 @@ body.two-col {
   flex-shrink: 0;
 }
 
+/* Multi-image strip */
+.case-thumb-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.case-thumb-strip--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.case-thumb-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 4 / 3;
+}
+
 .case-card-tags {
   display: flex;
   flex-wrap: wrap;
