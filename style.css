@@ -482,10 +482,11 @@ body.two-col {
 }
 
 .sidebar-companies {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
   margin-top: 32px;
   line-height: 1.5;
+  white-space: nowrap;
 }
 
 .sidebar-nav {
@@ -507,11 +508,21 @@ body.two-col {
   opacity: 1;
 }
 
+.sidebar-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: auto;
+  margin-bottom: 6px;
+}
+
 .sidebar-email {
   font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
-  margin-top: auto;
 }
 
 .sidebar-email:hover {
@@ -536,7 +547,7 @@ body.two-col {
 .case-card-thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #E0DEDB;
+  background-color: #D0CEC9;
   transition: opacity 0.15s ease;
 }
 
