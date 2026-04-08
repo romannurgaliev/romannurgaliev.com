@@ -448,7 +448,6 @@ body.two-col {
   padding: 48px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(26, 26, 26, 0.08);
 }
 
 .sidebar-top {
@@ -851,8 +850,6 @@ body.two-col {
     position: static;
     width: 100%;
     height: auto;
-    border-right: none;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
     padding: 32px 24px;
   }
 
