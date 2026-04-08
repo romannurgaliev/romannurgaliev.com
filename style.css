@@ -590,7 +590,7 @@ body.two-col {
 
 /* Card meta */
 .case-meta {
-  padding: 0 0 24px;
+  padding: 16px 0 24px;
   display: flex;
   flex-direction: column;
 }
