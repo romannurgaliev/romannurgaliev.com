@@ -595,6 +595,10 @@ body.two-col {
   flex-direction: column;
 }
 
+.case-card:first-child .case-meta {
+  padding-top: 0;
+}
+
 .case-header {
   display: flex;
   justify-content: space-between;
