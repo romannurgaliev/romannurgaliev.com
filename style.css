@@ -920,19 +920,53 @@ body.two-col {
     position: static;
     width: 100%;
     height: auto;
-    padding: 32px 24px;
+    padding: 16px 20px 12px;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .sidebar-top {
     flex: none;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 8px;
   }
 
+  .sidebar-name {
+    font-size: 15px;
+  }
+
+  .sidebar-role {
+    font-size: 15px;
+    margin-top: 0;
+  }
+
+  .sidebar-companies {
+    white-space: normal;
+    margin-top: 4px;
+    width: 100%;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 0;
+  }
+
+  .sidebar-label,
   .sidebar-email {
-    margin-top: 32px;
+    display: none;
   }
 
   .content {
     margin-left: 0;
+    padding: 20px;
+  }
+
+  .home-content {
+    padding: 20px;
+    max-width: 100%;
   }
 }
 
