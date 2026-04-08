@@ -737,6 +737,63 @@ body.two-col {
   margin-top: 24px;
 }
 
+/* Contact */
+.contact {
+  max-width: 520px;
+}
+
+.contact-headline {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text);
+  margin-top: 0;
+}
+
+.contact-bio {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+}
+
+.contact-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  transition: opacity 0.15s ease;
+}
+
+.contact-link:first-child {
+  border-top: 1px solid rgba(26, 26, 26, 0.08);
+}
+
+.contact-link:hover {
+  opacity: 0.6;
+}
+
+.contact-link-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.contact-link-value {
+  font-size: 13px;
+  color: var(--text);
+}
+
 /* CV */
 .cv {
   padding: 0;
@@ -750,7 +807,7 @@ body.two-col {
 .cv-download {
   position: fixed;
   top: 24px;
-  left: calc(320px + 32px);
+  right: 32px;
   font-size: 12px;
   font-weight: 500;
   color: var(--bg);
