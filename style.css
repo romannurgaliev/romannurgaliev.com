@@ -445,7 +445,7 @@ body.two-col {
   left: 0;
   width: 320px;
   height: 100dvh;
-  padding: 48px;
+  padding: 24px 32px;
   display: flex;
   flex-direction: column;
 }
@@ -522,6 +522,7 @@ body.two-col {
 
 .content {
   margin-left: 320px;
+  padding: 24px 32px;
   display: flex;
   flex-direction: column;
 }
@@ -589,7 +590,7 @@ body.two-col {
 
 /* Card meta */
 .case-meta {
-  padding: 16px 24px 24px;
+  padding: 0 0 24px;
   display: flex;
   flex-direction: column;
 }
