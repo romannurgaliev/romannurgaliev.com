@@ -525,7 +525,6 @@ body.two-col {
   margin-left: 320px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 /* Case cards */
