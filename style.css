@@ -739,24 +739,32 @@ body.two-col {
 
 /* CV */
 .cv {
-  padding: 48px;
+  padding: 0;
   max-width: 680px;
 }
 
 .cv-header {
-  margin-bottom: 48px;
+  display: none;
 }
 
 .cv-download {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  position: fixed;
+  top: 24px;
+  left: calc(320px + 32px);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--text);
   text-decoration: none;
-  border: 1px solid rgba(26, 26, 26, 0.2);
   padding: 6px 14px;
-  border-radius: 4px;
-  cursor: default;
-  opacity: 0.4;
-  pointer-events: none;
+  border-radius: 100px;
+  transition: opacity 0.15s ease;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.cv-download:hover {
+  opacity: 0.8;
 }
 
 .cv-section {
