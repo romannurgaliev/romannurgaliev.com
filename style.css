@@ -915,27 +915,6 @@ body.two-col {
   color: var(--text-muted);
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    padding: 32px 24px;
-  }
-
-  .sidebar-top {
-    flex: none;
-  }
-
-  .sidebar-email {
-    margin-top: 32px;
-  }
-
-  .content {
-    margin-left: 0;
-  }
-}
-
 /* ============================================================
    Animations
    ============================================================ */
@@ -1008,6 +987,46 @@ body.two-col {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+
+  /* Two-column layout: collapse sidebar below 640px */
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    top: auto;
+    left: auto;
+    padding: 24px 20px;
+  }
+
+  .sidebar-top {
+    flex: none;
+  }
+
+  .sidebar-companies {
+    white-space: normal;
+  }
+
+  .sidebar-email {
+    margin-top: 32px;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding: 24px 20px;
+  }
+
+  .home-content {
+    padding: 24px 20px;
+  }
+
+  .case-thumb {
+    height: 240px;
+  }
+
+  .case-header {
+    flex-wrap: wrap;
   }
 }
 
