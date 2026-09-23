@@ -236,6 +236,15 @@ body.two-col {
 
   .sidebar {
     padding-top: calc(var(--baseline) - 1.114em); /* 16px, lh 1.5 */
+    /* Bottom mirrors the top: the email's baseline sits as far from the
+       bottom edge as the name's cap height sits from the top edge */
+    padding-bottom: calc(var(--baseline) - 16px); /* 13px, lh 1.4 */
+  }
+
+  /* Same bottom gap for the last contact row (20px, lh 1.3, minus the
+     content's own 24px bottom padding) */
+  #contact {
+    padding-bottom: calc(var(--baseline) - 41.4px);
   }
 
   .home-headline {
