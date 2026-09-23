@@ -36,9 +36,9 @@
   --lh-l: 1.3;
   --ls-l: -0.017em;
 
-  --fs-xl: 32px;
-  --lh-xl: 1.1;
-  --ls-xl: -0.022em;
+  --fs-xl: 44px;
+  --lh-xl: 1.15;
+  --ls-xl: -0.028em;
 
   --fs-display: clamp(40px, 4.6vw, 64px);
   --lh-display: 1.02;
@@ -397,9 +397,12 @@ a.case-card:hover .case-thumb {
   color: var(--text);
 }
 
-/* Last section fills the screen so its anchor lands at the top */
+/* Last section fills the screen so its anchor lands at the top;
+   contact links sit at the bottom of it */
 #contact {
   min-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
 }
 
 /* ============================================================
@@ -417,6 +420,7 @@ a.case-card:hover .case-thumb {
 
 .home-bio {
   color: var(--text-muted);
+  line-height: 1.45;
   text-wrap: pretty;
   margin-top: 24px;
   max-width: 28em;
@@ -436,6 +440,7 @@ a.case-card:hover .case-thumb {
 
 .contact-bio {
   color: var(--text-muted);
+  line-height: 1.45;
   text-wrap: pretty;
   margin-top: 24px;
   max-width: 28em;
@@ -444,7 +449,8 @@ a.case-card:hover .case-thumb {
 .contact-links {
   display: flex;
   flex-direction: column;
-  margin-top: 48px;
+  margin-top: auto;
+  padding-top: 120px;
 }
 
 .contact-link {
@@ -452,7 +458,7 @@ a.case-card:hover .case-thumb {
   justify-content: space-between;
   align-items: baseline;
   gap: 16px;
-  padding: 16px 0;
+  padding: 24px 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -803,6 +809,14 @@ a.case-card:hover .case-thumb {
     margin-top: 120px;
   }
 
+  #contact {
+    min-height: calc(100dvh - 96px);
+  }
+
+  .contact-links {
+    padding-top: 80px;
+  }
+
   .intro {
     margin-bottom: 80px;
   }
@@ -810,7 +824,7 @@ a.case-card:hover .case-thumb {
 
 @media (max-width: 640px) {
   :root {
-    --fs-xl: 28px;
+    --fs-xl: 32px;
   }
 
   body {
