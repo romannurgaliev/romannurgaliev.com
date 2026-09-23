@@ -462,8 +462,10 @@ a.case-card:hover .case-thumb {
   border-bottom: 1px solid var(--line);
 }
 
-.contact-link:first-child {
-  border-top: 1px solid var(--line);
+/* Dividers only between rows; last row sits on the section's bottom edge */
+.contact-link:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .contact-link-label {
