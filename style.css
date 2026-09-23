@@ -225,12 +225,13 @@ body.two-col {
 }
 
 /* Desktop baseline grid: the name, the home headline and the section titles
-   share one baseline, --baseline from the top of the screen.
+   share one baseline, --baseline from the top of the screen
+   (13% of the screen height, 104–152px).
    Offsets = distance from the top of a line box to its baseline in Inter
    (ascender 0.969em, content area 1.21em), for each size's line-height. */
 @media (min-width: 769px) {
   :root {
-    --baseline: 72px;
+    --baseline: clamp(104px, 13vh, 152px);
   }
 
   .sidebar {
