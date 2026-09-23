@@ -229,6 +229,28 @@ body.two-col {
   }
 }
 
+/* Desktop baseline grid: the name, the home headline and the section titles
+   share one baseline, --baseline from the top of the screen.
+   Offsets = distance from the top of a line box to its baseline in Inter
+   (ascender 0.969em, content area 1.21em), for each size's line-height. */
+@media (min-width: 769px) {
+  :root {
+    --baseline: 72px;
+  }
+
+  .sidebar {
+    padding-top: calc(var(--baseline) - 1.114em); /* 16px, lh 1.5 */
+  }
+
+  .home-headline {
+    margin-top: calc(var(--baseline) - 24px - 0.874em); /* lh 1.02 */
+  }
+
+  .section-title {
+    margin-top: calc(var(--baseline) - 24px - 0.939em); /* lh 1.15 */
+  }
+}
+
 .sidebar-nav a {
   color: var(--text-muted);
 }
