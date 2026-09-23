@@ -126,7 +126,6 @@ h1, h2, h3 {
 
 /* M — base UI and body text */
 .sidebar-name,
-.sidebar-role,
 .sidebar-nav a,
 .case-card .case-desc,
 .cv-entry-company,
@@ -207,10 +206,6 @@ body.two-col {
   display: block;
   font-weight: 500;
   color: var(--text);
-}
-
-.sidebar-role {
-  color: var(--text-muted);
 }
 
 .sidebar-nav {
@@ -803,7 +798,6 @@ a.case-card:hover .case-thumb {
     gap: 16px;
   }
 
-  .sidebar-role,
   .sidebar-email {
     display: none;
   }
