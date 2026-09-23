@@ -14,53 +14,303 @@
 
   <aside class="sidebar animate">
     <div class="sidebar-top">
-      <p class="sidebar-name">Roman Nurgaliev</p>
+      <a class="sidebar-name" href="#home">Roman Nurgaliev</a>
       <p class="sidebar-role">Designer</p>
 
-      <p class="sidebar-companies">Brighty · DeDust · Antara Health</p>
-
       <nav class="sidebar-nav">
-        <a href="work.html">Work</a>
-        <a href="cv.html">CV</a>
-        <a href="contact.html">Contact</a>
+        <a href="#home" class="active" aria-current="true">Home</a>
+        <a href="#cv">CV</a>
+        <a href="#contact">Contact</a>
       </nav>
     </div>
 
     <a class="sidebar-email" href="mailto:romannurgaliev@gmail.com">romannurgaliev@gmail.com</a>
   </aside>
 
-  <main class="content home-content animate delay-1">
+  <main class="content animate delay-1">
 
-    <p class="home-headline">Product designer for fintech, Web3, and healthtech.</p>
+    <section id="home" class="section">
+      <div class="intro">
+        <h1 class="home-headline">Product designer for fintech, Web3, and healthtech.</h1>
 
-    <p class="home-bio">Over 6 years designing mission-critical interfaces —
+        <p class="home-bio">Over 6 years designing mission-critical interfaces —
 trading terminals, blockchain explorers, clinical dashboards.
 Currently at Brighty, building institutional trading infrastructure.</p>
 
-    <p class="home-section-label">Where I've worked</p>
-
-    <div class="home-companies">
-      <div class="home-companies-col">
-        <span>Brighty</span>
-        <span>DeDust.io</span>
-        <span>donuts.tg</span>
-        <span>QuestHub</span>
+        <p class="home-location">Based in Almaty, Kazakhstan · Open to remote opportunities</p>
       </div>
-      <div class="home-companies-col">
-        <span>Antara Health</span>
-        <span>Дизайн Такой</span>
-        <span>Fomoscan</span>
+
+      <div id="work" class="work">
+
+        <article class="case-card">
+          <div class="case-thumb"></div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">Brighty — Trading Terminal &amp; B2B Platform</span>
+              <span class="case-year">2025–2026</span>
+            </div>
+            <p class="case-desc">Sole designer on a crypto-fiat trading terminal and B2B settlement platform for institutional clients.</p>
+            <div class="case-tags">
+              <span>Fintech</span><span>Web3</span><span>B2B</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-thumb"></div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">DeDust.io — TON Blockchain Explorer</span>
+              <span class="case-year">2025</span>
+            </div>
+            <p class="case-desc">Developer-focused explorer with raw transaction data, flat-trace tables, and Op code debugging.</p>
+            <div class="case-tags">
+              <span>TON</span><span>Web3</span><span>Developer Tools</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-thumb">
+            <div class="case-thumb-strip">
+              <img src="work/images/donuts/05.png" alt="donuts.tg">
+              <img src="work/images/donuts/Background Image.png" alt="donuts.tg">
+              <img src="work/images/donuts/Image-1.png" alt="donuts.tg">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">donuts.tg — Crypto Payment Gateway</span>
+              <span class="case-year">2024</span>
+            </div>
+            <p class="case-desc">Full payment flow and merchant dashboard for a TON-based crypto gateway.</p>
+            <div class="case-tags">
+              <span>TON</span><span>Web3</span><span>B2B</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-thumb">
+            <div class="case-thumb-strip">
+              <img src="work/images/fomoscan/Image-1.png" alt="Fomoscan">
+              <img src="work/images/fomoscan/Image.png" alt="Fomoscan">
+              <img src="work/images/fomoscan/Screenshot 2025-03-20 at 21.29.00 1.png" alt="Fomoscan">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">Fomoscan — Telegram Mini App</span>
+              <span class="case-year">2024</span>
+            </div>
+            <p class="case-desc">Crypto alert manager: subscription flow, pricing plans, multi-bot connection logic.</p>
+            <div class="case-tags">
+              <span>TON</span><span>TMA</span><span>Web3</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-thumb"></div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">QuestHub — Telegram Mini App</span>
+              <span class="case-year">2024</span>
+            </div>
+            <p class="case-desc">Redesign and rebrand from BroBot: onboarding flow and quest experience for an on-chain reward platform.</p>
+            <div class="case-tags">
+              <span>TON</span><span>TMA</span><span>Web3</span>
+            </div>
+          </div>
+        </article>
+
+        <a class="case-card" href="work/antara-health.html">
+          <div class="case-thumb">
+            <div class="case-thumb-single">
+              <img src="work/images/antara/01.png" alt="Antara Health">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">Antara Health — Healthcare Platform</span>
+              <span class="case-year">2021–2024</span>
+            </div>
+            <p class="case-desc">Patient app and clinical dashboards for a virtual-first primary care platform serving Kenya.</p>
+            <div class="case-tags">
+              <span>Healthtech</span><span>iOS</span><span>Android</span>
+            </div>
+          </div>
+        </a>
+
+        <article class="case-card">
+          <div class="case-thumb">
+            <div class="case-thumb-strip case-thumb-strip--2">
+              <img src="work/images/podcast/Screenshot 2024-06-11 at 23.14 1.png" alt="Дизайн Такой">
+              <img src="work/images/podcast/Screenshot 2024-06-11 at 23.19 1.png" alt="Дизайн Такой">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <span class="case-title">Дизайн Такой — Podcast</span>
+              <span class="case-year">2018–2022</span>
+            </div>
+            <p class="case-desc">Russian-language design podcast. 482k plays · 101k listeners · 4.9 rating · 61 episodes.</p>
+            <div class="case-tags">
+              <span>Side Project</span>
+            </div>
+          </div>
+        </article>
+
       </div>
-    </div>
+    </section>
 
-    <div class="home-cta">
-      <a class="home-btn home-btn--dark" href="work.html">View Work</a>
-      <a class="home-btn home-btn--light" href="mailto:romannurgaliev@gmail.com">Get in Touch</a>
-    </div>
+    <section id="cv" class="section cv">
+      <div class="section-head">
+        <h2 class="section-title">CV</h2>
+        <a class="cv-download" href="cv.pdf">Download PDF</a>
+      </div>
 
-    <p class="home-location">Based in Almaty, Kazakhstan · Open to remote opportunities</p>
+        <section class="cv-section">
+          <p class="cv-section-label">Experience</p>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Brighty App</span>
+              <span class="cv-entry-period">Oct 2025–Present · Switzerland</span>
+            </div>
+            <p class="cv-entry-role">Product Designer</p>
+            <ul class="cv-entry-list">
+              <li>Shipped first version of a trading terminal as sole designer</li>
+              <li>Leading design on Brighty Business: B2B crypto-to-fiat settlement platform</li>
+              <li>Conversion flows, SEPA transfers, bulk payouts, recurring payments</li>
+              <li>Built design system and component architecture from scratch</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">DeDust.io</span>
+              <span class="cv-entry-period">Mar–Sep 2025</span>
+            </div>
+            <p class="cv-entry-role">Product Designer</p>
+            <ul class="cv-entry-list">
+              <li>Designed TON Blockchain Explorer for smart-contract developers</li>
+              <li>Raw transaction data, flat-trace tables, Op code debugging</li>
+              <li>Shifted focus from consumer to mission-critical developer tooling</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">donuts.tg</span>
+              <span class="cv-entry-period">Jul–Dec 2024</span>
+            </div>
+            <p class="cv-entry-role">Founding Product Designer</p>
+            <ul class="cv-entry-list">
+              <li>Crypto payment gateway for merchants on TON blockchain</li>
+              <li>B2B dashboard: taxes, reporting, compliance settings</li>
+              <li>User interviews with merchants, research-driven iteration</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Antara Health</span>
+              <span class="cv-entry-period">Feb 2021–May 2024 · Nairobi, Kenya</span>
+            </div>
+            <p class="cv-entry-role">Founding Product Designer</p>
+            <ul class="cv-entry-list">
+              <li>Sole designer in international cross-functional team</li>
+              <li>Patient apps and clinical dashboards for 5,000+ subscribers</li>
+              <li>Led user research, design, and iteration across mobile and web</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Side Projects</p>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Дизайн Такой</span>
+              <span class="cv-entry-period">2018–2022</span>
+            </div>
+            <p class="cv-entry-role">Podcast Host</p>
+            <ul class="cv-entry-list">
+              <li>Independent Russian-language design podcast.</li>
+              <li>Covered product strategy, design process, and industry analysis.</li>
+              <li>Ranked #1 in its category.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Earlier</p>
+
+          <div class="cv-entry cv-entry--inline">
+            <span class="cv-entry-company">True Engineering</span>
+            <span class="cv-entry-role">UX Designer</span>
+            <span class="cv-entry-period">2019–2020</span>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Education</p>
+
+          <div class="cv-entry cv-entry--inline">
+            <span class="cv-entry-company">Novosibirsk State University</span>
+            <span class="cv-entry-role">Economics</span>
+            <span class="cv-entry-period">2013</span>
+          </div>
+        </section>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2 class="section-title">Let’s work together</h2>
+      <p class="contact-bio">I’m open to full-time roles and select freelance projects in fintech, Web3, and healthtech. Currently based in Almaty, Kazakhstan — available remotely.</p>
+
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:romannurgaliev@gmail.com">
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-value">romannurgaliev@gmail.com</span>
+          </a>
+          <a class="contact-link" href="https://linkedin.com/in/romannurgaliev" target="_blank" rel="noopener">
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-value">linkedin.com/in/romannurgaliev</span>
+          </a>
+          <a class="contact-link" href="https://t.me/romannurgaliev" target="_blank" rel="noopener">
+            <span class="contact-link-label">Telegram</span>
+            <span class="contact-link-value">@romannurgaliev</span>
+          </a>
+        </div>
+    </section>
 
   </main>
+
+  <script>
+    // Scroll-spy: the nav item of the section in view is active.
+    const links = [...document.querySelectorAll('.sidebar-nav a')];
+    const sections = links.map(a => document.querySelector(a.hash));
+
+    function updateNav() {
+      const line = window.innerHeight * 0.35;
+      let current = 0;
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= line) current = i;
+      });
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) current = sections.length - 1;
+      links.forEach((a, i) => {
+        a.classList.toggle('active', i === current);
+        if (i === current) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    addEventListener('scroll', updateNav, { passive: true });
+    addEventListener('resize', updateNav);
+    updateNav();
+  </script>
 
 </body>
 </html>
