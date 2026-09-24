@@ -331,10 +331,15 @@ body.two-col {
 /* ============================================================
    Work — case cards
    ============================================================ */
+/* Preview on top, text under it; cards far apart, text close to its preview */
 .case-card {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   color: inherit;
+}
+
+.case-card + .case-card {
+  margin-top: 112px;
 }
 
 /* Whole card is the link; only its title gets the underline */
@@ -410,13 +415,9 @@ a.case-card:hover .case-title {
 
 /* Card meta */
 .case-card .case-meta {
-  padding: 16px 0 24px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
-}
-
-.case-card:first-child .case-meta {
-  padding-top: 0;
 }
 
 .case-header {
@@ -997,6 +998,10 @@ a.contact-link {
 
   .intro {
     margin-bottom: 80px;
+  }
+
+  .case-card + .case-card {
+    margin-top: 72px;
   }
 }
 
