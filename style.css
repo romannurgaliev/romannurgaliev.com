@@ -119,6 +119,7 @@ button {
 .sidebar-email,
 .home-location,
 .case-card .case-year,
+.cv-download,
 .cv-section-label,
 .cv-entry-period,
 .case-period,
@@ -577,6 +578,22 @@ a.contact-link {
    ============================================================ */
 .cv {
   max-width: 640px;
+}
+
+/* Download PDF: a quiet grey pill, darker on hover, like the case pager */
+.cv-download {
+  flex-shrink: 0;
+  color: var(--text);
+  background: var(--fill);
+  padding: 7px 14px;
+  line-height: 1;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.cv-download:hover {
+  background: var(--fill-hover);
 }
 
 .cv-section {
