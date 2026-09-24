@@ -329,10 +329,10 @@ body.two-col {
 /* ============================================================
    Work — case cards
    ============================================================ */
-/* Preview on top, text under it; cards far apart, text close to its preview */
+/* Text on top, its preview right under it; cards far apart */
 .case-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   color: inherit;
 }
 
@@ -414,7 +414,7 @@ a.case-card:hover .case-title {
 
 /* Card meta */
 .case-card .case-meta {
-  padding-top: 24px;
+  padding-bottom: 24px;
   display: flex;
   flex-direction: column;
 }
