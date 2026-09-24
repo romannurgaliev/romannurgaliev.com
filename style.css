@@ -17,6 +17,7 @@
   --text: #111111;
   --text-muted: #737373;
   --line: rgba(17, 17, 17, 0.1);
+  --fill: rgba(17, 17, 17, 0.05);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   /* Type scale: five sizes, two weights (400 / 500). Nothing else.
@@ -109,7 +110,8 @@ h1, h2, h3 {
 .cv-section-label,
 .cv-entry-period,
 .case-back,
-.case-facts,
+.case-period,
+.case-chips,
 .case-section h2 {
   font-size: var(--fs-s);
   font-weight: 500;
@@ -616,26 +618,38 @@ a.contact-link {
   margin-top: 12px;
 }
 
-/* Heading on the left, period and context on the right,
-   like the year on a work card */
-.case-header {
+.case-intro {
+  margin-bottom: 64px;
+}
+
+/* Company on the left, period on the right, like the year on a work card */
+.case-title-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 24px;
-  margin-bottom: 72px;
+  flex-wrap: wrap;
+  gap: 8px 24px;
 }
 
-.case-header > div {
-  min-width: 0;
-}
-
-.case-facts {
-  list-style: none;
-  flex-shrink: 0;
-  max-width: 50%;
-  text-align: right;
+.case-period {
   color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Location, platform and similar context as quiet grey chips */
+.case-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.case-chips li {
+  color: var(--text-muted);
+  background: var(--fill);
+  padding: 4px 10px;
+  border-radius: 100px;
 }
 
 .case-back {
@@ -800,16 +814,8 @@ a.contact-link {
     --fs-xl: 32px;
   }
 
-  /* Narrow screens: facts drop under the heading, left-aligned */
-  .case-header {
-    flex-direction: column;
-    gap: 16px;
+  .case-intro {
     margin-bottom: 56px;
-  }
-
-  .case-facts {
-    max-width: none;
-    text-align: left;
   }
 
   .contact-link {
