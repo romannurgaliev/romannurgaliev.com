@@ -617,20 +617,26 @@ a.contact-link {
 
 .case-lead {
   color: var(--text-muted);
-  margin-top: 12px;
 }
 
 .case-intro {
   margin-bottom: 64px;
 }
 
-/* Company on the left, period on the right, like the year on a work card */
-.case-title-row {
+/* Company on the left, period on the right, like the year on a work card.
+   Sticks to the top for the whole case, like the CV title on the index. */
+.case-head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px 24px;
+  padding: 24px 0 12px;
+  margin-top: -24px;
+  background: var(--bg);
 }
 
 .case-period {
@@ -656,7 +662,9 @@ a.contact-link {
 
 .case-section {
   margin-bottom: 56px;
-  scroll-margin-top: 32px;
+  /* Clear the sticky head: it ends ~21px below the desktop baseline;
+     on phones (no --baseline) the 52px bar + head come to ~140px */
+  scroll-margin-top: calc(var(--baseline, 92px) + 48px);
 }
 
 .case-section h2 {
@@ -819,7 +827,8 @@ a.contact-link {
   }
 
   /* Stick below the 52px bar */
-  .section-head {
+  .section-head,
+  .case-head {
     top: 52px;
     padding-top: 12px;
     margin-top: -12px;
