@@ -18,6 +18,7 @@
   --text-muted: #737373;
   --line: rgba(17, 17, 17, 0.1);
   --fill: rgba(17, 17, 17, 0.05);
+  --fill-hover: rgba(17, 17, 17, 0.09);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   /* Type scale: five sizes, two weights (400 / 500). Nothing else.
@@ -718,6 +719,11 @@ a.contact-link {
   background: var(--fill);
   border-radius: 24px;
   text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.case-pager-link:hover {
+  background: var(--fill-hover);
 }
 
 /* A lone "Up next" card keeps to the right column */
@@ -731,13 +737,6 @@ a.contact-link {
 
 .case-pager-title {
   color: var(--text);
-  text-decoration: underline 1px transparent;
-  text-underline-offset: 0.25em;
-  transition: text-decoration-color 0.15s ease;
-}
-
-.case-pager-link:hover .case-pager-title {
-  text-decoration-color: currentColor;
 }
 
 /* ============================================================
