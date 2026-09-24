@@ -580,20 +580,20 @@ a.contact-link {
   max-width: 640px;
 }
 
-/* Download PDF: a quiet grey pill, darker on hover, like the case pager */
+/* Download PDF: black pill with white text */
 .cv-download {
   flex-shrink: 0;
-  color: var(--text);
-  background: var(--fill);
+  color: var(--bg);
+  background: var(--text);
   padding: 7px 14px;
   line-height: 1;
   border-radius: 100px;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .cv-download:hover {
-  background: var(--fill-hover);
+  opacity: 0.75;
 }
 
 .cv-section {
