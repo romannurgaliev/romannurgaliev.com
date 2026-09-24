@@ -110,7 +110,6 @@ h1, h2, h3 {
 .home-location,
 .case-card .case-year,
 .case-card .case-tags,
-.cv-download,
 .cv-section-label,
 .cv-entry-period,
 .case-back,
@@ -131,6 +130,7 @@ h1, h2, h3 {
 .cv-entry-company,
 .cv-entry-role,
 .cv-entry-list li,
+.cv-entry-note,
 .site-header .name,
 .site-nav a {
   font-size: var(--fs-m);
@@ -511,19 +511,6 @@ a.case-card:hover .case-thumb {
   max-width: 640px;
 }
 
-.cv-download {
-  flex-shrink: 0;
-  color: var(--bg);
-  background: var(--text);
-  padding: 7px 14px;
-  line-height: 1;
-  border-radius: 100px;
-}
-
-.cv-download:hover {
-  opacity: 0.75;
-}
-
 .cv-section {
   margin-bottom: 56px;
 }
@@ -585,6 +572,11 @@ a.case-card:hover .case-thumb {
   position: absolute;
   left: 0;
   color: var(--text-muted);
+}
+
+.cv-entry-note {
+  color: var(--text-muted);
+  margin-top: 8px;
 }
 
 .cv-entry--inline {
