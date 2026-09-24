@@ -105,11 +105,10 @@ h1, h2, h3 {
    Type roles — every text element maps to one step of the scale
    ============================================================ */
 
-/* S — meta, labels, years, tags */
+/* S — meta, labels, years */
 .sidebar-email,
 .home-location,
 .case-card .case-year,
-.case-card .case-tags,
 .cv-section-label,
 .cv-entry-period,
 .case-back,
@@ -381,18 +380,6 @@ a.case-card:hover .case-thumb {
   color: var(--text-muted);
   max-width: 36em;
   margin-top: 6px;
-}
-
-.case-card .case-tags {
-  display: flex;
-  flex-wrap: wrap;
-  color: var(--text-muted);
-  margin-top: 8px;
-}
-
-.case-card .case-tags span + span::before {
-  content: "·";
-  margin: 0 0.5em;
 }
 
 /* ============================================================
