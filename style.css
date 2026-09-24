@@ -366,6 +366,7 @@ a.case-card:hover .case-title {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-radius: 6px;
 }
 
 /* Temporary grey placeholder until the real preview is ready */
@@ -415,7 +416,7 @@ a.case-card:hover .case-title {
 
 /* Card meta */
 .case-card .case-meta {
-  padding-top: 20px;
+  padding-top: 24px;
   display: flex;
   flex-direction: column;
 }
@@ -442,7 +443,7 @@ a.case-card:hover .case-title {
 .case-card .case-desc {
   color: var(--text-muted);
   max-width: 36em;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 /* ============================================================
