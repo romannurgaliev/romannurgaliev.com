@@ -9,42 +9,41 @@
   <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
   <link rel="stylesheet" href="../style.css">
 </head>
-<body>
+<body class="two-col">
 
-  <header class="site-header animate">
-    <a href="/" class="name">Roman Nurgaliev</a>
-    <nav>
-      <ul class="site-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/#cv">CV</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <aside class="sidebar animate">
+    <div class="sidebar-top">
+      <a class="sidebar-name" href="/">Roman Nurgaliev</a>
 
-  <main class="container">
+      <nav class="sidebar-nav">
+        <a href="/" class="active">Home</a>
+        <a href="/#cv">CV</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+    </div>
 
-    <section style="border-top: none; padding-top: 64px;">
+    <a class="sidebar-email" href="mailto:romannurgaliev@gmail.com">romannurgaliev@gmail.com</a>
+  </aside>
 
-      <a href="/#work" class="case-back animate">← Back to Work</a>
+  <main class="content animate delay-1">
+    <article class="case">
+      <h1 class="case-heading">Brighty</h1>
+      <p class="case-lead">Trading terminal and B2B onboarding</p>
 
-      <p class="case-meta animate delay-1">Brighty · 2025–2026</p>
-      <h1 class="case-title animate delay-2">Trading Terminal &amp; B2B Onboarding</h1>
+      <dl class="case-facts">
+        <div><dt>Role</dt><dd>Product Designer</dd></div>
+        <div><dt>Period</dt><dd>Oct 2025–Apr 2026, 7 months</dd></div>
+        <div><dt>Location</dt><dd>Switzerland, remote</dd></div>
+        <div><dt>Team</dt><dd>~20-person company, one frontend engineer</dd></div>
+      </dl>
 
-      <div class="case-info animate delay-3">
-        <span><strong>Role</strong>Product Designer</span>
-        <span><strong>Period</strong>Oct 2025–Apr 2026, 7 months</span>
-        <span><strong>Location</strong>Switzerland, remote</span>
-        <span><strong>Team</strong>~20-person company, one frontend engineer</span>
-      </div>
-
-      <div class="case-section animate delay-4">
+      <div class="case-section">
         <h2>Overview</h2>
         <p>Brighty is a Swiss crypto fintech of about 20 people. In 2025 it launched a trading terminal to bring a new audience to its core products, on the wave of interest in perps trading. I was the only designer on the terminal and on Brighty Business, the product for business accounts.</p>
         <p>Mistakes are expensive on both sides. With leverage up to 50x, a small price move can liquidate a position, and in cross margin a loss on one position moves the liquidation price of every other. On the business side, companies have to pass KYB before they can use their account, and many never finished it.</p>
       </div>
 
-      <div class="case-section animate delay-5">
+      <div class="case-section">
         <h2>What I Did</h2>
         <ul>
           <li>Designed a perps and spot trading terminal with leverage up to 50x and took it through public release, working with one frontend engineer through specs and design tokens, and reviewing the build before launch</li>
@@ -55,7 +54,7 @@
         </ul>
       </div>
 
-      <div class="case-section animate delay-6">
+      <div class="case-section">
         <h2>Cross-Margin Risk Simulator</h2>
         <p>In cross margin, all positions share one pool of collateral. Traders tend to read each liquidation price as fixed, but a drop in one asset eats into the shared equity and pulls every other liquidation price closer to the market. The simulator lets a trader try a scenario before it happens:</p>
         <ul>
@@ -67,7 +66,7 @@
         <p>The product owner defined the risk model; I designed the interaction and the interface. The simulator was designed and prototyped.</p>
       </div>
 
-      <div class="case-section animate delay-6">
+      <div class="case-section">
         <h2>KYB Onboarding</h2>
         <p>Business onboarding took about 40 minutes on average, per analytics, across eight steps with no point to pause. Businesses entered the same data more than once and had to download, sign, and re-upload provider documents. Support kept hearing that customers were surprised by how much they had to provide just to see the product.</p>
         <p>Each iteration pulled in more people while compliance questions stayed open. I mapped every field and document, about 80 across seven steps, marked each one as ask, pre-fill, reuse, or remove, and proposed three changes:</p>
@@ -79,22 +78,14 @@
         <p>I prepared and ran a decision meeting with the CTO and Compliance to turn the open questions into decisions, each with an owner.</p>
       </div>
 
-      <div class="case-section animate delay-6">
+      <div class="case-section">
         <h2>Outcome</h2>
         <p>The terminal shipped to public release. The risk simulator reached a complete prototype, and the KYB field map and proposal went to the CTO and Compliance for decisions. My role was eliminated in the April 2026 layoffs.</p>
       </div>
 
-    </section>
-
+      <a href="/#work" class="case-back">← All work</a>
+    </article>
   </main>
-
-  <footer class="site-footer">
-    <span>© 2026 Roman Nurgaliev</span>
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/romannurgaliev/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://band.link/designtakoy" target="_blank" rel="noopener">Podcast</a>
-    </div>
-  </footer>
 
 </body>
 </html>

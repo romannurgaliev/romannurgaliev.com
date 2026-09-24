@@ -17,7 +17,6 @@
   --text: #111111;
   --text-muted: #737373;
   --line: rgba(17, 17, 17, 0.1);
-  --max-w: 680px;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   /* Type scale: five sizes, two weights (400 / 500). Nothing else.
@@ -110,10 +109,7 @@ h1, h2, h3 {
 .cv-section-label,
 .cv-entry-period,
 .case-back,
-.container .case-meta,
-.case-info,
-.case-section h2,
-.site-footer {
+.case-section h2 {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -125,7 +121,9 @@ h1, h2, h3 {
 .cv-entry-company,
 .cv-entry-role,
 .cv-entry-list li,
-.cv-entry-note {
+.cv-entry-note,
+.case-facts dt,
+.case-facts dd {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
@@ -134,9 +132,8 @@ h1, h2, h3 {
 /* L — lead text, name and navigation, card titles, contact values, case copy */
 .sidebar-name,
 .sidebar-nav a,
-.site-header .name,
-.site-nav a,
 .home-bio,
+.case-lead,
 .contact-bio,
 .contact-link-label,
 .contact-link-value,
@@ -150,7 +147,7 @@ h1, h2, h3 {
 
 /* XL — section and page titles */
 .section-title,
-.container .case-title {
+.case-heading {
   font-size: var(--fs-xl);
   line-height: var(--lh-xl);
   letter-spacing: var(--ls-xl);
@@ -167,8 +164,7 @@ h1, h2, h3 {
 
 /* Numbers that line up */
 .case-card .case-year,
-.cv-entry-period,
-.case-info {
+.cv-entry-period {
   font-variant-numeric: tabular-nums;
 }
 
@@ -255,7 +251,8 @@ body.two-col {
     margin-top: calc(var(--baseline) - 24px - 0.874em); /* lh 1.02 */
   }
 
-  .section-title {
+  .section-title,
+  .case-heading {
     margin-top: calc(var(--baseline) - 24px - 0.939em); /* lh 1.15 */
   }
 }
@@ -603,74 +600,51 @@ a.contact-link {
 }
 
 /* ============================================================
-   Case study pages (work/[slug].html) — single column
+   Case study pages (work/[slug].html) — same two columns as the index
    ============================================================ */
-.container {
-  max-width: var(--max-w);
-  margin: 0 auto;
+.case {
+  max-width: 640px;
+  padding-bottom: 96px;
 }
 
-.container section {
-  padding: 64px 0 80px;
-}
-
-.site-header {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 32px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 24px;
-}
-
-.site-header .name {
+.case-heading {
   font-weight: 500;
   color: var(--text);
 }
 
-.site-nav {
-  display: flex;
-  gap: 24px;
-  list-style: none;
+.case-lead {
+  color: var(--text-muted);
+  margin-top: 12px;
 }
 
-.site-nav a {
+/* Facts: label and value on one row, dividers between rows
+   as in the contact list */
+.case-facts {
+  margin: 40px 0 72px;
+}
+
+.case-facts > div {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.case-facts > div + div {
+  border-top: 1px solid var(--line);
+}
+
+.case-facts dt {
   color: var(--text-muted);
+}
+
+.case-facts dd {
+  color: var(--text);
 }
 
 .case-back {
   display: inline-block;
   color: var(--text-muted);
-  margin-bottom: 48px;
-}
-
-.container .case-meta {
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.container .case-title {
-  font-weight: 500;
-  margin-bottom: 32px;
-}
-
-.case-info {
-  display: flex;
-  gap: 40px;
-  color: var(--text-muted);
-  margin-bottom: 64px;
-  flex-wrap: wrap;
-}
-
-.case-info span {
-  display: flex;
-  flex-direction: column;
-}
-
-.case-info strong {
-  font-weight: 500;
-  color: var(--text);
 }
 
 .case-section {
@@ -720,39 +694,6 @@ a.contact-link {
   position: absolute;
   left: 0;
   color: var(--text-muted);
-}
-
-.case-images {
-  margin-top: 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.case-images img {
-  width: 100%;
-  border-radius: 4px;
-}
-
-.site-footer {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 32px 0 48px;
-  border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  color: var(--text-muted);
-}
-
-.site-footer a {
-  color: var(--text-muted);
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
 }
 
 /* ============================================================
@@ -863,37 +804,13 @@ a.contact-link {
     --fs-xl: 32px;
   }
 
-  body {
-    padding: 0 20px;
-  }
-
-  .site-header {
-    flex-direction: column;
-    gap: 16px;
-    padding-top: 24px;
-  }
-
-  .site-nav {
-    gap: 16px;
-  }
-
-  .container section {
-    padding: 48px 0 56px;
-  }
-
-  .case-info {
-    gap: 24px;
+  .case-facts > div {
+    grid-template-columns: 96px minmax(0, 1fr);
   }
 
   .contact-link {
     flex-direction: column;
     gap: 2px;
-  }
-
-  .site-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
   }
 }
 
