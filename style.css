@@ -20,7 +20,6 @@
   --fill: rgba(17, 17, 17, 0.05);
   --fill-hover: rgba(17, 17, 17, 0.09);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-  --icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E");
 
   /* Type scale: five sizes, two weights (400 / 500). Nothing else.
      Small text is set in 500 so meta stays crisp, not thin.
@@ -310,7 +309,6 @@ body.two-col {
    black with an underline on hover */
 .sidebar-email {
   align-self: flex-start;
-  position: relative;
   color: var(--text-muted);
   text-decoration: underline 1px transparent;
   text-underline-offset: 0.25em;
@@ -575,40 +573,6 @@ a.contact-link {
   text-decoration-color: currentColor;
 }
 
-/* Copy icon right of the address, on hover. Positioned outside the text
-   so the email row's value stays flush with the rows below it.
-   Contact: 4px gap + 16px icon fits the 20px phone gutter. */
-.sidebar-email::after,
-.contact-link[data-copy] .contact-link-value::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 6px);
-  width: 14px;
-  height: 14px;
-  transform: translateY(-50%);
-  background: currentColor;
-  -webkit-mask: var(--icon-copy) center / contain no-repeat;
-  mask: var(--icon-copy) center / contain no-repeat;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.contact-link[data-copy] .contact-link-value {
-  position: relative;
-}
-
-.contact-link[data-copy] .contact-link-value::after {
-  left: calc(100% + 4px);
-  width: 16px;
-  height: 16px;
-}
-
-.sidebar-email:is(:hover, :focus-visible)::after,
-.contact-link[data-copy]:is(:hover, :focus-visible) .contact-link-value::after {
-  opacity: 1;
-}
-
 /* ============================================================
    CV
    ============================================================ */
@@ -616,20 +580,21 @@ a.contact-link {
   max-width: 640px;
 }
 
-/* Download PDF: black pill with white text */
+/* Download PDF: black pill with white text. Hover eases the fill to grey:
+   starts at once and settles softly, no layer swap for the text */
 .cv-download {
   flex-shrink: 0;
   color: var(--bg);
-  background: var(--text);
+  background-color: var(--text);
   padding: 7px 14px;
   line-height: 1;
   border-radius: 100px;
   text-decoration: none;
-  transition: opacity 0.15s ease;
+  transition: background-color 0.25s ease-out;
 }
 
 .cv-download:hover {
-  opacity: 0.75;
+  background-color: color-mix(in srgb, var(--text) 75%, var(--bg));
 }
 
 .cv-section {
