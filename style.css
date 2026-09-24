@@ -363,6 +363,12 @@ a.case-card:hover .case-title {
   overflow: hidden;
 }
 
+/* Temporary grey placeholder until the real preview is ready */
+.case-thumb--placeholder {
+  background: var(--fill);
+  color: var(--text-muted);
+}
+
 /* Single image */
 .case-thumb-single {
   display: flex;
