@@ -109,6 +109,7 @@ h1, h2, h3 {
 .cv-section-label,
 .cv-entry-period,
 .case-back,
+.case-facts,
 .case-section h2 {
   font-size: var(--fs-s);
   font-weight: 500;
@@ -121,9 +122,7 @@ h1, h2, h3 {
 .cv-entry-company,
 .cv-entry-role,
 .cv-entry-list li,
-.cv-entry-note,
-.case-facts dt,
-.case-facts dd {
+.cv-entry-note {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
@@ -617,29 +616,26 @@ a.contact-link {
   margin-top: 12px;
 }
 
-/* Facts: label and value on one row, dividers between rows
-   as in the contact list */
+/* Heading on the left, period and context on the right,
+   like the year on a work card */
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 72px;
+}
+
+.case-header > div {
+  min-width: 0;
+}
+
 .case-facts {
-  margin: 40px 0 72px;
-}
-
-.case-facts > div {
-  display: grid;
-  grid-template-columns: 128px minmax(0, 1fr);
-  gap: 16px;
-  padding: 12px 0;
-}
-
-.case-facts > div + div {
-  border-top: 1px solid var(--line);
-}
-
-.case-facts dt {
+  list-style: none;
+  flex-shrink: 0;
+  max-width: 50%;
+  text-align: right;
   color: var(--text-muted);
-}
-
-.case-facts dd {
-  color: var(--text);
 }
 
 .case-back {
@@ -804,8 +800,16 @@ a.contact-link {
     --fs-xl: 32px;
   }
 
-  .case-facts > div {
-    grid-template-columns: 96px minmax(0, 1fr);
+  /* Narrow screens: facts drop under the heading, left-aligned */
+  .case-header {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  .case-facts {
+    max-width: none;
+    text-align: left;
   }
 
   .contact-link {
