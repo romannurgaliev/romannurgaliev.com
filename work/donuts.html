@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="view-transition" content="same-origin">
+  <title>donuts.tg — Roman Nurgaliev</title>
+  <meta name="description" content="Case study: checkout, merchant dashboard, and admin panel for donuts.tg, a crypto payment gateway on TON.">
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header animate">
+    <a href="/" class="name">Roman Nurgaliev</a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#cv">CV</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section style="border-top: none; padding-top: 64px;">
+
+      <a href="/#work" class="case-back animate">← Back to Work</a>
+
+      <p class="case-meta animate delay-1">donuts.tg · 2024</p>
+      <h1 class="case-title animate delay-2">Crypto Payment Gateway</h1>
+
+      <div class="case-info animate delay-3">
+        <span><strong>Role</strong>Founding Product Designer</span>
+        <span><strong>Period</strong>Jul–Dec 2024, 6 months</span>
+        <span><strong>Location</strong>Remote</span>
+        <span><strong>Platform</strong>Web</span>
+      </div>
+
+      <div class="case-section animate delay-4">
+        <h2>Overview</h2>
+        <p>donuts.tg let creators, streamers, and small merchants accept crypto payments on TON. Buyers could pay in almost any TON token, including volatile meme coins, and a crypto payment can’t be reversed, so the amount on screen had to be right at the moment of payment.</p>
+        <p>I was the founding designer and designed the product across three surfaces: the buyer checkout, the merchant dashboard, and the internal admin panel.</p>
+      </div>
+
+      <div class="case-section animate delay-5">
+        <h2>What I Did</h2>
+        <ul>
+          <li>Designed checkout for volatile tokens: payment window, rate lock, re-quotes, and recovery from insufficient funds</li>
+          <li>Designed the merchant dashboard: orders, balance, payment settings, integration, and staff roles</li>
+          <li>Designed the internal admin panel: users and merchants, roles, sign-in, search and filters, stats, and payment history with commissions</li>
+          <li>Interviewed merchants about accounting, tax reporting, and the payment processors they already used, and reworked the dashboard home around what they needed for their books</li>
+        </ul>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>Checkout</h2>
+        <ul>
+          <li>Two timers instead of one: ten minutes to pay, and a 60-second lock on the exchange rate, shown next to the dollar equivalent</li>
+          <li>When the rate expires, the re-quote shows the old and the new amount side by side instead of silently changing the number</li>
+          <li>When the wallet doesn’t hold enough, the screen says how much is available and offers to change the coin</li>
+          <li>Payment by QR code or a connected wallet, with success and error states</li>
+          <li>After design review, the token picker became a single list instead of separate “Popular” and “All tokens” sections</li>
+        </ul>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>Merchant Dashboard</h2>
+        <ul>
+          <li>The balance is split into what can be withdrawn and a 48-hour reserve for refunds, with a line explaining why</li>
+          <li>Each order keeps its fiat value and the exchange rate with the time it was locked, which is what accountants and tax reports need</li>
+          <li>Accepting every TON token requires confirming a warning that some are highly volatile</li>
+          <li>API keys are shown once and can be revoked; webhooks, redirect URLs, and a choice between API and CMS-plugin integration</li>
+          <li>Staff roles, with a confirmation that lists what a promotion to administrator grants</li>
+          <li>A store can’t be deleted while it has active transactions or a balance</li>
+        </ul>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>Outcome</h2>
+        <p>donuts.tg launched in beta and processed live payments from real merchants. The company closed in December 2024 when funding ran out: merchants wanted more networks than TON, and the next step required a banking license.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Roman Nurgaliev</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/romannurgaliev/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://band.link/designtakoy" target="_blank" rel="noopener">Podcast</a>
+    </div>
+  </footer>
+
+</body>
+</html>

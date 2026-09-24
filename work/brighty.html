@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="view-transition" content="same-origin">
+  <title>Brighty — Roman Nurgaliev</title>
+  <meta name="description" content="Case study: a perps and spot trading terminal, a cross-margin risk simulator, and KYB onboarding for business accounts at Brighty.">
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header animate">
+    <a href="/" class="name">Roman Nurgaliev</a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#cv">CV</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section style="border-top: none; padding-top: 64px;">
+
+      <a href="/#work" class="case-back animate">← Back to Work</a>
+
+      <p class="case-meta animate delay-1">Brighty · 2025–2026</p>
+      <h1 class="case-title animate delay-2">Trading Terminal &amp; B2B Onboarding</h1>
+
+      <div class="case-info animate delay-3">
+        <span><strong>Role</strong>Product Designer</span>
+        <span><strong>Period</strong>Oct 2025–Apr 2026, 7 months</span>
+        <span><strong>Location</strong>Switzerland, remote</span>
+        <span><strong>Team</strong>~20-person company, one frontend engineer</span>
+      </div>
+
+      <div class="case-section animate delay-4">
+        <h2>Overview</h2>
+        <p>Brighty is a Swiss crypto fintech of about 20 people. In 2025 it launched a trading terminal to bring a new audience to its core products, on the wave of interest in perps trading. I was the only designer on the terminal and on Brighty Business, the product for business accounts.</p>
+        <p>Mistakes are expensive on both sides. With leverage up to 50x, a small price move can liquidate a position, and in cross margin a loss on one position moves the liquidation price of every other. On the business side, companies have to pass KYB before they can use their account, and many never finished it.</p>
+      </div>
+
+      <div class="case-section animate delay-5">
+        <h2>What I Did</h2>
+        <ul>
+          <li>Designed a perps and spot trading terminal with leverage up to 50x and took it through public release, working with one frontend engineer through specs and design tokens, and reviewing the build before launch</li>
+          <li>Built the design system and the token set used in handoff</li>
+          <li>Designed a cross-margin risk simulator with the product owner, who owned the risk model</li>
+          <li>Redesigned KYB onboarding for business accounts and ran the decision session with the CTO and Compliance</li>
+          <li>Benchmarked Brighty Business against six B2B finance products (Slash, Finom, Brex, Ramp, Deel, Papaya) on approvals, roles, and audit</li>
+        </ul>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>Cross-Margin Risk Simulator</h2>
+        <p>In cross margin, all positions share one pool of collateral. Traders tend to read each liquidation price as fixed, but a drop in one asset eats into the shared equity and pulls every other liquidation price closer to the market. The simulator lets a trader try a scenario before it happens:</p>
+        <ul>
+          <li>Each open position is a card with a price slider from −50% to +50%, an entry marker, a liquidation marker that moves with the scenario, and a danger zone</li>
+          <li>Presets for common shocks: the whole market down 30%, one asset down 50%, a 15% recovery, and a reset to live prices</li>
+          <li>An account-health bar for the cross-margin ratio in three states (secure, warning, danger), with maintenance margin, effective leverage, maximum drawdown, and withdrawable funds</li>
+          <li>Two ways in: from the risk tooltip in the terminal, and from the order form, to see how a new order affects open positions before placing it</li>
+        </ul>
+        <p>The product owner defined the risk model; I designed the interaction and the interface. The simulator was designed and prototyped.</p>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>KYB Onboarding</h2>
+        <p>Business onboarding took about 40 minutes on average, per analytics, across eight steps with no point to pause. Businesses entered the same data more than once and had to download, sign, and re-upload provider documents. Support kept hearing that customers were surprised by how much they had to provide just to see the product.</p>
+        <p>Each iteration pulled in more people while compliance questions stayed open. I mapped every field and document, about 80 across seven steps, marked each one as ask, pre-fill, reuse, or remove, and proposed three changes:</p>
+        <ul>
+          <li>A two-stage flow: about 20 fields before the home page, the rest after the first login</li>
+          <li>Pre-fill for data already collected, such as offering the legal address as the operational one</li>
+          <li>Provider documents filled in by Brighty from data it already has, instead of download, sign, and re-upload</li>
+        </ul>
+        <p>I prepared and ran a decision meeting with the CTO and Compliance to turn the open questions into decisions, each with an owner.</p>
+      </div>
+
+      <div class="case-section animate delay-6">
+        <h2>Outcome</h2>
+        <p>The terminal shipped to public release. The risk simulator reached a complete prototype, and the KYB field map and proposal went to the CTO and Compliance for decisions. My role was eliminated in the April 2026 layoffs.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Roman Nurgaliev</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/romannurgaliev/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://band.link/designtakoy" target="_blank" rel="noopener">Podcast</a>
+    </div>
+  </footer>
+
+</body>
+</html>

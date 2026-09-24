@@ -675,6 +675,7 @@ a.contact-link {
 
 .case-section {
   margin-bottom: 56px;
+  scroll-margin-top: 32px;
 }
 
 .case-section h2 {
@@ -687,7 +688,9 @@ a.contact-link {
   line-height: 1.5;
 }
 
-.case-section p + p {
+.case-section p + p,
+.case-section p + ul,
+.case-section ul + p {
   margin-top: 0.75em;
 }
 
