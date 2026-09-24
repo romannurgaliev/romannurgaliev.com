@@ -144,7 +144,6 @@ button {
 .sidebar-email,
 .home-location,
 .case-card .case-year,
-.case-card .case-more,
 .skip-link,
 .cv-download,
 .cv-section-label,
@@ -437,12 +436,6 @@ a.case-card:hover .case-title {
   color: var(--text-muted);
   max-width: 36em;
   margin-top: 6px;
-}
-
-/* Tells the card is a link: "Read case →" or "Listen →" */
-.case-card .case-more {
-  color: var(--text-muted);
-  margin-top: 8px;
 }
 
 /* ============================================================
