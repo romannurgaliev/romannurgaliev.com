@@ -300,6 +300,53 @@ Now designing pricing, billing, and apps for a VPN service.</p>
     addEventListener('scroll', updateNav, { passive: true });
     addEventListener('resize', updateNav);
     updateNav();
+
+    // Anchor links glide to their section with a soft ease-in-out,
+    // slower than the browser's built-in smooth scroll.
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    let frame = 0;
+
+    function glideTo(target) {
+      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const to = Math.min(max, Math.max(0, target.getBoundingClientRect().top + scrollY - margin));
+      const from = scrollY;
+      const distance = to - from;
+      cancelAnimationFrame(frame);
+
+      if (reduceMotion.matches || Math.abs(distance) < 2) {
+        scrollTo(0, to);
+        return;
+      }
+
+      const duration = Math.min(1100, Math.max(600, Math.abs(distance) * 0.4));
+      const start = performance.now();
+      const step = now => {
+        const t = Math.min(1, (now - start) / duration);
+        scrollTo(0, from + distance * ease(t));
+        if (t < 1) frame = requestAnimationFrame(step);
+      };
+      frame = requestAnimationFrame(step);
+    }
+
+    // Let the reader take over mid-glide
+    const stopGlide = () => cancelAnimationFrame(frame);
+    addEventListener('wheel', stopGlide, { passive: true });
+    addEventListener('touchstart', stopGlide, { passive: true });
+
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const target = document.querySelector(link.hash);
+      if (!target) return;
+      e.preventDefault();
+      if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+      // Keep keyboard focus in step with the scroll, as a native jump would
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      glideTo(target);
+    });
   </script>
 
 </body>

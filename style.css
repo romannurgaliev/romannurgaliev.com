@@ -59,12 +59,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -86,14 +80,18 @@ img {
   display: block;
 }
 
+/* Links: an underline appears on hover; colour and opacity stay put */
 a {
   color: inherit;
-  text-decoration: none;
-  transition: opacity 0.15s ease, color 0.15s ease;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.15s ease;
 }
 
 a:hover {
-  opacity: 0.6;
+  text-decoration-color: currentColor;
 }
 
 h1, h2, h3 {
@@ -123,21 +121,21 @@ h1, h2, h3 {
 }
 
 /* M — base UI and body text */
-.sidebar-name,
-.sidebar-nav a,
 .case-card .case-desc,
 .cv-entry-company,
 .cv-entry-role,
 .cv-entry-list li,
-.cv-entry-note,
-.site-header .name,
-.site-nav a {
+.cv-entry-note {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
 }
 
-/* L — lead text, card titles, contact values, case copy */
+/* L — lead text, name and navigation, card titles, contact values, case copy */
+.sidebar-name,
+.sidebar-nav a,
+.site-header .name,
+.site-nav a,
 .home-bio,
 .contact-bio,
 .contact-link-label,
@@ -234,7 +232,7 @@ body.two-col {
   }
 
   .sidebar {
-    padding-top: calc(var(--baseline) - 1.114em); /* 16px, lh 1.5 */
+    padding-top: calc(var(--baseline) - 20.3px); /* 20px, lh 1.3 */
     /* Bottom mirrors the top: the email's baseline sits as far from the
        bottom edge as the name's cap height sits from the top edge */
     padding-bottom: calc(var(--baseline) - 16px); /* 13px, lh 1.4 */
@@ -259,19 +257,12 @@ body.two-col {
   color: var(--text-muted);
 }
 
-.sidebar-nav a:hover,
 .sidebar-nav a.active {
   color: var(--text);
-  opacity: 1;
 }
 
 .sidebar-email {
   color: var(--text-muted);
-}
-
-.sidebar-email:hover {
-  color: var(--text);
-  opacity: 1;
 }
 
 .content {
@@ -289,8 +280,19 @@ body.two-col {
   color: inherit;
 }
 
-a.case-card:hover {
-  opacity: 1;
+/* Whole card is the link; only its title gets the underline */
+a.case-card {
+  text-decoration: none;
+}
+
+a.case-card .case-title {
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+a.case-card:hover .case-title {
+  text-decoration-color: currentColor;
 }
 
 .case-thumb {
@@ -301,11 +303,6 @@ a.case-card:hover {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: opacity 0.15s ease;
-}
-
-a.case-card:hover .case-thumb {
-  opacity: 0.85;
 }
 
 /* Single image */
@@ -391,6 +388,11 @@ a.case-card:hover .case-thumb {
 
 .section + .section {
   margin-top: 160px;
+}
+
+/* Sections receive focus from the anchor links; no ring around a whole section */
+.section:focus {
+  outline: none;
 }
 
 .section-head {
@@ -489,6 +491,21 @@ a.case-card:hover .case-thumb {
 
 .contact-link-value {
   color: var(--text);
+}
+
+/* Contact rows: only the value gets the underline */
+a.contact-link {
+  text-decoration: none;
+}
+
+.contact-link-value {
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.contact-link:hover .contact-link-value {
+  text-decoration-color: currentColor;
 }
 
 /* ============================================================
@@ -615,20 +632,10 @@ a.case-card:hover .case-thumb {
   color: var(--text-muted);
 }
 
-.site-nav a:hover {
-  color: var(--text);
-  opacity: 1;
-}
-
 .case-back {
   display: inline-block;
   color: var(--text-muted);
   margin-bottom: 48px;
-}
-
-.case-back:hover {
-  color: var(--text);
-  opacity: 1;
 }
 
 .container .case-meta {
@@ -689,6 +696,15 @@ a.case-card:hover .case-thumb {
   position: relative;
 }
 
+/* Links inside running text stay marked; hover darkens the line */
+.case-section a {
+  text-decoration-color: var(--text-muted);
+}
+
+.case-section a:hover {
+  text-decoration-color: currentColor;
+}
+
 .case-section ul li::before {
   content: "–";
   position: absolute;
@@ -722,11 +738,6 @@ a.case-card:hover .case-thumb {
 
 .site-footer a {
   color: var(--text-muted);
-}
-
-.site-footer a:hover {
-  color: var(--text);
-  opacity: 1;
 }
 
 .footer-links {
@@ -789,6 +800,14 @@ a.case-card:hover .case-thumb {
 
   .sidebar-email {
     display: none;
+  }
+
+  /* The compact bar keeps M so the name and three links fit one 52px row */
+  .sidebar-name,
+  .sidebar-nav a {
+    font-size: var(--fs-m);
+    line-height: var(--lh-m);
+    letter-spacing: var(--ls-m);
   }
 
   .sidebar-nav {
