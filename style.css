@@ -218,6 +218,13 @@ body.two-col {
     top: 50%;
     left: 24px;
     transform: translateY(-50%);
+    gap: 0;
+  }
+
+  /* Each item gets room as if it sat in its own button: 36px rows,
+     and a hit area taller than the text */
+  .sidebar-nav a {
+    padding: 5px 0;
   }
 }
 
