@@ -109,7 +109,6 @@ h1, h2, h3 {
 .case-card .case-year,
 .cv-section-label,
 .cv-entry-period,
-.case-back,
 .case-period,
 .case-chips,
 .case-section h2 {
@@ -124,7 +123,8 @@ h1, h2, h3 {
 .cv-entry-company,
 .cv-entry-role,
 .cv-entry-list li,
-.cv-entry-note {
+.cv-entry-note,
+.case-pager-label {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
@@ -139,6 +139,7 @@ h1, h2, h3 {
 .contact-link-label,
 .contact-link-value,
 .case-card .case-title,
+.case-pager-title,
 .case-section p,
 .case-section li {
   font-size: var(--fs-l);
@@ -652,11 +653,6 @@ a.contact-link {
   border-radius: 100px;
 }
 
-.case-back {
-  display: inline-block;
-  color: var(--text-muted);
-}
-
 .case-section {
   margin-bottom: 56px;
   scroll-margin-top: 32px;
@@ -704,6 +700,44 @@ a.contact-link {
   position: absolute;
   left: 0;
   color: var(--text-muted);
+}
+
+/* Previous / next case, as two quiet grey cards */
+.case-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 96px;
+}
+
+.case-pager-link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 28px 28px;
+  background: var(--fill);
+  border-radius: 24px;
+  text-decoration: none;
+}
+
+/* A lone "Up next" card keeps to the right column */
+.case-pager-next {
+  grid-column: 2;
+}
+
+.case-pager-label {
+  color: var(--text-muted);
+}
+
+.case-pager-title {
+  color: var(--text);
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.case-pager-link:hover .case-pager-title {
+  text-decoration-color: currentColor;
 }
 
 /* ============================================================
@@ -816,6 +850,15 @@ a.contact-link {
 
   .case-intro {
     margin-bottom: 56px;
+  }
+
+  .case-pager {
+    grid-template-columns: 1fr;
+    margin-top: 72px;
+  }
+
+  .case-pager-next {
+    grid-column: auto;
   }
 
   .contact-link {
