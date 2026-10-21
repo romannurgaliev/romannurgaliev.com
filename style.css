@@ -786,6 +786,51 @@ a.contact-link {
   color: var(--text-muted);
 }
 
+/* Screens inside a case section: grey box, caption underneath */
+.case-figure {
+  margin-top: 40px;
+}
+
+.case-figure-frame {
+  background: var(--fill);
+  border-radius: 6px;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.case-figure-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.06);
+}
+
+/* Dialogs stay at dialog size instead of filling the column */
+.case-figure-frame--dialog img {
+  max-width: 360px;
+  border-radius: 21px;
+}
+
+.case-figure figcaption {
+  margin-top: 12px;
+  color: var(--text-muted);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  letter-spacing: var(--ls-m);
+}
+
+@media (max-width: 768px) {
+  .case-figure {
+    margin-top: 32px;
+  }
+
+  .case-figure-frame {
+    padding: 16px;
+  }
+}
+
 /* Previous / next case, as two quiet grey cards */
 .case-pager {
   display: grid;
