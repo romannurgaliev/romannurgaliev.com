@@ -1189,6 +1189,22 @@ body.case-page {
   cursor: pointer;
 }
 
+/* Mouse users can drag the track and the deck */
+@media (hover: hover) and (pointer: fine) {
+  .case-gallery-track,
+  .case-carousel-stage {
+    cursor: grab;
+  }
+}
+
+.case-gallery-track.is-dragging,
+.case-gallery-track.is-dragging *,
+.case-carousel-stage.is-dragging,
+.case-carousel-stage.is-dragging * {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .case-gallery-slide img {
   width: 100%;
   height: auto;

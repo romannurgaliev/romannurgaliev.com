@@ -16,6 +16,18 @@
     });
   }
 
+  // Stops the browser's own image drag, and swallows the click that
+  // follows a mouse drag so it doesn't also jump to a slide
+  function noDragClicks(root, wasDrag) {
+    root.addEventListener('dragstart', function (event) { event.preventDefault(); });
+    root.addEventListener('click', function (event) {
+      if (wasDrag()) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    }, true);
+  }
+
   // ---------- Card carousel ----------
   function initCarousel(figure) {
     var slides = Array.prototype.slice.call(figure.querySelectorAll('.case-carousel-slide'));
@@ -64,18 +76,37 @@
       });
     });
 
-    // Swipe on touch screens
+    // Swipe on touch screens, drag with a held mouse button
     var startX = null;
+    var dragged = false;
     stage.addEventListener('pointerdown', function (event) {
-      if (event.pointerType !== 'mouse') startX = event.clientX;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      startX = event.clientX;
+      dragged = false;
     });
-    stage.addEventListener('pointerup', function (event) {
+    // Capture the mouse only once it moves, so a plain click still
+    // reaches the card under it
+    stage.addEventListener('pointermove', function (event) {
+      if (startX === null || event.pointerType !== 'mouse') return;
+      if (Math.abs(event.clientX - startX) > 6 && !stage.classList.contains('is-dragging')) {
+        stage.classList.add('is-dragging');
+        stage.setPointerCapture(event.pointerId);
+      }
+    });
+    function endSwipe(event) {
       if (startX === null) return;
       var dx = event.clientX - startX;
+      if (Math.abs(dx) > 6) dragged = true;
       if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
       startX = null;
+      stage.classList.remove('is-dragging');
+    }
+    stage.addEventListener('pointerup', endSwipe);
+    stage.addEventListener('pointercancel', function () {
+      startX = null;
+      stage.classList.remove('is-dragging');
     });
-    stage.addEventListener('pointercancel', function () { startX = null; });
+    noDragClicks(stage, function () { return dragged; });
 
     arrowKeys(figure, go);
     render();
@@ -131,6 +162,77 @@
         if (i !== index) goTo(i);
       });
     });
+
+    // Drag with a held mouse button. Touch and trackpads scroll natively.
+    // Snapping is paused while the track follows the cursor, then the
+    // nearest slide in the drag direction is scrolled to the centre.
+    var drag = null;
+    var dragged = false;
+    var snapTimer = null;
+
+    function restoreSnap() {
+      clearTimeout(snapTimer);
+      track.removeEventListener('scrollend', restoreSnap);
+      track.style.scrollSnapType = '';
+    }
+
+    track.addEventListener('pointerdown', function (event) {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      restoreSnap();
+      drag = {
+        x: event.clientX,
+        left: track.scrollLeft,
+        from: index,
+        lastX: event.clientX,
+        lastT: event.timeStamp,
+        v: 0
+      };
+      dragged = false;
+    });
+
+    track.addEventListener('pointermove', function (event) {
+      if (!drag) return;
+      var dx = event.clientX - drag.x;
+      if (!dragged && Math.abs(dx) < 6) return;
+      if (!dragged) {
+        dragged = true;
+        track.style.scrollSnapType = 'none';
+        track.classList.add('is-dragging');
+        // Captured only now, so a plain click still reaches a slide
+        track.setPointerCapture(event.pointerId);
+      }
+      var dt = event.timeStamp - drag.lastT;
+      if (dt > 0) drag.v = (event.clientX - drag.lastX) / dt;
+      drag.lastX = event.clientX;
+      drag.lastT = event.timeStamp;
+      track.scrollLeft = drag.left - dx;
+    });
+
+    function endDrag(event) {
+      if (!drag) return;
+      var d = drag;
+      drag = null;
+      if (!dragged) return;
+      track.classList.remove('is-dragging');
+      var dx = d.lastX - d.x;
+      var fresh = event.timeStamp - d.lastT < 100;
+      var flick = fresh && Math.abs(d.v) > 0.4;
+      var far = Math.abs(dx) > slides[d.from].offsetWidth * 0.15;
+      // A long drag lands on the nearest slide; a short one or a flick
+      // still moves one step in the drag direction
+      var target = index;
+      if (target === d.from && (flick || far)) target += dx < 0 ? 1 : -1;
+      target = Math.min(Math.max(target, 0), slides.length - 1);
+      goTo(target);
+      // Put snapping back once the smooth scroll settles
+      requestAnimationFrame(function () {
+        track.addEventListener('scrollend', restoreSnap);
+      });
+      snapTimer = setTimeout(restoreSnap, 800);
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    noDragClicks(track, function () { return dragged; });
 
     var ticking = false;
     track.addEventListener('scroll', function () {
