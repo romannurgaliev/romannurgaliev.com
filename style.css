@@ -1428,6 +1428,11 @@ body.case-page {
     display: none;
   }
 
+  /* A single phone has nothing to scroll to, so it sits in the middle */
+  .case-figure-frame--phones:has(> img:only-child) {
+    justify-content: center;
+  }
+
   .case-figure-frame--phones img {
     flex: 0 0 min(64vw, 280px);
     scroll-snap-align: start;
