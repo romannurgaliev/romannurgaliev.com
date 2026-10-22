@@ -1228,10 +1228,40 @@ body.case-page {
   letter-spacing: var(--ls-m);
 }
 
+/* ---------- Callout: a grey panel for a key fact and its source ---------- */
+.case-callout {
+  padding: clamp(24px, 5vw, 56px);
+  border-radius: 12px;
+  background: var(--fill);
+}
+
+.case-callout .case-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 24px;
+  margin-bottom: 0;
+}
+
+.case-section .case-callout + .case-callout-text {
+  margin-top: 24px;
+}
+
+.case-section .case-callout-text {
+  color: var(--text);
+  text-wrap: pretty;
+}
+
+.case-section .case-callout-source {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  letter-spacing: var(--ls-m);
+}
+
 /* ---------- Numbers: a row of figures with labels ---------- */
 .case-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
   gap: 24px;
   margin-bottom: 24px;
 }
