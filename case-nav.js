@@ -47,8 +47,10 @@
     var first = sections[0].getBoundingClientRect();
     var last = sections[sections.length - 1].getBoundingClientRect();
 
-    // Visible from the first heading until the last section has scrolled by
-    var visible = first.top < window.innerHeight * 0.6 && last.bottom > line;
+    // Visible once the page has scrolled at least one full screen and a
+    // section is on screen, until the last section has scrolled by
+    var visible = window.scrollY >= window.innerHeight &&
+      first.top < window.innerHeight * 0.6 && last.bottom > line;
 
     // Step aside while a full-width gallery passes under the list
     var band = toc.getBoundingClientRect();
