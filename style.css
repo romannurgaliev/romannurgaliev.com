@@ -1228,6 +1228,71 @@ body.case-page {
   letter-spacing: var(--ls-m);
 }
 
+/* ---------- Numbers: a row of figures with labels ---------- */
+.case-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Number on top, label under it; numbers line up whatever the label length */
+.case-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-stats dd {
+  order: -1;
+}
+
+.case-stats dd {
+  color: var(--text);
+  font-size: var(--fs-xl);
+  font-weight: 500;
+  line-height: var(--lh-xl);
+  letter-spacing: var(--ls-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.case-stats dt {
+  color: var(--text-muted);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  letter-spacing: var(--ls-m);
+}
+
+/* ---------- Embeds: podcast player and video ---------- */
+.case-embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
+
+/* The Apple Podcasts player stays at text width, phones included */
+.case-section > .case-figure.case-embed--podcast {
+  grid-column: text;
+  margin-top: 40px;
+}
+
+.case-embed--podcast iframe {
+  height: 450px;
+  border-radius: 12px;
+  background: var(--fill);
+}
+
+.case-embed-frame {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--fill);
+}
+
+.case-embed-frame iframe {
+  height: 100%;
+}
+
 /* ---------- Previous / next, across the wide column ---------- */
 .case > .case-pager {
   grid-column: wide;
@@ -1336,7 +1401,8 @@ body.case-page {
     grid-column: full;
   }
 
-  .case-figure-frame {
+  .case-figure-frame,
+  .case-embed-frame {
     border-radius: 0;
   }
 
