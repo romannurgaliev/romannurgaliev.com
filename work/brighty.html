@@ -67,7 +67,7 @@
           <li>Designed the terminal and took it through public release</li>
           <li>Worked with one frontend engineer through specs and design tokens, and reviewed the build before launch</li>
           <li>Built the design system and the token set used in handoff</li>
-          <li>Designed a cross-margin risk simulator with the product owner, who owned the risk model</li>
+          <li>Designed a cross-margin risk simulator together with the product owner</li>
         </ul>
 
         <figure class="case-figure">
@@ -75,6 +75,16 @@
             <img src="images/brighty/order-form-1184.webp" srcset="images/brighty/order-form-700.webp 700w, images/brighty/order-form-1184.webp 1184w" sizes="(max-width: 768px) calc(100vw - 72px), 592px" width="1184" height="1064" alt="The terminal in production: BTC-USDC order book next to the order form with Long and Short, size, margin slider, cross leverage, and take-profit and stop-loss presets" loading="lazy" decoding="async">
           </div>
           <figcaption>The terminal in production: order book and order form with cross leverage, margin, and take-profit and stop-loss presets</figcaption>
+        </figure>
+
+        <figure class="case-figure">
+          <div class="case-figure-frame">
+            <picture>
+              <source media="(prefers-reduced-motion: reduce)" srcset="images/brighty/terminal-reel-poster-1184.webp">
+              <img src="images/brighty/terminal-reel-1184.webp" srcset="images/brighty/terminal-reel-700.webp 700w, images/brighty/terminal-reel-1184.webp 1184w" sizes="(max-width: 768px) calc(100vw - 72px), 592px" width="1184" height="740" alt="Animated walkthrough of the terminal as designed: trade screen, asset selector, order type menu, leverage and margin settings, the liquidation risk popover, and four states of the risk simulator" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>The terminal as designed, rebuilt from work-in-progress exports: order form, asset selector, order types, leverage, and the way into the risk simulator</figcaption>
         </figure>
       </div>
 
@@ -87,13 +97,23 @@
           <li>An account-health bar for the cross-margin ratio in three states (secure, warning, danger), with maintenance margin, effective leverage, maximum drawdown, and withdrawable funds</li>
           <li>Two ways in: from the risk tooltip in the terminal, and from the order form, to see how a new order affects open positions before placing it</li>
         </ul>
-        <p>The product owner defined the risk model; I designed the interaction and the interface. The simulator was designed and prototyped.</p>
+        <p>The product owner and I worked out the risk model together; I designed the interaction and the interface. The simulator was designed and prototyped.</p>
 
         <figure class="case-figure">
           <div class="case-figure-frame">
-            <img src="images/brighty/risk-simulator-1184.webp" srcset="images/brighty/risk-simulator-700.webp 700w, images/brighty/risk-simulator-1184.webp 1184w" sizes="(max-width: 768px) calc(100vw - 72px), 592px" width="1184" height="1034" alt="Early draft of the cross-margin risk simulator after the Black Swan preset: account health in the danger state, and BTC, ETH, and SOL position cards with price sliders and moved liquidation markers" loading="lazy" decoding="async">
+            <picture>
+              <source media="(prefers-reduced-motion: reduce)" srcset="images/brighty/risk-simulator-drag-poster-1184.webp">
+              <img src="images/brighty/risk-simulator-drag-1184.webp" srcset="images/brighty/risk-simulator-drag-700.webp 700w, images/brighty/risk-simulator-drag-1184.webp 1184w" sizes="(max-width: 768px) calc(100vw - 72px), 592px" width="1184" height="1096" alt="Positions in the risk simulator as BTC is dragged from $89,740 to $82,561: ETH's liquidation price moves from $858.95 to $2,305.78, ZEC gets a liquidation price of $146.35, and the SOL short's moves from $234.03 to $164.87" loading="lazy" decoding="async">
+            </picture>
           </div>
-          <figcaption>Early draft of the simulator after the “whole market down 30%” preset: account health in danger, liquidation prices moved on every position</figcaption>
+          <figcaption>BTC drops 8%. ETH hasn't moved, yet its liquidation price goes from $859 to $2,306 and its buffer shrinks from 71.5% to 23.4%</figcaption>
+        </figure>
+
+        <figure class="case-figure">
+          <div class="case-figure-frame">
+            <img src="images/brighty/risk-simulator-sl-warning-1184.webp" srcset="images/brighty/risk-simulator-sl-warning-700.webp 700w, images/brighty/risk-simulator-sl-warning-1184.webp 1184w" sizes="(max-width: 768px) calc(100vw - 72px), 592px" width="1184" height="1096" alt="Risk simulator with the SOL short dragged up 15%: BTC's liquidation price, $81,109, is now above its $81,000 stop loss, and the row shows a warning that the stop won't trigger" loading="lazy" decoding="async">
+          </div>
+          <figcaption>SOL up 15% pulls BTC's liquidation price above its stop loss. The stop won't fire before liquidation, and the simulator says so</figcaption>
         </figure>
 
         <figure class="case-figure">
@@ -149,6 +169,7 @@
       <div class="case-section">
         <h2>Outcome</h2>
         <p>The terminal shipped to public release, and the risk simulator reached a complete prototype. On Brighty Business, the KYB field map and proposal went to the CTO and Compliance for decisions. My role was eliminated in the April 2026 layoffs.</p>
+        <p>A note on the simulator images: the prototype was built in React with Gemini. The original Figma files were lost; in October 2026 I rebuilt them from work-in-progress exports and recalculated every number in the simulator mockups with Hyperliquid's published liquidation formulas.</p>
       </div>
 
       <nav class="case-pager" aria-label="More work">
