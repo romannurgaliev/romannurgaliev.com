@@ -765,7 +765,8 @@ body.case-page {
   display: block;
 }
 
-.case {
+.case,
+.site-footer {
   display: grid;
   grid-template-columns:
     [full-start] minmax(var(--case-margin), 1fr)
@@ -1473,12 +1474,16 @@ body.case-page {
 }
 
 /* ============================================================
-   Footer on case pages: contact links and a way back, lined up
-   with the top bar, so a reader can get in touch without the
-   hidden bar or the home page
+   Footer on case pages: contact links, so a reader can get in
+   touch without the hidden bar or the home page
    ============================================================ */
 .site-footer {
-  padding: 0 max(var(--case-gutter), (100% - var(--case-wide)) / 2) 40px;
+  padding-bottom: 40px;
+}
+
+/* Same width as the previous / next cards above */
+.site-footer > * {
+  grid-column: wide;
 }
 
 .site-footer-groups {
@@ -1522,21 +1527,6 @@ body.case-page {
 
 .site-footer-link span {
   color: var(--text-muted);
-}
-
-.site-footer-copy {
-  margin-top: 64px;
-  color: var(--text-muted);
-  font-size: var(--fs-s);
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
-}
-
-/* Lines up with the bar and the contents list once that shows */
-@media (min-width: 1240px) {
-  .site-footer {
-    padding-inline: var(--case-edge);
-  }
 }
 
 /* ============================================================
