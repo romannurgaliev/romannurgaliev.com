@@ -1070,7 +1070,7 @@ body.case-page {
 .case-carousel-slide {
   grid-area: 1 / 1;
   --offset: 0;
-  transform: translateX(calc(var(--offset) * 14%)) scale(calc(1 - var(--offset) * 0.08));
+  transform: translateX(calc(var(--offset) * var(--deck-shift, 14%))) scale(calc(1 - var(--offset) * var(--deck-scale, 0.08)));
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
@@ -1121,6 +1121,22 @@ body.case-page {
 .case-carousel-arrows {
   display: flex;
   gap: 8px;
+}
+
+/* Large deck: for screens that need to be read (the simulator). The card
+   takes most of the frame; the cards behind show as thin strips */
+.case-carousel--large .case-carousel-frame {
+  padding-inline: clamp(16px, 3vw, 40px);
+}
+
+.case-carousel--large .case-carousel-stage,
+.case-carousel--large .case-carousel-controls {
+  width: min(88%, 1000px);
+}
+
+.case-carousel--large .case-carousel-slide {
+  --deck-shift: 4%;
+  --deck-scale: 0.04;
 }
 
 /* A single card needs no controls */
@@ -1301,6 +1317,11 @@ body.case-page {
   .case-carousel-stage,
   .case-carousel-controls {
     width: 74%;
+  }
+
+  .case-carousel--large .case-carousel-stage,
+  .case-carousel--large .case-carousel-controls {
+    width: 90%;
   }
 
   .case-gallery {
