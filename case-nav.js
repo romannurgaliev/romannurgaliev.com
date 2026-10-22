@@ -10,7 +10,8 @@
   // ---------- Contents ----------
   var toc = null;
   var links = [];
-  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery'));
+  // Full-width blocks the contents list steps aside for: galleries and the footer
+  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery, .site-footer'));
 
   function slug(text) {
     return text.toLowerCase().trim()
@@ -52,7 +53,7 @@
     var visible = window.scrollY >= window.innerHeight &&
       first.top < window.innerHeight * 0.6 && last.bottom > line;
 
-    // Step aside while a full-width gallery passes under the list
+    // Step aside while a gallery or the footer passes under the list
     var band = toc.getBoundingClientRect();
     wide.forEach(function (el) {
       var r = el.getBoundingClientRect();

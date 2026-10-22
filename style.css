@@ -1189,19 +1189,11 @@ body.case-page {
   cursor: pointer;
 }
 
-/* Mouse users can drag the track and the deck */
-@media (hover: hover) and (pointer: fine) {
-  .case-gallery-track,
-  .case-carousel-stage {
-    cursor: grab;
-  }
-}
-
+/* No text selection while the mouse drags the track or the deck */
 .case-gallery-track.is-dragging,
 .case-gallery-track.is-dragging *,
 .case-carousel-stage.is-dragging,
 .case-carousel-stage.is-dragging * {
-  cursor: grabbing;
   user-select: none;
 }
 
@@ -1211,15 +1203,16 @@ body.case-page {
   border-radius: 12px;
 }
 
-.case-gallery-caption {
+/* Doubled class beats the .case-section p text size */
+.case-gallery .case-gallery-caption {
   max-width: var(--case-text);
   margin: 16px auto 0;
   text-align: center;
   text-wrap: balance;
   color: var(--text-muted);
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
   transition: opacity 0.3s ease;
 }
 
@@ -1244,6 +1237,13 @@ body.case-page {
   letter-spacing: var(--ls-m);
 }
 
+/* Carousel captions sit smaller than regular figure captions */
+.case-carousel figcaption {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
+}
+
 /* ---------- Callout: a grey panel for a key fact and its source ---------- */
 .case-callout {
   padding: clamp(24px, 5vw, 56px);
@@ -1257,21 +1257,28 @@ body.case-page {
   margin-bottom: 0;
 }
 
-.case-section .case-callout + .case-callout-text {
-  margin-top: 24px;
+/* ---------- Quote: a centred pull quote with its source under it ---------- */
+.case-quote {
+  margin: clamp(40px, 6vw, 64px) 0 0;
+  text-align: center;
 }
 
-.case-section .case-callout-text {
+.case-section .case-quote p {
   color: var(--text);
-  text-wrap: pretty;
+  font-size: var(--fs-h);
+  font-weight: 500;
+  line-height: var(--lh-h);
+  letter-spacing: var(--ls-h);
+  text-wrap: balance;
 }
 
-.case-section .case-callout-source {
-  margin-top: 8px;
+.case-quote figcaption {
+  margin-top: 24px;
   color: var(--text-muted);
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
+  font-size: var(--fs-s);
+  font-weight: 500;
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
 }
 
 /* ---------- Numbers: a row of figures with labels ---------- */
@@ -1462,6 +1469,73 @@ body.case-page {
 
   .case-pager-next {
     grid-column: auto;
+  }
+}
+
+/* ============================================================
+   Footer on case pages: contact links and a way back, lined up
+   with the top bar, so a reader can get in touch without the
+   hidden bar or the home page
+   ============================================================ */
+.site-footer {
+  padding: 0 max(var(--case-gutter), (100% - var(--case-wide)) / 2) 40px;
+}
+
+.site-footer-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px clamp(48px, 8vw, 96px);
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer-label {
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  font-size: var(--fs-s);
+  font-weight: 500;
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
+}
+
+.site-footer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.site-footer-link {
+  padding: 0;
+  color: var(--text);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  letter-spacing: var(--ls-m);
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.site-footer-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.site-footer-link span {
+  color: var(--text-muted);
+}
+
+.site-footer-copy {
+  margin-top: 64px;
+  color: var(--text-muted);
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
+}
+
+/* Lines up with the bar and the contents list once that shows */
+@media (min-width: 1240px) {
+  .site-footer {
+    padding-inline: var(--case-edge);
   }
 }
 
