@@ -21,7 +21,7 @@
   --fill-hover: rgba(17, 17, 17, 0.09);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
-  /* Type scale: five sizes, two weights (400 / 500). Nothing else.
+  /* Type scale: six sizes, two weights (400 / 500). Nothing else.
      Small text is set in 500 so meta stays crisp, not thin.
      Tracking follows Inter's dynamic metrics, a touch tighter on large sizes;
      opsz switches to the Display cut automatically from 32px up. */
@@ -36,6 +36,12 @@
   --fs-l: 20px;
   --lh-l: 1.3;
   --ls-l: -0.017em;
+
+  /* H — headings inside long text (case sections): 1.4 × the L body,
+     enough to lead a section without competing with the screens */
+  --fs-h: 28px;
+  --lh-h: 1.25;
+  --ls-h: -0.021em;
 
   --fs-xl: 44px;
   --lh-xl: 1.15;
@@ -148,8 +154,7 @@ button {
 .cv-section-label,
 .cv-entry-period,
 .case-period,
-.case-chips,
-.case-section h2 {
+.case-chips {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -185,16 +190,23 @@ button {
   letter-spacing: var(--ls-l);
 }
 
+/* H — section headings inside a case */
+.case-section h2 {
+  font-size: var(--fs-h);
+  line-height: var(--lh-h);
+  letter-spacing: var(--ls-h);
+}
+
 /* XL — section and page titles */
-.section-title,
-.case-heading {
+.section-title {
   font-size: var(--fs-xl);
   line-height: var(--lh-xl);
   letter-spacing: var(--ls-xl);
 }
 
 /* Display — the one statement on the page */
-.home-headline {
+.home-headline,
+.case-heading {
   font-size: var(--fs-display);
   line-height: var(--lh-display);
   letter-spacing: var(--ls-display);
@@ -291,8 +303,7 @@ body.two-col {
     margin-top: calc(var(--baseline) - 24px - 0.874em); /* lh 1.02 */
   }
 
-  .section-title,
-  .case-heading {
+  .section-title {
     margin-top: calc(var(--baseline) - 24px - 0.939em); /* lh 1.15 */
   }
 }
@@ -678,11 +689,192 @@ a.contact-link {
 }
 
 /* ============================================================
-   Case study pages (work/[slug].html) — same two columns as the index
+   Case study pages (work/[slug].html, body.case-page)
+   The index sidebar becomes a thin top bar, and the article is one
+   grid with named lines:
+
+   | gutter |  wide  |      text      |  wide  | gutter |
+   full-start  wide-start  text-start  text-end  wide-end  full-end
+
+   Text sits in the text column (680px). A figure takes the wide
+   column (1200px), on phones the full width. Sections are subgrids,
+   so a figure inside a section still lines up with the page grid.
    ============================================================ */
+:root {
+  --case-text: 680px;
+  --case-wide: 1200px;
+  --case-gutter: clamp(20px, 4vw, 48px);
+  --case-side: calc((var(--case-wide) - var(--case-text)) / 2);
+  /* Side columns: plain margins by default; with the contents list
+     shown they make room for it (see "Contents" below) */
+  --case-edge: var(--case-gutter);
+  --case-margin: var(--case-gutter);
+  --toc-w: 200px;
+  --toc-gap: 32px;
+}
+
+body.case-page {
+  padding: 0;
+}
+
+/* Top bar: name on the left, links on the right, aligned with the
+   wide column. Hides while scrolling down, comes back on scroll up
+   (case-nav.js), so it never sits over the screens being read. */
+.case-page .sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: auto;
+  padding: 20px max(var(--case-gutter), (100% - var(--case-wide)) / 2);
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: translate 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* translate, not transform: the fade-in animation holds transform */
+.case-page .sidebar.is-hidden {
+  translate: 0 -100%;
+}
+
+.case-page .sidebar-top {
+  flex: none;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.case-page .sidebar-nav {
+  position: static;
+  transform: none;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.case-page .sidebar-nav a {
+  padding: 0;
+}
+
+.case-page .sidebar-email {
+  display: none;
+}
+
+.case-page .content {
+  padding: 0;
+  display: block;
+}
+
 .case {
-  max-width: 640px;
-  padding-bottom: 96px;
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--case-margin), 1fr)
+    [wide-start] minmax(0, var(--case-side))
+    [text-start] min(var(--case-text), 100% - 2 * var(--case-gutter)) [text-end]
+    minmax(0, var(--case-side)) [wide-end]
+    minmax(var(--case-margin), 1fr) [full-end];
+  padding-bottom: 120px;
+}
+
+.case > *,
+.case-section > * {
+  grid-column: text;
+}
+
+.case-section {
+  grid-column: full;
+  display: grid;
+  grid-template-columns: subgrid;
+  /* Clears the top bar when a contents link scrolls up to a section */
+  scroll-margin-top: 96px;
+}
+
+/* ---------- Contents: section list on the left (case-nav.js builds it) ----------
+   Shown from 1240px, where 680px of text plus a 280px margin on each side fit.
+   Text stays centred; the margins grow to hold the list, so wide screens
+   narrow a little instead of running under it. */
+.case-toc {
+  display: none;
+}
+
+@media (min-width: 1240px) {
+  :root {
+    --case-frame: 1760px;
+    --case-edge: max(var(--case-gutter), (100vw - var(--case-frame)) / 2);
+    --case-margin: calc(var(--case-edge) + var(--toc-w) + var(--toc-gap));
+  }
+
+  /* Bar lines up with the list */
+  .case-page .sidebar {
+    padding-inline: var(--case-edge);
+  }
+
+  .case-toc {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: var(--case-edge);
+    z-index: 5;
+    width: var(--toc-w);
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    translate: 0 -50%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  }
+
+  /* Only while a section is on screen: not over the intro or the pager */
+  .case-toc.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s;
+  }
+
+  .case-toc ol {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .case-toc a {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--fs-m);
+    line-height: 1.35;
+    letter-spacing: var(--ls-m);
+    text-wrap: balance;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .case-toc a:hover,
+  .case-toc a[aria-current="true"] {
+    color: var(--text);
+  }
+}
+
+@media (min-width: 1240px) and (prefers-reduced-motion: no-preference) {
+  html:has(.case-toc) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- Intro: meta, the name, the lead ---------- */
+.case-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: clamp(64px, 12vh, 136px);
+}
+
+/* Period reads as the meta line above the title */
+.case-period {
+  order: -1;
+  color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
 .case-heading {
@@ -692,31 +884,12 @@ a.contact-link {
 
 .case-lead {
   color: var(--text-muted);
+  margin-top: 16px;
 }
 
 .case-intro {
-  margin-bottom: 64px;
-}
-
-/* Company on the left, period on the right, like the year on a work card.
-   Sticks to the top for the whole case, like the CV title on the index. */
-.case-head {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  padding: 24px 0 12px;
-  margin-top: -24px;
-  background: var(--bg);
-}
-
-.case-period {
-  color: var(--text-muted);
-  white-space: nowrap;
+  text-align: center;
+  margin-bottom: clamp(96px, 14vh, 160px);
 }
 
 /* Location, platform and similar context as quiet grey chips */
@@ -724,8 +897,9 @@ a.contact-link {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .case-chips li {
@@ -735,16 +909,14 @@ a.contact-link {
   border-radius: 100px;
 }
 
-.case-section {
-  margin-bottom: 56px;
-  /* Clear the sticky head: it ends ~21px below the desktop baseline;
-     on phones (no --baseline) the 52px bar + head come to ~140px */
-  scroll-margin-top: calc(var(--baseline, 92px) + 48px);
+/* ---------- Sections ---------- */
+.case-section + .case-section {
+  margin-top: 128px;
 }
 
 .case-section h2 {
-  color: var(--text-muted);
-  margin-bottom: 12px;
+  color: var(--text);
+  margin-bottom: 16px;
 }
 
 .case-section p,
@@ -770,6 +942,13 @@ a.contact-link {
   position: relative;
 }
 
+.case-section ul li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
 /* Links inside running text stay marked; hover darkens the line */
 .case-section a {
   text-decoration-color: var(--text-muted);
@@ -779,64 +958,267 @@ a.contact-link {
   text-decoration-color: currentColor;
 }
 
-.case-section ul li::before {
-  content: "–";
-  position: absolute;
-  left: 0;
-  color: var(--text-muted);
+/* ---------- Figures: wider than the text ---------- */
+.case-section > .case-figure {
+  grid-column: wide;
+  margin-top: 80px;
 }
 
-/* Screens inside a case section: grey box, caption underneath */
-.case-figure {
-  margin-top: 40px;
+/* Back-to-back screens sit a bit closer than text and screen */
+.case-section > .case-figure + .case-figure {
+  margin-top: 48px;
+}
+
+/* Text after a screen gets the same air as before it */
+.case-section > .case-figure + :not(.case-figure) {
+  margin-top: 80px;
+}
+
+/* Edge to edge, for a screen that should fill the window */
+.case-section > .case-figure--full {
+  grid-column: full;
 }
 
 .case-figure-frame {
   background: var(--fill);
-  border-radius: 6px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: clamp(16px, 5vw, 64px);
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
+.case-figure--full .case-figure-frame {
+  border-radius: 0;
+}
+
+/* <picture> steps aside so the img sizes against the frame */
+.case-figure-frame picture {
+  display: contents;
+}
+
+/* Wide screens fill the frame; tall ones stop at the window height
+   and stay centred, so a whole screen is visible at once */
 .case-figure-frame img {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
-  border-radius: 4px;
+  max-width: 100%;
+  max-height: min(78vh, 880px);
+  border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.06);
 }
 
-/* Dialogs stay at dialog size instead of filling the column */
+/* Phone screens side by side. The screens carry their own rounded
+   corners (transparent PNG-style edges), so no frame line or radius */
+.case-figure-frame--phones {
+  gap: clamp(16px, 3vw, 40px);
+}
+
+.case-figure-frame--phones img {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 320px;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ---------- Arrow buttons (carousels) ---------- */
+.case-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.case-arrow:hover:not(:disabled) {
+  background: var(--fill);
+}
+
+.case-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.case-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- Card carousel: half-size screens in a deck (case-media.js) ----------
+   The front card sits centred in the wide grey frame at about half its width;
+   the next two peek out to the right, smaller. Counter and arrows below. */
+.case-carousel-frame {
+  flex-direction: column;
+  padding: clamp(40px, 7vw, 96px) clamp(16px, 5vw, 64px) clamp(32px, 4vw, 56px);
+  overflow: hidden;
+}
+
+.case-carousel-stage {
+  display: grid;
+  align-items: center;
+  width: clamp(280px, 46%, 520px);
+  touch-action: pan-y;
+}
+
+.case-carousel-slide {
+  grid-area: 1 / 1;
+  --offset: 0;
+  transform: translateX(calc(var(--offset) * 14%)) scale(calc(1 - var(--offset) * 0.08));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+/* Cards already passed slide off to the left; cards beyond the third wait unseen */
+.case-carousel-slide.is-before {
+  transform: translateX(-12%) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.case-carousel-slide.is-far {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.case-carousel-slide.is-next {
+  cursor: pointer;
+}
+
+.case-figure-frame .case-carousel-slide img {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+/* Exports with their own rounded corners and border: no frame line */
+.case-figure-frame .case-carousel-slide--bare img {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.case-carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: clamp(280px, 46%, 520px);
+  margin-top: 32px;
+}
+
+.case-carousel-count {
+  color: var(--text-muted);
+  font-size: var(--fs-s);
+  font-weight: 500;
+  line-height: var(--lh-s);
+  font-variant-numeric: tabular-nums;
+}
+
+.case-carousel-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+/* A single card needs no controls */
+.case-carousel[data-count="1"] .case-carousel-controls {
+  display: none;
+}
+
+/* ---------- Gallery: full-width screens with neighbours peeking (case-media.js) ----------
+   A scroll-snap track across the whole window; arrows above, the
+   current screen's caption below. Swipes and trackpads scroll it natively. */
+.case-section > .case-gallery {
+  grid-column: full;
+  container-type: inline-size;
+}
+
+.case-gallery {
+  --gallery-slide: min(var(--case-wide), 100cqw - 2 * clamp(24px, 10cqw, 200px));
+  --gallery-gap: clamp(12px, 2cqw, 24px);
+}
+
+.case-gallery-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.case-gallery-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gallery-gap);
+  padding-inline: calc((100% - var(--gallery-slide)) / 2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.case-gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.case-gallery-slide {
+  flex: 0 0 var(--gallery-slide);
+  scroll-snap-align: center;
+}
+
+.case-gallery-slide:not(.is-active) {
+  cursor: pointer;
+}
+
+.case-gallery-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.case-gallery-caption {
+  max-width: var(--case-text);
+  margin: 16px auto 0;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--text-muted);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  letter-spacing: var(--ls-m);
+  transition: opacity 0.3s ease;
+}
+
+.case-gallery-slide:not(.is-active) .case-gallery-caption {
+  opacity: 0;
+}
+
+/* Dialogs stay at dialog size instead of filling the frame */
 .case-figure-frame--dialog img {
-  max-width: 360px;
+  max-width: min(100%, 420px);
   border-radius: 21px;
 }
 
 .case-figure figcaption {
-  margin-top: 12px;
+  max-width: var(--case-text);
+  margin: 16px auto 0;
+  text-align: center;
+  text-wrap: balance;
   color: var(--text-muted);
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
 }
 
-@media (max-width: 768px) {
-  .case-figure {
-    margin-top: 32px;
-  }
-
-  .case-figure-frame {
-    padding: 16px;
-  }
-}
-
-/* Previous / next case, as two quiet grey cards */
-.case-pager {
+/* ---------- Previous / next, across the wide column ---------- */
+.case > .case-pager {
+  grid-column: wide;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 96px;
+  margin-top: 160px;
 }
 
 .case-pager-link {
@@ -865,6 +1247,89 @@ a.contact-link {
 
 .case-pager-title {
   color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .case-page .sidebar {
+    padding: 14px var(--case-gutter);
+    transition-duration: 0.25s;
+  }
+
+  .case-page .sidebar-nav {
+    gap: 16px;
+  }
+
+  .case-section + .case-section {
+    margin-top: 96px;
+  }
+
+  .case-section > .case-figure,
+  .case-section > .case-figure + :not(.case-figure) {
+    margin-top: 48px;
+  }
+
+  .case-section > .case-figure + .case-figure {
+    margin-top: 32px;
+  }
+
+  .case > .case-pager {
+    margin-top: 112px;
+  }
+}
+
+/* Phones: screens run edge to edge, captions keep the text margin */
+@media (max-width: 640px) {
+  /* A row of phone screens scrolls sideways instead of shrinking */
+  .case-figure-frame--phones {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--case-gutter);
+    padding-inline: var(--case-gutter);
+    scrollbar-width: none;
+  }
+
+  .case-figure-frame--phones::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-figure-frame--phones img {
+    flex: 0 0 min(64vw, 280px);
+    scroll-snap-align: start;
+  }
+
+  .case-carousel-stage,
+  .case-carousel-controls {
+    width: 74%;
+  }
+
+  .case-gallery {
+    --gallery-slide: calc(100cqw - 2 * var(--case-gutter));
+  }
+
+  .case-gallery-caption {
+    padding: 0 var(--case-gutter);
+  }
+
+  .case-section > .case-figure {
+    grid-column: full;
+  }
+
+  .case-figure-frame {
+    border-radius: 0;
+  }
+
+  .case-figure figcaption {
+    padding: 0 var(--case-gutter);
+  }
+
+  .case > .case-pager {
+    grid-template-columns: 1fr;
+  }
+
+  .case-pager-next {
+    grid-column: auto;
+  }
 }
 
 /* ============================================================
@@ -988,8 +1453,7 @@ a.contact-link {
   }
 
   /* Stick below the 52px bar */
-  .section-head,
-  .case-head {
+  .section-head {
     top: 52px;
     padding-top: 12px;
     margin-top: -12px;
@@ -1018,20 +1482,8 @@ a.contact-link {
 
 @media (max-width: 640px) {
   :root {
+    --fs-h: 24px;
     --fs-xl: 32px;
-  }
-
-  .case-intro {
-    margin-bottom: 56px;
-  }
-
-  .case-pager {
-    grid-template-columns: 1fr;
-    margin-top: 72px;
-  }
-
-  .case-pager-next {
-    grid-column: auto;
   }
 
   .contact-link {
