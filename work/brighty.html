@@ -94,13 +94,16 @@
 
       <div class="case-section">
         <h2>Cross-Margin Risk Simulator</h2>
-        <p>In cross margin, all positions share one pool of collateral. Traders tend to read each liquidation price as fixed, but a drop in one asset eats into the shared equity and pulls every other liquidation price closer to the market. The simulator lets a trader try a scenario before it happens:</p>
-        <ul>
-          <li>Each open position is a row with a price slider from −50% to +50%, a liquidation marker that moves with the scenario, a danger zone, and the position's stop loss and take profit</li>
-          <li>Presets for common shocks: the whole market down 30%, BTC up 15%, the market up 10%, and a reset to market prices</li>
-          <li>A cross-margin ratio bar colored by risk level (low, medium, high), with maintenance margin, effective leverage, the market move to liquidation, and withdrawable funds</li>
-          <li>Two ways in: from the risk tooltip in the terminal, and from the order form, to see how a new order affects open positions before placing it</li>
-        </ul>
+        <p>In cross margin, all positions share one pool of collateral. Traders tend to read each liquidation price as fixed, but a drop in one asset eats into the shared equity and pulls every other liquidation price closer to the market. The simulator lets a trader try a scenario before it happens.</p>
+        <details class="case-details">
+          <summary>How the simulator works</summary>
+          <ul>
+            <li>Each open position is a row with a price slider from −50% to +50%, a liquidation marker that moves with the scenario, a danger zone, and the position's stop loss and take profit</li>
+            <li>Presets for common shocks: the whole market down 30%, BTC up 15%, the market up 10%, and a reset to market prices</li>
+            <li>A cross-margin ratio bar colored by risk level (low, medium, high), with maintenance margin, effective leverage, the market move to liquidation, and withdrawable funds</li>
+            <li>Two ways in: from the risk tooltip in the terminal, and from the order form, to see how a new order affects open positions before placing it</li>
+          </ul>
+        </details>
         <p>The product owner and I worked out the risk model together; I designed the interaction and the interface and took the simulator to a complete prototype.</p>
 
         <figure class="case-figure case-carousel case-carousel--large" aria-roledescription="carousel" aria-label="Risk simulator screens">
