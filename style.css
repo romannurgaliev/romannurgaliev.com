@@ -1695,6 +1695,24 @@ body.case-page {
     gap: 2px;
   }
 
+  /* Phones: shorter bio, so the first case shows up sooner */
+  .home-bio-extra {
+    display: none;
+  }
+
+  .intro {
+    margin-bottom: 56px;
+  }
+
+  /* VPN cover: one phone in a square frame instead of three tiny ones */
+  .case-thumb--one-phone {
+    aspect-ratio: 1 / 1;
+  }
+
+  .case-thumb--one-phone .case-thumb-strip img:not(:first-child) {
+    display: none;
+  }
+
   .toast {
     bottom: 16px;
   }
