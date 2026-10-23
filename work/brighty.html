@@ -20,6 +20,7 @@
   <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../risk-sim.css">
 </head>
 <body class="case-page">
 
@@ -95,9 +96,9 @@
         <h2>Cross-Margin Risk Simulator</h2>
         <p>In cross margin, all positions share one pool of collateral. Traders tend to read each liquidation price as fixed, but a drop in one asset eats into the shared equity and pulls every other liquidation price closer to the market. The simulator lets a trader try a scenario before it happens:</p>
         <ul>
-          <li>Each open position is a card with a price slider from −50% to +50%, an entry marker, a liquidation marker that moves with the scenario, and a danger zone</li>
-          <li>Presets for common shocks: the whole market down 30%, one asset down 50%, a 15% recovery, and a reset to live prices</li>
-          <li>An account-health bar for the cross-margin ratio in three states (secure, warning, danger), with maintenance margin, effective leverage, maximum drawdown, and withdrawable funds</li>
+          <li>Each open position is a row with a price slider from −50% to +50%, a liquidation marker that moves with the scenario, a danger zone, and the position's stop loss and take profit</li>
+          <li>Presets for common shocks: the whole market down 30%, BTC up 15%, the market up 10%, and a reset to market prices</li>
+          <li>A cross-margin ratio bar colored by risk level (low, medium, high), with maintenance margin, effective leverage, the market move to liquidation, and withdrawable funds</li>
           <li>Two ways in: from the risk tooltip in the terminal, and from the order form, to see how a new order affects open positions before placing it</li>
         </ul>
         <p>The product owner and I worked out the risk model together; I designed the interaction and the interface and took the simulator to a complete prototype.</p>
@@ -124,6 +125,14 @@
             </div>
           </div>
           <figcaption aria-live="polite">BTC drops 8%. ETH hasn't moved, yet its liquidation price goes from $859 to $2,306 and its buffer shrinks from 71.5% to 23.4%</figcaption>
+        </figure>
+
+        <figure class="case-figure case-figure--full sim-figure" aria-label="Interactive liquidation risk simulator">
+          <div class="sim-stage">
+            <div class="sim-backdrop" aria-hidden="true"></div>
+            <div class="sim" data-risk-sim data-icons="images/brighty/sim/"></div>
+          </div>
+          <figcaption>Live prototype. Drag any price or try a scenario: drop BTC by 8% and watch ETH's liquidation price move, or push SOL up 15% and BTC's stop loss stops protecting it. Hover a real crash to see each coin's move</figcaption>
         </figure>
       </div>
 
@@ -172,7 +181,7 @@
       <div class="case-section">
         <h2>Outcome</h2>
         <p>The terminal shipped to public release, and the risk simulator reached a complete prototype. For Brighty Business, I handed the CTO and Compliance a map of every KYB field and a two-stage proposal to decide on.</p>
-        <p>A note on the simulator images: the prototype was built in React with Gemini. The original Figma files were lost; in October 2026 I rebuilt them from work-in-progress exports and recalculated every number in the simulator mockups with Hyperliquid's published liquidation formulas.</p>
+        <p>A note on the simulator: the original prototype was built in React with Gemini, and the Figma files were lost. In October 2026 I rebuilt the mockups from work-in-progress exports, recalculated every number with Hyperliquid's published liquidation formulas, and built the live prototype on this page. The rebuild settled a few open questions: risk levels by distance to liquidation, the market move to liquidation, and stops that fire before or after liquidation. It also adds what the original didn't have: before-and-after values, suggested fixes, and two real crashes replayed from Hyperliquid prices.</p>
       </div>
 
       <nav class="case-pager" aria-label="More work">
@@ -203,6 +212,7 @@
   <script src="../copy-email.js" defer></script>
   <script src="../case-nav.js" defer></script>
   <script src="../case-media.js" defer></script>
+  <script src="../risk-sim.js" defer></script>
 
 </body>
 </html>

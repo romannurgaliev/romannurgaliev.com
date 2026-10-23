@@ -1,0 +1,34 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Coin Icon">
+<g clip-path="url(#clip0_0_11)">
+<rect width="20" height="20" rx="10" fill="#141414"/>
+<circle id="Background" cx="10" cy="10" r="10" fill="#1A1A1C"/>
+<g id="Logo" clip-path="url(#clip1_0_11)">
+<path id="Vector" d="M10 16C13.3137 16 16 13.3137 16 10C16 6.68629 13.3137 4 10 4C6.68629 4 4 6.68629 4 10C4 13.3137 6.68629 16 10 16Z" fill="black"/>
+<path id="Vector_2" d="M7.63324 11.3895C7.67482 11.3476 7.732 11.3232 7.79265 11.3232H13.2925C13.3929 11.3232 13.4432 11.4452 13.3722 11.5167L12.2857 12.6094C12.2441 12.6513 12.1869 12.6757 12.1263 12.6757H6.6265C6.526 12.6757 6.47576 12.5537 6.5468 12.4822L7.63324 11.3895Z" fill="url(#paint0_linear_0_11)"/>
+<path id="Vector_3" d="M7.63324 7.30947C7.67656 7.26764 7.73374 7.24325 7.79265 7.24325H13.2925C13.3929 7.24325 13.4432 7.36525 13.3722 7.4367L12.2857 8.52946C12.2441 8.57129 12.1869 8.59569 12.1263 8.59569H6.6265C6.526 8.59569 6.47576 8.47369 6.5468 8.40224L7.63324 7.30947Z" fill="url(#paint1_linear_0_11)"/>
+<path id="Vector_4" d="M12.2857 9.3364C12.2441 9.29457 12.1869 9.27017 12.1263 9.27017H6.6265C6.526 9.27017 6.47576 9.39217 6.5468 9.46363L7.63324 10.5564C7.67482 10.5982 7.732 10.6226 7.79265 10.6226H13.2925C13.3929 10.6226 13.4432 10.5006 13.3722 10.4292L12.2857 9.3364Z" fill="url(#paint2_linear_0_11)"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_11" x1="11.9296" y1="6.1507" x2="8.08849" y2="13.4654" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00FFA3"/>
+<stop offset="1" stop-color="#DC1FFF"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_11" x1="11.9296" y1="6.1507" x2="8.08849" y2="13.4654" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00FFA3"/>
+<stop offset="1" stop-color="#DC1FFF"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_11" x1="11.9296" y1="6.1507" x2="8.08849" y2="13.4654" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00FFA3"/>
+<stop offset="1" stop-color="#DC1FFF"/>
+</linearGradient>
+<clipPath id="clip0_0_11">
+<rect width="20" height="20" rx="10" fill="white"/>
+</clipPath>
+<clipPath id="clip1_0_11">
+<rect width="12" height="12" fill="white" transform="translate(4 4)"/>
+</clipPath>
+</defs>
+</svg>

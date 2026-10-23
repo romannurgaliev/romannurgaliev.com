@@ -15,7 +15,7 @@
   var article = document.querySelector('.case');
   var links = [];
   // Full-width galleries the contents list steps aside for
-  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery'));
+  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery, .sim-figure'));
 
   function slug(text) {
     return text.toLowerCase().trim()
