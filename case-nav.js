@@ -2,6 +2,8 @@
 // 1. The top bar hides while scrolling down and comes back on scroll up.
 // 2. A contents list on the left, built from the section headings,
 //    marks the section being read (shown from 1240px, see style.css).
+//    It is sticky inside a track that runs from the first section to the
+//    end of the last one, so the browser scrolls it with the text.
 (function () {
   var bar = document.querySelector('.sidebar');
   var sections = Array.prototype.slice.call(document.querySelectorAll('.case-section'))
@@ -9,9 +11,11 @@
 
   // ---------- Contents ----------
   var toc = null;
+  var track = null;
+  var article = document.querySelector('.case');
   var links = [];
-  // Full-width blocks the contents list steps aside for: galleries and the footer
-  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery, .site-footer'));
+  // Full-width galleries the contents list steps aside for
+  var wide = Array.prototype.slice.call(document.querySelectorAll('.case-gallery'));
 
   function slug(text) {
     return text.toLowerCase().trim()
@@ -39,21 +43,29 @@
     });
 
     toc.appendChild(list);
-    document.body.appendChild(toc);
+    track = document.createElement('div');
+    track.className = 'case-toc-track';
+    track.appendChild(toc);
+    article.appendChild(track);
+  }
+
+  // Track spans the sections; the list's height centres it in the window
+  function layoutToc() {
+    if (!toc) return;
+    var box = article.getBoundingClientRect();
+    var first = sections[0].getBoundingClientRect();
+    var last = sections[sections.length - 1].getBoundingClientRect();
+    track.style.top = (first.top - box.top) + 'px';
+    track.style.height = (last.bottom - first.top) + 'px';
+    toc.style.setProperty('--toc-h', toc.offsetHeight + 'px');
   }
 
   function updateToc() {
     if (!toc) return;
     var line = window.innerHeight * 0.4;
-    var first = sections[0].getBoundingClientRect();
-    var last = sections[sections.length - 1].getBoundingClientRect();
+    var visible = true;
 
-    // Visible once the page has scrolled at least one full screen and a
-    // section is on screen, until the last section has scrolled by
-    var visible = window.scrollY >= window.innerHeight &&
-      first.top < window.innerHeight * 0.6 && last.bottom > line;
-
-    // Step aside while a gallery or the footer passes under the list
+    // Step aside while a gallery passes under the list
     var band = toc.getBoundingClientRect();
     wide.forEach(function (el) {
       var r = el.getBoundingClientRect();
@@ -111,5 +123,16 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
+
+  if (toc) {
+    // Sections change height as images load and the window resizes
+    if (window.ResizeObserver) {
+      var watch = new ResizeObserver(layoutToc);
+      watch.observe(article);
+      watch.observe(toc);
+    }
+    window.addEventListener('load', layoutToc);
+    layoutToc();
+  }
   updateToc();
 })();

@@ -794,7 +794,7 @@ body.case-page {
    Shown from 1240px, where 680px of text plus a 280px margin on each side fit.
    Text stays centred; the margins grow to hold the list, so wide screens
    narrow a little instead of running under it. */
-.case-toc {
+.case-toc-track {
   display: none;
 }
 
@@ -810,22 +810,35 @@ body.case-page {
     padding-inline: var(--case-edge);
   }
 
-  .case-toc {
+  .case {
+    position: relative;
+  }
+
+  /* Runs from the first section to the end of the last (case-nav.js
+     sets top and height); the list sticks inside it, so it scrolls in
+     with the first section and away with the last line of text */
+  .case-toc-track {
     display: block;
-    position: fixed;
-    top: 50%;
+    position: absolute;
+    /* Out of the text column: positioned against the whole article */
+    grid-column: auto;
     left: var(--case-edge);
     z-index: 5;
     width: var(--toc-w);
+  }
+
+  /* Centred in the window while reading */
+  .case-toc {
+    position: sticky;
+    top: max(96px, 50vh - var(--toc-h, 0px) / 2);
     max-height: calc(100vh - 160px);
     overflow-y: auto;
-    translate: 0 -50%;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0s linear 0.3s;
   }
 
-  /* Only while a section is on screen: not over the intro or the pager */
+  /* Hidden while a gallery passes under it */
   .case-toc.is-visible {
     opacity: 1;
     visibility: visible;
@@ -1353,7 +1366,7 @@ body.case-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 160px;
+  margin-top: 96px;
 }
 
 .case-pager-link {
@@ -1408,7 +1421,7 @@ body.case-page {
   }
 
   .case > .case-pager {
-    margin-top: 112px;
+    margin-top: 80px;
   }
 }
 
@@ -1492,26 +1505,15 @@ body.case-page {
 }
 
 .site-footer-groups {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px clamp(48px, 8vw, 96px);
   padding-top: 40px;
   border-top: 1px solid var(--line);
 }
 
-.site-footer-label {
-  margin-bottom: 16px;
-  color: var(--text-muted);
-  font-size: var(--fs-s);
-  font-weight: 500;
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
-}
-
 .site-footer ul {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 32px;
   list-style: none;
 }
 
