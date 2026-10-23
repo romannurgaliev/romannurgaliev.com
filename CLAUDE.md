@@ -23,13 +23,14 @@ Roman is a designer, not a developer. Explain changes in plain terms; don't assu
 ```
 index.html            — the one main page: #home (bio + case cards, #work) → #cv → #contact
 work/<slug>.html      — case pages: brighty, donuts, vpn, dedust, antara-health, podcast
-work/images/<project>/ — webp only, named <what>-<width>.webp (e.g. terminal-700.webp)
+work/images/<project>/ — stills: webp, <what>-<width>.webp (e.g. terminal-700.webp);
+                        animations: <what>-<width>-av1.mp4 + -h264.mp4 + -poster.webp
 _redirects, _headers  — Netlify: 301s for old URLs (/cv, /work, /contact), cache headers
 404.html
 style.css             — the whole site, one file
 risk-sim.css/.js      — Liquidation Risk Simulator, Brighty page only, desktop ≥960px
 case-nav.js           — case pages: hiding top bar, contents list (≥1240px)
-case-media.js         — case pages: carousels (.case-carousel) and galleries (.case-gallery)
+case-media.js         — case pages: carousels (.case-carousel), galleries (.case-gallery), looping videos (video[data-loop])
 copy-email.js         — any [data-copy] element copies its value and shows a toast
 scripts/cv-pdf.js     — builds cv.pdf from the #cv section of index.html (Playwright)
 cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
@@ -101,6 +102,17 @@ Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-
 
 Images: webp, always with `width`, `height`, `alt`, and `srcset`/`sizes` when there are several widths. `loading="lazy"` on all images except the first on a page, which gets `fetchpriority="high"`.
 
+Animations (screen recordings, UI loops) are never animated webp or GIF — they are looping videos, 5–10× lighter. One size per animation, AV1 first with an H.264 fallback (Safari on devices without AV1), poster = the first frame:
+
+```html
+<video data-loop role="img" muted loop playsinline preload="none" poster="images/x/name-640-poster.webp" width="640" height="1088" aria-label="What the animation shows">
+  <source src="images/x/name-640-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"'>
+  <source src="images/x/name-640-h264.mp4" type="video/mp4">
+</video>
+```
+
+case-media.js plays a `video[data-loop]` only while it is in view and never with reduced motion. Video width and height must be even. Encode (ffmpeg): H.264 `-c:v libx264 -preset slow -crf 26 -tune animation -movflags +faststart`; AV1 `-c:v libsvtav1 -preset 6 -crf 38 -movflags +faststart`; codecs string level from `ffprobe -show_entries stream=level`. Styles: frame rules use `:is(img, video)`.
+
 CV text lives only in the #cv section of index.html. After any CV edit, rebuild the PDF:
 
 ```bash
@@ -140,7 +152,7 @@ Do now:
 - [x] Second `<nav>` on case pages has no `aria-label`
 
 Later:
-- [ ] Animated webp → mp4/webm with poster (terminal-reel-2400 is 4.3 MB, split-tunneling-loop 1.7 MB)
+- [x] Animated webp → looping AV1/H.264 video with poster (Brighty 5.9 → ~1.2 MB, Antara ~5.5 → ~1 MB)
 - [ ] Type scale in rem; remove `html { font-size: 16px }`
 - [ ] Own og:image per case
 - [ ] Spacing and radius tokens (now ~30 spacing values, 13 radii)

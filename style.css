@@ -82,7 +82,8 @@ body {
   padding: 0 24px;
 }
 
-img {
+img,
+video {
   max-width: 100%;
   display: block;
 }
@@ -1094,7 +1095,7 @@ body.case-page {
 
 /* Wide screens fill the frame; tall ones stop at the window height
    and stay centred, so a whole screen is visible at once */
-.case-figure-frame img {
+.case-figure-frame :is(img, video) {
   display: block;
   width: auto;
   height: auto;
@@ -1110,7 +1111,7 @@ body.case-page {
   gap: clamp(16px, 3vw, 40px);
 }
 
-.case-figure-frame--phones img {
+.case-figure-frame--phones :is(img, video) {
   flex: 1 1 0;
   min-width: 0;
   max-width: 320px;
@@ -1292,7 +1293,7 @@ body.case-page {
   user-select: none;
 }
 
-.case-gallery-slide img {
+.case-gallery-slide :is(img, video) {
   width: 100%;
   height: auto;
   border-radius: 12px;
@@ -1523,11 +1524,11 @@ body.case-page {
   }
 
   /* A single phone has nothing to scroll to, so it sits in the middle */
-  .case-figure-frame--phones:has(> img:only-child) {
+  .case-figure-frame--phones:has(> :is(img, video):only-child) {
     justify-content: center;
   }
 
-  .case-figure-frame--phones img {
+  .case-figure-frame--phones :is(img, video) {
     flex: 0 0 min(64vw, 280px);
     scroll-snap-align: start;
   }

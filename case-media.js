@@ -249,6 +249,36 @@
     update();
   }
 
+  // ---------- Looping screen recordings ----------
+  // <video data-loop> replaces animated webp at a fraction of the weight.
+  // Nothing downloads until the video nears the window (preload="none");
+  // it plays while in view and pauses when scrolled away. With reduced
+  // motion it never plays, and the poster stays as a still screen.
+  function initLoops() {
+    var videos = Array.prototype.slice.call(document.querySelectorAll('video[data-loop]'));
+    if (!videos.length || !window.IntersectionObserver) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting && !reduceMotion.matches) {
+          var played = video.play();
+          // Autoplay can still be refused (Low Power Mode); the poster stays
+          if (played && played.catch) played.catch(function () {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { rootMargin: '200px 0px' });
+
+    videos.forEach(function (video) { observer.observe(video); });
+
+    reduceMotion.addEventListener('change', function () {
+      if (reduceMotion.matches) videos.forEach(function (video) { video.pause(); });
+    });
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('.case-carousel'), initCarousel);
   Array.prototype.forEach.call(document.querySelectorAll('.case-gallery'), initGallery);
+  initLoops();
 })();
