@@ -161,7 +161,6 @@ button {
 
 /* S — meta, labels, years */
 .sidebar-email,
-.case-card .case-year,
 .skip-link,
 .cv-download,
 .cv-section-label,
@@ -227,7 +226,6 @@ button {
 }
 
 /* Numbers that line up */
-.case-card .case-year,
 .cv-entry-period {
   font-variant-numeric: tabular-nums;
 }
@@ -455,12 +453,6 @@ a.case-card:hover .case-title {
   font-weight: 500;
   color: var(--text);
   text-wrap: balance;
-}
-
-.case-card .case-year {
-  color: var(--text-muted);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .case-card .case-desc {
