@@ -1,0 +1,163 @@
+# CLAUDE.md — romannurgaliev.com
+
+Portfolio and CV of Roman Nurgaliev, product designer. Audience: recruiters and hiring managers.
+Plain HTML + CSS + vanilla JS. No framework, no build step. Deployed by Netlify from `main`.
+
+Repo: `github.com/romannurgaliev/romannurgaliev.com` · local: `~/romannurgaliev.com`
+
+Roman is a designer, not a developer. Explain changes in plain terms; don't assume he can debug code.
+
+---
+
+## Read before editing
+
+- Read the actual file before changing it. Don't guess class names or values — this file describes the system, the code is the source of truth.
+- If the code and this file disagree, trust the code and point out the mismatch.
+- Change existing tokens and rules before adding new selectors.
+- Every shared block (head, sidebar, footer, pager) is copied by hand into several files. When you change one, change all of them (see "Duplicated markup").
+
+---
+
+## File structure
+
+```
+index.html            — the one main page: #home (bio + case cards, #work) → #cv → #contact
+work/<slug>.html      — case pages: brighty, donuts, vpn, dedust, antara-health, podcast
+work/images/<project>/ — webp only, named <what>-<width>.webp (e.g. terminal-700.webp)
+_redirects, _headers  — Netlify: 301s for old URLs (/cv, /work, /contact), cache headers
+404.html
+style.css             — the whole site, one file
+risk-sim.css/.js      — Liquidation Risk Simulator, Brighty page only, desktop ≥960px
+case-nav.js           — case pages: hiding top bar, contents list (≥1240px)
+case-media.js         — case pages: carousels (.case-carousel) and galleries (.case-gallery)
+copy-email.js         — any [data-copy] element copies its value and shows a toast
+scripts/cv-pdf.js     — builds cv.pdf from the #cv section of index.html (Playwright)
+cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
+fonts/InterVariable.woff2
+```
+
+Scroll-spy and smooth anchor scrolling for index.html are an inline `<script>` at the end of index.html.
+
+---
+
+## Design tokens (style.css `:root`)
+
+Colors — never hardcode a color in style.css outside `:root`:
+
+```css
+--bg: #FFFFFF;
+--text: #111111;
+--text-muted: #737373;
+--line: rgba(17,17,17,0.1);
+--fill: rgba(17,17,17,0.05);
+--fill-hover: rgba(17,17,17,0.09);
+```
+
+Font: Inter Variable, self-hosted and preloaded. No Google Fonts, no other typefaces.
+
+Type scale — six steps, two weights (400 and 500). Nothing else in style.css:
+
+| Step | Size | Line height | Tracking | Used for |
+|---|---|---|---|---|
+| S | 13px | 1.4 | 0 | meta, years, labels, chips (weight 500) |
+| M | 16px | 1.5 | −0.011em | body, CV entries |
+| L | 20px | 1.3 | −0.017em | bio, nav, card titles, case copy |
+| H | 28px (24 on phones) | 1.25 | −0.021em | h2 inside a case |
+| XL | 44px (32 on phones) | 1.15 | −0.028em | section titles |
+| Display | clamp(40px, 4.6vw, 64px) | 1.02 | −0.03em | case page h1 |
+
+Text elements get their size from the "Type roles" block near the top of style.css (each role lists its selectors). To change a text style, add the selector to a role there; don't set `font-size` on a component.
+
+No `text-transform: uppercase` and no decorative `letter-spacing` anywhere in style.css.
+
+`risk-sim.css` is the exception: it reproduces the trading terminal UI and has its own tokens (`--w50`, `--red`, …), weights 600/700 and uppercase. Keep it isolated; don't reuse its styles elsewhere.
+
+---
+
+## Layout
+
+- **index.html** (`body.two-col`): grid, 320px sticky sidebar + content, max 1200px. On desktop the nav sits in the vertical middle of the sidebar; name, bio and section titles share one baseline (`--baseline`).
+- **Case pages** (`body.case-page`): the sidebar becomes a top bar that hides on scroll down. Text column 680px (`--case-text`), figures 1200px (`--case-wide`), contents list on the left from 1240px.
+- Breakpoints: 640 (phones), 768/769 (sidebar → top), 960 (risk simulator), 1240 (contents list).
+
+---
+
+## Content
+
+Home cards, in this order (the order is deliberate — fintech and B2B first):
+
+1. Brighty — Trading Terminal & B2B Onboarding · 2025–2026 → work/brighty.html
+2. donuts.tg — Crypto Payment Gateway · 2024 → work/donuts.html
+3. VPN service — Apps & Web Account · 2026–now → work/vpn.html
+4. DeDust.io — TON Explorer & Quest Hub · 2025 → work/dedust.html
+5. Antara Health — Virtual Primary Care · 2021–2024 → work/antara-health.html
+6. Дизайн Такой — Podcast · 2018–2022 → work/podcast.html
+
+The case pager (Previous / Up next) must follow the same order. The VPN company is not named anywhere on the site.
+
+Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title` + `.case-year`) + `p.case-desc`. No tags on cards.
+
+Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`, `--dialog`), `.case-carousel`, `.case-gallery`, `.case-embed`.
+
+Images: webp, always with `width`, `height`, `alt`, and `srcset`/`sizes` when there are several widths. `loading="lazy"` on all images except the first on a page, which gets `fetchpriority="high"`.
+
+CV text lives only in the #cv section of index.html. After any CV edit, rebuild the PDF:
+
+```bash
+npm i --no-save playwright && npx playwright install chromium
+node scripts/cv-pdf.js
+```
+
+---
+
+## Duplicated markup
+
+No templating, so these are copied by hand — update every copy:
+
+- `<head>` (meta, OG, preload, favicon, stylesheet): index.html, 404.html, all work/*.html
+- Sidebar / top bar: index.html, 404.html, all work/*.html
+- Footer (`.site-footer`): all work/*.html
+- Pager: all work/*.html and 404.html
+- `sitemap.xml` `lastmod`: update by hand when a page changes
+
+---
+
+## Code conventions
+
+- HTML: semantic and minimal. Every landmark that repeats (`nav`) needs an `aria-label`.
+- Accessibility that already exists and must not break: skip link, `:focus-visible` outline, `prefers-reduced-motion` (CSS and JS), toast as `role="status"`, `inert` on hidden carousel slides, arrow-key carousel control.
+- JS: no libraries. New code in modern syntax (`const`, arrow functions); existing ES5 files (case-nav, case-media, risk-sim) may stay as they are until rewritten.
+- Comments explain why, in plain English, as in the existing files.
+
+---
+
+## Known issues (in priority order)
+
+Do now:
+- [x] Pager order on case pages doesn't match the home order (current pager: VPN → Brighty → DeDust → donuts → Antara → Podcast)
+- [x] First image on index and each case page is `loading="lazy"`; make it eager with `fetchpriority="high"`
+- [x] Add Netlify `_redirects` (301 for /cv.html, /work.html, /contact.html) and `_headers` (long cache for /fonts and /work/images)
+- [x] Second `<nav>` on case pages has no `aria-label`
+
+Later:
+- [ ] Animated webp → mp4/webm with poster (terminal-reel-2400 is 4.3 MB, split-tunneling-loop 1.7 MB)
+- [ ] Type scale in rem; remove `html { font-size: 16px }`
+- [ ] Own og:image per case
+- [ ] Spacing and radius tokens (now ~30 spacing values, 13 radii)
+- [ ] Media queries: keep them next to their component, drop the separate "Responsive" block at the end
+- [ ] One JS dialect; move index scroll-spy into a shared file with case-nav.js
+- [ ] Remove dead CSS (`.delay-2`…`.delay-6`, `.case-thumb--placeholder`) and duplicate selectors (`.case-stats dd`, `.contact-link-value`); check `.case-thumb-strip--2` has no styles
+- [ ] Sidebar `<aside>` → `<header>`
+- [ ] Templating for the shared shell — only once there are ~10 cases
+
+---
+
+## Deploy
+
+Claude Code can't push (auth fails in its environment). End every task with the commit command; Roman runs it in his own terminal:
+
+```bash
+git add -A && git commit -m "description" && git push
+```
+
+Remote: HTTPS with a Personal Access Token in macOS Keychain.

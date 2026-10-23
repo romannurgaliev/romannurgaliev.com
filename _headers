@@ -1,0 +1,8 @@
+/fonts/*
+  Cache-Control: public, max-age=31536000
+
+/work/images/*
+  Cache-Control: public, max-age=604800
+
+/og-image.png
+  Cache-Control: public, max-age=604800
