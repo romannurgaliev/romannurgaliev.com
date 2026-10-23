@@ -8,6 +8,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
+// No longer shown on the home page, so it lives here
+const LOCATION = 'Almaty, Kazakhstan · Open to remote opportunities';
 (async () => {
   const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const src = await b.newPage();
@@ -15,7 +17,6 @@ const ROOT = path.resolve(__dirname, '..');
   const data = await src.evaluate(() => {
     const t = (el, s) => (el.querySelector(s)?.textContent || '').trim();
     const title = document.title.split('—').pop().trim();
-    const location = t(document, '.home-location');
     const sections = [...document.querySelectorAll('#cv .cv-section')].map(sec => ({
       label: t(sec, '.cv-section-label'),
       entries: [...sec.querySelectorAll('.cv-entry')].map(e => ({
@@ -25,7 +26,7 @@ const ROOT = path.resolve(__dirname, '..');
         note: t(e, '.cv-entry-note'),
       })),
     }));
-    return { title, location, sections };
+    return { title, sections };
   });
   await src.close();
 
@@ -74,7 +75,7 @@ li::before { content: "–"; position: absolute; left: 0; color: #9a9a9a; }
   <div class="contacts">
     <a href="mailto:romannurgaliev@gmail.com">romannurgaliev@gmail.com</a><br>
     <a href="https://romannurgaliev.com">romannurgaliev.com</a> · <a href="https://linkedin.com/in/romannurgaliev">linkedin.com/in/romannurgaliev</a> · <a href="https://t.me/romannurgaliev">t.me/romannurgaliev</a><br>
-    ${esc(data.location.replace(/^Based in /,''))}
+    ${esc(LOCATION)}
   </div>
 </header>
 ${data.sections.map(s => `<section><h2>${esc(s.label)}</h2>${s.entries.map(entry).join('')}</section>`).join('')}
