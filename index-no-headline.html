@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="view-transition" content="same-origin">
+  <title>Roman Nurgaliev — Product Designer</title>
+  <meta name="description" content="Product designer for fintech and B2B products: trading, payments, billing, business onboarding, and internal tools, often as the only designer on the team. Based in Almaty, open to remote.">
+  <link rel="canonical" href="https://romannurgaliev.com/">
+  <meta name="robots" content="noindex">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Roman Nurgaliev">
+  <meta property="og:title" content="Roman Nurgaliev — Product Designer">
+  <meta property="og:description" content="Product designer for fintech and B2B products: trading, payments, billing, business onboarding, and internal tools, often as the only designer on the team. Based in Almaty, open to remote.">
+  <meta property="og:url" content="https://romannurgaliev.com/">
+  <meta property="og:image" content="https://romannurgaliev.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Roman Nurgaliev — Product designer">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Variant: no visible headline, the bio leads the page */
+    .home-h1-hidden {
+      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .intro--no-headline .home-bio {
+      margin-top: 0;
+    }
+    @media (min-width: 769px) {
+      /* First bio line on the same baseline as the name (20px, lh 1.45) */
+      .intro--no-headline .home-bio {
+        margin-top: calc(var(--baseline) - 24px - 21.8px);
+      }
+    }
+  </style>
+</head>
+<body class="two-col">
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <aside class="sidebar animate">
+    <div class="sidebar-top">
+      <a class="sidebar-name" href="#home">Roman Nurgaliev</a>
+
+      <nav class="sidebar-nav">
+        <a href="#home" class="active" aria-current="true">Home</a>
+        <a href="#cv">CV</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <button type="button" class="sidebar-email" data-copy="romannurgaliev@gmail.com" aria-label="Copy email romannurgaliev@gmail.com">romannurgaliev@gmail.com</button>
+  </aside>
+
+  <main class="content animate delay-1" id="main">
+
+    <section id="home" class="section">
+      <div class="intro intro--no-headline">
+        <h1 class="home-h1-hidden">Roman Nurgaliev, product designer</h1>
+
+        <p class="home-bio">I design fintech and B2B products: trading, payments, billing, business onboarding, and internal tools, often as the only designer on the team. <span class="home-bio-extra">I work closely with engineers, compliance, clinicians, and merchants. </span>Now I’m building a VPN for networks where Surfshark doesn’t work.</p>
+
+        <p class="home-location">Based in Almaty, Kazakhstan · Open to remote opportunities</p>
+      </div>
+
+      <div id="work" class="work">
+
+        <a class="case-card" href="work/brighty.html">
+          <div class="case-thumb">
+            <div class="case-thumb-single">
+              <img src="work/images/brighty/terminal-1536.webp" srcset="work/images/brighty/terminal-700.webp 700w, work/images/brighty/terminal-1536.webp 1536w" sizes="(max-width: 768px) 90vw, 768px" width="1536" height="819" alt="The trading terminal in production: BTC-USDC chart with MACD and RSI, order book, order form with cross leverage and take-profit and stop-loss presets, and the positions table" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">Brighty — Trading Terminal &amp; B2B Onboarding</h2>
+              <span class="case-year">2025–2026</span>
+            </div>
+            <p class="case-desc">Sole designer of a perps and spot terminal with up to 50x leverage, through public release; also a cross-margin risk simulator and KYB onboarding for business accounts.</p>
+          </div>
+        </a>
+
+        <a class="case-card" href="work/donuts.html">
+          <div class="case-thumb">
+            <div class="case-thumb-strip">
+              <img src="work/images/donuts/merchant-dashboard-1000.webp" srcset="work/images/donuts/merchant-dashboard-500.webp 500w, work/images/donuts/merchant-dashboard-1000.webp 1000w" sizes="(max-width: 768px) 30vw, 250px" width="1000" height="581" alt="donuts.tg merchant dashboard: store revenue, commission, and token balances" loading="lazy" decoding="async">
+              <img src="work/images/donuts/orders-1000.webp" srcset="work/images/donuts/orders-500.webp 500w, work/images/donuts/orders-1000.webp 1000w" sizes="(max-width: 768px) 30vw, 250px" width="1000" height="581" alt="donuts.tg orders: payment status, transaction IDs, and amounts in tokens and dollars" loading="lazy" decoding="async">
+              <img src="work/images/donuts/checkout-308.webp" srcset="work/images/donuts/checkout-308.webp 308w" sizes="(max-width: 768px) 20vw, 204px" width="308" height="651" alt="donuts.tg checkout: amount in tokens, payment timer, and wallet options" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">donuts.tg — Crypto Payment Gateway</h2>
+              <span class="case-year">2024</span>
+            </div>
+            <p class="case-desc">Founding designer of a TON payment gateway, where a payment can’t be reversed: checkout with a 60-second rate lock, merchant dashboard, and admin panel. Processed live merchant payments in beta.</p>
+          </div>
+        </a>
+
+        <a class="case-card" href="work/vpn.html">
+          <div class="case-thumb case-thumb--one-phone">
+            <div class="case-thumb-strip">
+              <img src="work/images/vpn/cover-bypass-on-430.webp" width="430" height="880" alt="Split tunneling settings on iPhone with Bypass VPN turned on and two bypassed websites" loading="lazy" decoding="async">
+              <img src="work/images/vpn/cover-add-website-430.webp" width="430" height="880" alt="Add Website alert on iPhone with spotify.com typed in" loading="lazy" decoding="async">
+              <img src="work/images/vpn/cover-swipe-delete-430.webp" width="430" height="880" alt="Bypassed websites list on iPhone with one row swiped to reveal Delete" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">VPN service — Apps &amp; Web Account</h2>
+              <span class="case-year">2026–now</span>
+            </div>
+            <p class="case-desc">Product design for a VPN with 275K+ monthly users in Telegram and 40,000 daily on the web: a new web account, plans and billing, and split tunneling in the apps.</p>
+          </div>
+        </a>
+
+        <a class="case-card" href="work/dedust.html">
+          <div class="case-thumb">
+            <div class="case-thumb-strip">
+              <img src="work/images/questhub/quest-intro-390.webp" width="390" height="844" alt="Quest Hub quest intro: reward pool in $DUST, soulbound tokens, and extra XP" loading="lazy" decoding="async">
+              <img src="work/images/questhub/quest-progress-390.webp" width="390" height="844" alt="Quest Hub quest page: soulbound-token reward tiers and XP progress" loading="lazy" decoding="async">
+              <img src="work/images/questhub/rewards-390.webp" width="390" height="844" alt="Quest Hub rewards: XP balance and a grid of bronze, silver, and gold soulbound tokens" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">DeDust.io — TON Explorer &amp; Quest Hub</h2>
+              <span class="case-year">2025</span>
+            </div>
+            <p class="case-desc">Quest Hub, a Telegram Mini App for on-chain quests that reached 100K+ participants; also an explorer for TON smart-contract developers, from a plain-language summary down to raw cells, taken to a working build with ABI upload.</p>
+          </div>
+        </a>
+
+        <a class="case-card" href="work/antara-health.html">
+          <div class="case-thumb">
+            <div class="case-thumb-single">
+              <img src="work/images/antara/patient-app-1078.webp" srcset="work/images/antara/patient-app-700.webp 700w, work/images/antara/patient-app-1078.webp 1078w" sizes="(max-width: 768px) 90vw, 670px" width="1078" height="697" alt="Antara Health patient app listing: booking consultations, tracking progress, and health documents" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">Antara Health — Virtual Primary Care</h2>
+              <span class="case-year">2021–2024</span>
+            </div>
+            <p class="case-desc">Founding designer, 0→1, in Kenya: patient app and Scribe, an internal web app for clinical staff, that took clinical capacity from 206 to 800 patients per clinician.</p>
+          </div>
+        </a>
+
+        <a class="case-card" href="work/podcast.html">
+          <div class="case-thumb">
+            <div class="case-thumb-strip case-thumb-strip--2">
+              <img src="work/images/podcast/apple-podcasts-989.webp" srcset="work/images/podcast/apple-podcasts-500.webp 500w, work/images/podcast/apple-podcasts-989.webp 989w" sizes="(max-width: 768px) 45vw, 370px" width="989" height="601" alt="Дизайн Такой in Apple Podcasts with the episode list" loading="lazy" decoding="async">
+              <img src="work/images/podcast/youtube-talk-1000.webp" srcset="work/images/podcast/youtube-talk-500.webp 500w, work/images/podcast/youtube-talk-1000.webp 1000w" sizes="(max-width: 768px) 45vw, 370px" width="1000" height="660" alt="A talk about the Дизайн Такой podcast on YouTube" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="case-meta">
+            <div class="case-header">
+              <h2 class="case-title">Дизайн Такой — Podcast</h2>
+              <span class="case-year">2018–2022</span>
+            </div>
+            <p class="case-desc">Co-hosted Russian-language design podcast: 61 episodes, 482K plays, 101K listeners; the most-listened podcast in DevCrowd’s 2023 survey of product designers.</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section id="cv" class="section cv">
+      <div class="section-head">
+        <h2 class="section-title">CV</h2>
+        <a class="cv-download" href="cv.pdf" download="Roman-Nurgaliev-CV.pdf">Download PDF</a>
+      </div>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Experience</p>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">VPN service</span>
+              <span class="cv-entry-period">May 2026–Present</span>
+            </div>
+            <p class="cv-entry-role">Product Designer · Remote</p>
+            <ul class="cv-entry-list">
+              <li>Own product design for a VPN service with 275K+ monthly users in Telegram and 40,000 daily web users: web account, main landing page, and apps for iOS, Android, and Android TV.</li>
+              <li>Pitched a redesign of the long-unchanged web account until it was prioritized; when both versions ran side by side, 96% of users stayed on the new one, and everyone moved over.</li>
+              <li>Redesigned pricing and billing: the plan grid, plan changes, and extra traffic that carries over to the next month, plus every state from usage warnings to grace period, expiry, and ban.</li>
+              <li>Shipped split tunneling for apps and sites; now designing connection settings for restrictive networks, with a warning wherever a change can break the connection.</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Brighty</span>
+              <span class="cv-entry-period">Oct 2025–Apr 2026 · 7 mos</span>
+            </div>
+            <p class="cv-entry-role">Product Designer · Switzerland, remote</p>
+            <ul class="cv-entry-list">
+              <li>The only designer on two products: a perps and spot trading terminal with up to 50x leverage, and Brighty Business. Took the terminal through public release with one frontend engineer, on a design system and token set I built.</li>
+              <li>Designed a cross-margin risk simulator where traders try a crash scenario and see every liquidation price move across open positions; worked out the risk model with the product owner and took it to a complete prototype.</li>
+              <li>Reworked KYB for business accounts, a ~40-minute flow with no point to pause: mapped ~80 fields and documents to pre-fill or reuse what Brighty already had, and proposed a two-stage flow with about 20 fields to get into the account and more features unlocking as the company shares more data.</li>
+              <li>Ran the decision session with the CTO and Compliance after KYB iterations stalled; benchmarked Brighty Business against Slash, Finom, Brex, Ramp, Deel, and Papaya on approvals, roles, and audit.</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">DeDust.io</span>
+              <span class="cv-entry-period">Mar–Sep 2025 · 7 mos</span>
+            </div>
+            <p class="cv-entry-role">Product Designer · Dubai, remote</p>
+            <ul class="cv-entry-list">
+              <li>Designed a TON blockchain explorer for smart-contract developers, where one transaction can fan out into 99 messages: three levels of detail, from a plain-language summary to a trace graph to raw TL-B cells. Took it to a working build with one engineer.</li>
+              <li>Designed ABI upload, live in the working build, that turns an unknown contract into get-methods callable in the browser, with decoded results, op codes, and exit codes.</li>
+              <li>Rebranded BroBot into Quest Hub, a Telegram Mini App for on-chain quests that reached 100K+ participants: a migration flow for $BROBOT holders, XP tiers with soulbound-token rewards, and partner campaigns.</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">donuts.tg</span>
+              <span class="cv-entry-period">Jul–Dec 2024 · 6 mos</span>
+            </div>
+            <p class="cv-entry-role">Founding Product Designer · Remote</p>
+            <ul class="cv-entry-list">
+              <li>Designed a TON crypto payment gateway from zero to live merchant payments in beta: buyer checkout, merchant dashboard, and internal admin panel.</li>
+              <li>Designed checkout for payments that can’t be reversed, in volatile tokens: a 10-minute payment window with a 60-second rate lock, a re-quote that shows the old and new amount, and recovery from insufficient funds.</li>
+              <li>Designed merchant tools: multi-store setup, API keys and webhooks, staff roles, and a balance split into available funds and a 48-hour refund reserve.</li>
+              <li>Interviewed merchants about accounting, tax reporting, and the payment processors they already use; reworked the dashboard home around fiat earnings per period, currency breakdown, and the exchange rate locked at each payment.</li>
+            </ul>
+            <p class="cv-entry-note">Closed in December 2024: merchants needed networks beyond TON, and the next step required a banking license.</p>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Antara Health</span>
+              <span class="cv-entry-period">Feb 2021–May 2024 · 3 yrs 4 mos</span>
+            </div>
+            <p class="cv-entry-role">Founding Product Designer · Nairobi, Kenya (on-site 2022–2023)</p>
+            <ul class="cv-entry-list">
+              <li>Joined as the first designer before any product existed; designed the patient app and Scribe, the internal web app for doctors and care coordinators, from zero to launch for a primary care platform with ~40,000 members.</li>
+              <li>Designed patient queues, at-risk flags and suggested care pathways in Scribe, automating over 60% of non-patient-facing work; clinical capacity grew from 206 to 800 patients per clinician and protocol adherence rose 25%.</li>
+              <li>Redesigned the onboarding I had built earlier after its numbers came in weak; the new version shipped, and sustained engagement rose from 33% to 55% alongside new progress-tracking features.</li>
+              <li>Designed WhatsApp sign-up and dependant accounts for children, for users with limited digital literacy; part of a growth push that brought 5,000+ new subscriptions.</li>
+              <li>Hired two designers and mentored an intern into a full team member.</li>
+              <li>Tested flows with patients and clinicians before they went to engineering: usability interviews and in-person tests in Nairobi, run with UX researchers.</li>
+            </ul>
+            <p class="cv-entry-note">Asked back part-time in October 2024.</p>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Side Projects</p>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <span class="cv-entry-company">Дизайн Такой</span>
+              <span class="cv-entry-period">2018–2022</span>
+            </div>
+            <p class="cv-entry-role">Co-host</p>
+            <ul class="cv-entry-list">
+              <li>Co-hosted 61 episodes on product strategy and design process from the first episode; 482K plays, 101K listeners, 4.9 rating.</li>
+              <li>The most-listened podcast in DevCrowd’s 2023 survey of Russian-speaking product designers (53% of respondents).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Earlier</p>
+
+          <div class="cv-entry cv-entry--inline">
+            <span class="cv-entry-company">True Engineering</span>
+            <span class="cv-entry-role">UX Designer</span>
+            <span class="cv-entry-period">2019–2020</span>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <p class="cv-section-label">Education</p>
+
+          <div class="cv-entry cv-entry--inline">
+            <span class="cv-entry-company">Novosibirsk State University</span>
+            <span class="cv-entry-role">Economics</span>
+            <span class="cv-entry-period">2013</span>
+          </div>
+        </section>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2 class="section-title">Let’s work together</h2>
+      <p class="contact-bio">I’m looking for Design Lead and Senior Product Designer roles in fintech, trading platforms, and crypto infrastructure. Full-time preferred; open to part-time and freelance. Based in Almaty, Kazakhstan, working remotely.</p>
+
+        <div class="contact-links">
+          <button type="button" class="contact-link" data-copy="romannurgaliev@gmail.com" aria-label="Copy email romannurgaliev@gmail.com">
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-value">romannurgaliev@gmail.com</span>
+          </button>
+          <a class="contact-link" href="https://linkedin.com/in/romannurgaliev" target="_blank" rel="noopener">
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-value">linkedin.com/in/romannurgaliev</span>
+          </a>
+          <a class="contact-link" href="https://t.me/romannurgaliev" target="_blank" rel="noopener">
+            <span class="contact-link-label">Telegram</span>
+            <span class="contact-link-value">@romannurgaliev</span>
+          </a>
+        </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Scroll-spy: the nav item of the section in view is active.
+    const links = [...document.querySelectorAll('.sidebar-nav a')];
+    const sections = links.map(a => document.querySelector(a.hash));
+
+    function updateNav() {
+      const line = window.innerHeight * 0.35;
+      let current = 0;
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= line) current = i;
+      });
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) current = sections.length - 1;
+      links.forEach((a, i) => {
+        a.classList.toggle('active', i === current);
+        if (i === current) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    addEventListener('scroll', updateNav, { passive: true });
+    addEventListener('resize', updateNav);
+    updateNav();
+
+    // Anchor links glide to their section with a soft ease-in-out,
+    // slower than the browser's built-in smooth scroll.
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    let frame = 0;
+
+    function glideTo(target) {
+      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const to = Math.min(max, Math.max(0, target.getBoundingClientRect().top + scrollY - margin));
+      const from = scrollY;
+      const distance = to - from;
+      cancelAnimationFrame(frame);
+
+      if (reduceMotion.matches || Math.abs(distance) < 2) {
+        scrollTo(0, to);
+        return;
+      }
+
+      const duration = Math.min(1100, Math.max(600, Math.abs(distance) * 0.4));
+      const start = performance.now();
+      const step = now => {
+        const t = Math.min(1, (now - start) / duration);
+        scrollTo(0, from + distance * ease(t));
+        if (t < 1) frame = requestAnimationFrame(step);
+      };
+      frame = requestAnimationFrame(step);
+    }
+
+    // Let the reader take over mid-glide
+    const stopGlide = () => cancelAnimationFrame(frame);
+    addEventListener('wheel', stopGlide, { passive: true });
+    addEventListener('touchstart', stopGlide, { passive: true });
+
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const target = document.querySelector(link.hash);
+      if (!target) return;
+      e.preventDefault();
+      if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+      // Keep keyboard focus in step with the scroll, as a native jump would
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      glideTo(target);
+    });
+  </script>
+  <script src="copy-email.js" defer></script>
+
+</body>
+</html>
