@@ -1,6 +1,7 @@
 // Case pages: two kinds of carousels (styles in style.css).
 // .case-carousel — half-size screens in a deck, with a counter and arrows.
 // .case-gallery  — full-width screens on a scroll-snap track, arrows above.
+// Also: smooth open / close for .case-details.
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -278,7 +279,65 @@
     });
   }
 
+  // ---------- Collapsible details ----------
+  // A <details> opens and closes in one frame. Here a click animates the
+  // panel's height and fades the list in, so the page below glides instead
+  // of jumping. A second click mid-animation turns it around smoothly.
+  // With reduced motion (or no Web Animations) it toggles as usual.
+  function initDetails(details) {
+    var summary = details.querySelector('summary');
+    var body = summary.nextElementSibling;
+    var heightAnim = null;
+    var bodyAnim = null;
+    var closing = false;
+
+    summary.addEventListener('click', function (event) {
+      if (reduceMotion.matches || !details.animate) return;
+      event.preventDefault();
+
+      // Start from the height on screen right now, even mid-animation
+      var from = details.offsetHeight;
+      var open = closing || !details.open;
+      if (heightAnim) heightAnim.cancel();
+      if (bodyAnim) bodyAnim.cancel();
+
+      details.open = true;
+      closing = !open;
+      // The icon follows the click at once, not the end of the animation
+      details.classList.toggle('is-closing', closing);
+      var to = open ? details.offsetHeight : summary.offsetHeight;
+      details.style.overflow = 'hidden';
+
+      heightAnim = details.animate(
+        { height: [from + 'px', to + 'px'] },
+        open
+          ? { duration: 380, easing: 'cubic-bezier(0.2, 0, 0, 1)' }
+          : { duration: 280, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+      );
+      if (body) {
+        bodyAnim = body.animate(
+          open
+            ? { opacity: [0, 1], transform: ['translateY(-6px)', 'none'] }
+            : { opacity: [1, 0], transform: ['none', 'translateY(-6px)'] },
+          open
+            ? { duration: 320, delay: 60, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards' }
+            : { duration: 160, easing: 'ease-in', fill: 'forwards' }
+        );
+      }
+
+      heightAnim.onfinish = function () {
+        if (closing) details.open = false;
+        closing = false;
+        details.classList.remove('is-closing');
+        details.style.overflow = '';
+        heightAnim = null;
+        if (bodyAnim) { bodyAnim.cancel(); bodyAnim = null; }
+      };
+    });
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('.case-carousel'), initCarousel);
   Array.prototype.forEach.call(document.querySelectorAll('.case-gallery'), initGallery);
+  Array.prototype.forEach.call(document.querySelectorAll('.case-details'), initDetails);
   initLoops();
 })();
