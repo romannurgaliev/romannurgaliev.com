@@ -58,6 +58,7 @@
   --orange: #ff9500;
   --yellow: #ffcc00;
   --blue: #007aff;
+  --blue-text: #2e8fff; /* blue for small text on dark: 5.2:1, --blue is 4.18:1 */
 
   position: relative;
   width: 872px;
@@ -295,7 +296,7 @@
 }
 
 .sim-footnote {
-  color: var(--w25);
+  color: var(--w50); /* --w25 was 2.24:1, below WCAG AA */
 }
 
 /* ---------- Positions column ---------- */
@@ -651,7 +652,7 @@
 
 .sim-chip--tp {
   background: rgba(0, 122, 255, 0.1);
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
 .sim-chip--warn {

@@ -1,0 +1,3 @@
+/* Applied only while taking screenshots: the case page's top bar slides in
+   and out with scrolling and would sometimes cover the simulator */
+.sidebar { visibility: hidden !important; }

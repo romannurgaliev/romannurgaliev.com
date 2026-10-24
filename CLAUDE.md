@@ -28,7 +28,11 @@ work/images/<project>/ — stills: webp, <what>-<width>.webp (e.g. terminal-700.
 _redirects, _headers  — Netlify: 301s for old URLs (/cv, /work, /contact), cache headers
 404.html
 style.css             — the whole site, one file
-risk-sim.css/.js      — Liquidation Risk Simulator, Brighty page only, desktop ≥960px
+risk-model.js         — simulator math and demo data, no page code (browser: window.RiskModel, Node: require)
+risk-sim.css/.js      — Liquidation Risk Simulator UI, Brighty page only, desktop ≥960px; loads after risk-model.js
+docs/risk-model.md     — the simulator math for developers: formulas, assumptions, Hyperliquid gaps; tests/vectors.json has worked examples
+tests/                — risk-model.js tests (see tests/README.md): `npm test`, `npm run coverage`,
+                        `npm run mutation`, `npm run test:ui` (browser). Run them after any change to the simulator
 case-nav.js           — case pages: hiding top bar, contents list (≥1240px)
 case-media.js         — case pages: carousels (.case-carousel), galleries (.case-gallery), looping videos (video[data-loop])
 copy-email.js         — any [data-copy] element copies its value and shows a toast
@@ -172,4 +176,6 @@ Claude Code can't push (auth fails in its environment). End every task with the 
 git add -A && git commit -m "description" && git push
 ```
 
-Remote: HTTPS with a Personal Access Token in macOS Keychain.
+Remote: HTTPS with a Personal Access Token in macOS Keychain. Pushing changes to `.github/workflows/` needs a token with the `workflow` scope.
+
+GitHub Actions (`.github/workflows/test.yml`) runs the simulator tests on every push; it doesn't block Netlify. Browser screenshots for CI are recorded by the "Update Linux screenshots" workflow (see tests/README.md).

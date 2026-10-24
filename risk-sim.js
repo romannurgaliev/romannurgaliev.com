@@ -1,89 +1,54 @@
 // Liquidation Risk Simulator: a live prototype for the Brighty case page.
 //
-// Risk model: Hyperliquid cross margin.
-//   account value     = collateral + Σ unrealized P&L
-//   maintenance margin = Σ notional × mmr, mmr = 1 / (2 × max leverage)
-//   cross margin ratio = maintenance margin / account value (liquidated at 100%)
-//   liq. price         = price − side × (account value − MM) / size / (1 − mmr × side)
-// The demo account and its five positions match the Figma frames to the cent.
-//
-// Prices move along a straight line from market to the simulated prices.
-// Stops, take-profits and the account liquidation fire in the order the
-// price reaches them, so a stop can close a position before a crash
-// liquidates the account, or a liquidation can come before the stop.
-//
-// On top of prices the trader can try fixes: add margin, cut a position,
-// move a stop. They apply now, at market prices, before the simulated move.
+// This file is the page side only: it draws the simulator and handles
+// dragging, keys and buttons. All the math (cross margin, liquidation
+// prices, stops, risk fixes) and the demo data live in risk-model.js,
+// which must load first.
 (function () {
   var root = document.querySelector('[data-risk-sim]');
-  if (!root) return;
+  var M = window.RiskModel;
+  if (!root || !M) return;
 
   var ICONS = root.getAttribute('data-icons') || '';
   var W = 576; // track width: market price ±50%
   var MINUS = '−';
-  var LOW = 15; // distance to liquidation (%) where risk turns Low
+  var HIGH = M.HIGH; // price buffer turns red below this (%)
 
-  var COLLATERAL = 2500;
-  var POSITIONS = [
-    { id: 'btc', name: 'BTC-USDC', ticker: 'BTC', side: 1, size: 0.1, entry: 101000, mark: 89740, lev: 10, maxLev: 40, dp: 0, sl: 81000, tp: 104000 },
-    { id: 'eth', name: 'ETH-USDC', ticker: 'ETH', side: 1, size: 0.5, entry: 3120, mark: 3010, lev: 5, maxLev: 25, dp: 2 },
-    { id: 'zec', name: 'ZEC-USDC', ticker: 'ZEC', side: 1, size: 1.5, entry: 402, mark: 388.5, lev: 5, maxLev: 10, dp: 2 },
-    { id: 'sol', name: 'SOL-USDC', ticker: 'SOL', side: -1, size: 10, entry: 128.4, mark: 131.2, lev: 10, maxLev: 20, dp: 2 },
-    { id: 'hype', name: 'HYPE-USDC', ticker: 'HYPE', side: -1, size: 30, entry: 24.1, mark: 23.35, lev: 10, maxLev: 10, dp: 3 }
-  ];
-  POSITIONS.forEach(function (p) { p.mmr = 1 / (2 * p.maxLev); });
+  var ACCOUNT = M.DEMO;
+  var POSITIONS = ACCOUNT.positions;
+  var LEVEL_CLASS = { high: 'is-red', medium: 'is-orange', low: 'is-green' };
 
-  var SCENARIOS = [
-    { id: 'crash', down: true, name: 'Market Crash', effect: MINUS + '30% all positions', ratios: { btc: 0.7, eth: 0.7, zec: 0.7, sol: 0.7, hype: 0.7 } },
-    { id: 'boom', name: 'BTC Boom', effect: '+15% BTC', ratios: { btc: 1.15 } },
-    { id: 'recovery', name: 'Market Recovery', effect: '+10% all positions', ratios: { btc: 1.1, eth: 1.1, zec: 1.1, sol: 1.1, hype: 1.1 } }
-  ];
-
-  // Real crashes, replayed per coin: daily open to daily low on Hyperliquid
-  // (api.hyperliquid.xyz candleSnapshot, 1d, UTC). Lows were not all at the
-  // same minute, so this is the worst case of the day.
-  var SHOCKS = [
-    { id: 'oct10', name: 'Oct 10, 2025', range: 'Oct 10, 2025',
-      prices: { btc: [121615, 100837], eth: [4369.2, 3241.2], sol: [221.02, 137.51], hype: [43.976, 31.8], zec: [212.9, 123.91] } },
-    { id: 'apr25', name: 'Apr 2025 tariffs', range: 'Apr 2–7, 2025',
-      prices: { btc: [85123, 74442], eth: [1904.3, 1415], sol: [126.65, 95.333], hype: [13.327, 9.3061], zec: [40.66, 27.92] } }
-  ];
-  SHOCKS.forEach(function (sh) {
-    sh.down = true;
-    sh.ratios = {};
-    Object.keys(sh.prices).forEach(function (k) { sh.ratios[k] = sh.prices[k][1] / sh.prices[k][0]; });
+  // Preset buttons: the model has the prices, this adds the words
+  var LABELS = {
+    crash: { name: 'Market Crash', effect: MINUS + '30% all positions' },
+    boom: { name: 'BTC Boom', effect: '+15% BTC' },
+    recovery: { name: 'Market Recovery', effect: '+10% all positions' },
+    oct10: { name: 'Oct 10, 2025' },
+    apr25: { name: 'Apr 2025 tariffs' }
+  };
+  function preset(m) {
+    return { id: m.id, down: !!m.down, ratios: m.ratios, name: LABELS[m.id].name, effect: LABELS[m.id].effect };
+  }
+  var SCENARIOS = M.SCENARIOS.map(preset);
+  var SHOCKS = M.SHOCKS.map(function (m) {
+    var sh = preset(m);
     // Button shows the range across coins; the tooltip lists each one
-    var drops = Object.keys(sh.ratios).map(function (k) { return Math.round((1 - sh.ratios[k]) * 100); });
+    var drops = Object.keys(m.ratios).map(function (k) { return Math.round((1 - m.ratios[k]) * 100); });
     sh.effect = MINUS + Math.min.apply(null, drops) + '% to ' + MINUS + Math.max.apply(null, drops) + '%';
-    sh.title = sh.range + ', daily open to low on Hyperliquid: ' + POSITIONS.map(function (p) {
-      return p.ticker + ' ' + MINUS + ((1 - sh.ratios[p.id]) * 100).toFixed(1) + '%';
+    sh.title = m.range + ', daily open to low on Hyperliquid: ' + POSITIONS.map(function (p) {
+      return p.ticker + ' ' + MINUS + ((1 - m.ratios[p.id]) * 100).toFixed(1) + '%';
     }).join(', ');
+    return sh;
   });
   var PRESETS = SCENARIOS.concat(SHOCKS);
 
   // ---------- State ----------
-  var ratios = {};      // simulated price / market price, per position
+  var ratios = M.marketRatios(ACCOUNT); // simulated price / market price, per position
   var scenario = null;  // active preset id
   var dragging = null;  // id of the position being dragged
   var hinted = false;   // "Drag to simulate" shows on BTC until the first move
-  var adj = noAdjustments();
+  var adj = M.noAdjustments();
   var fixes = [];       // risk fixes offered in the last render
-  POSITIONS.forEach(function (p) { ratios[p.id] = 1; });
-
-  function noAdjustments() { return { deposit: 0, cut: {}, sl: {} }; }
-  function withAdj(change) {
-    var a = { deposit: adj.deposit, cut: Object.assign({}, adj.cut), sl: Object.assign({}, adj.sl) };
-    change(a);
-    return a;
-  }
-  function hasAdjustments() {
-    return adj.deposit > 0 || Object.keys(adj.cut).length > 0 || Object.keys(adj.sl).length > 0;
-  }
-  function marketRatios() {
-    var t = {};
-    POSITIONS.forEach(function (p) { t[p.id] = 1; });
-    return t;
-  }
 
   // ---------- Formatting ----------
   function num(v, dp) {
@@ -107,232 +72,27 @@
     return before !== null && before !== now ? '<s class="sim-was">' + before + '</s> ' : '';
   }
 
-  // ---------- Model ----------
-  function priceAt(p, t, rt) { return p.mark * (1 + t * (rt[p.id] - 1)); }
-
-  // Account value and maintenance margin are linear in t between events
-  function account(open, collateral, t, rt) {
-    var av = collateral, mm = 0;
-    open.forEach(function (p) {
-      var px = priceAt(p, t, rt);
-      av += p.side * p.size * (px - p.entry);
-      mm += p.size * px * p.mmr;
-    });
-    return { av: av, mm: mm };
-  }
-
-  function simulate(rt, a) {
-    var collateral = COLLATERAL + a.deposit;
-    var closed = {};
-    var cutPnl = 0;
-    var open = [];
-
-    // Fixes happen now, at market: a cut realizes its share of the P&L
-    POSITIONS.forEach(function (base) {
-      var cut = a.cut[base.id] || 0;
-      var p = Object.assign({}, base, { size: base.size * (1 - cut), sl: a.sl[base.id] || base.sl });
-      var realized = base.side * base.size * cut * (base.mark - base.entry);
-      collateral += realized;
-      // A full close shows its P&L in its own row; a partial one adds to the total
-      if (cut >= 1) closed[base.id] = { kind: 'Closed', price: base.mark, pnl: realized, manual: true };
-      else { cutPnl += realized; open.push(p); }
-    });
-    var sized = {};
-    open.forEach(function (p) { sized[p.id] = p; });
-
-    var liquidated = false;
-    var t = 0;
-    var EPS = 1e-9;
-
-    for (var guard = 0; guard < 20; guard++) {
-      var next = null;
-
-      // Stops and take-profits
-      open.forEach(function (p) {
-        var r = rt[p.id];
-        if (r === 1) return;
-        [['SL', p.sl], ['TP', p.tp]].forEach(function (pair) {
-          if (!pair[1]) return;
-          var tt = (pair[1] / p.mark - 1) / (r - 1);
-          if (tt > t + EPS && tt <= 1 + EPS && (!next || tt < next.t)) {
-            next = { t: tt, kind: pair[0], pos: p, price: pair[1] };
-          }
-        });
-      });
-
-      // Account liquidation: account value falls to maintenance margin
-      var a0 = account(open, collateral, t, rt);
-      var a1 = account(open, collateral, 1, rt);
-      var f0 = a0.av - a0.mm, f1 = a1.av - a1.mm;
-      if (f0 <= 0) {
-        next = { t: t, kind: 'liq' };
-      } else if (f1 <= 0) {
-        var tl = t + (1 - t) * f0 / (f0 - f1);
-        if (!next || tl <= next.t) next = { t: tl, kind: 'liq' };
-      }
-
-      if (!next) break;
-
-      // Liquidation: the spec keeps the rows on screen (tracks turn red) and
-      // reports equity and MM at the simulated prices, so nothing closes here
-      if (next.kind === 'liq') {
-        liquidated = true;
-        break;
-      }
-
-      var pnl = next.pos.side * next.pos.size * (next.price - next.pos.entry);
-      collateral += pnl;
-      closed[next.pos.id] = { kind: 'Closed by ' + next.kind, price: next.price, pnl: pnl };
-      open = open.filter(function (p) { return p !== next.pos; });
-      t = next.t;
-    }
-
-    // Final state at the simulated prices
-    var acc = account(open, collateral, 1, rt);
-    var av = acc.av, mm = acc.mm;
-    var avail = av - mm;
-    var notional = 0, im = 0, netLong = 0;
-    var rows = {};
-
-    open.forEach(function (p) {
-      var px = priceAt(p, 1, rt);
-      var n = p.size * px;
-      var pnl = p.side * p.size * (px - p.entry);
-      notional += n;
-      im += n / p.lev;
-      netLong += p.side * n;
-      var liq = liquidated ? null : px - p.side * avail / p.size / (1 - p.mmr * p.side);
-      if (liq !== null && liq <= 0) liq = null;
-      rows[p.id] = {
-        price: px,
-        pnl: pnl,
-        liq: liq,
-        sl: p.sl,
-        liquidated: liquidated,
-        buffer: liq === null ? null : p.side * (px - liq) / px * 100
-      };
-    });
-    // Total P&L adds up per position, in table order, like the mockup script
-    var totalPnl = POSITIONS.reduce(function (sum, p) {
-      return sum + (closed[p.id] ? closed[p.id].pnl : rows[p.id].pnl);
-    }, 0) + cutPnl;
-
-    // Uniform market move that takes the account to liquidation
-    var move = null;
-    if (open.length) {
-      var denom = netLong - mm;
-      move = Math.abs(denom) < 1e-9 ? Infinity : -avail / denom;
-    }
-
-    var minBuffer = Infinity, riskiest = null;
-    Object.keys(rows).forEach(function (id) {
-      if (rows[id].buffer !== null && rows[id].buffer < minBuffer) {
-        minBuffer = rows[id].buffer;
-        riskiest = id;
-      }
-    });
-    var distance = liquidated ? 0 : Math.min(minBuffer, move === null ? Infinity : Math.abs(move) * 100);
-    var level = distance < 7.5 ? 'is-red' : distance < LOW ? 'is-orange' : 'is-green';
-
-    return {
-      liquidated: liquidated,
-      av: av,
-      totalPnl: totalPnl,
-      mm: mm,
-      reserve: liquidated ? null : Math.max(0, avail),
-      cmr: av > 0 ? mm / av * 100 : Infinity,
-      lev: liquidated || av <= 0 ? null : notional / av,
-      move: liquidated ? null : move,
-      withdrawable: liquidated ? 0 : Math.max(0, av - im),
-      distance: distance,
-      riskiest: riskiest,
-      level: level,
-      rows: rows,
-      sized: sized,
-      closed: closed
-    };
-  }
-
   // The live account, for "was → now"
-  var BASE = simulate(marketRatios(), noAdjustments());
+  var BASE = M.simulate(ACCOUNT, M.marketRatios(ACCOUNT), M.noAdjustments());
 
-  // ---------- Risk fixes ----------
-  // Smallest value in [lo, hi] for which ok() holds (ok is monotonic)
-  function bisect(lo, hi, ok) {
-    if (!ok(hi)) return null;
-    for (var i = 0; i < 40; i++) {
-      var mid = (lo + hi) / 2;
-      if (ok(mid)) hi = mid; else lo = mid;
-    }
-    return hi;
-  }
-
-  function niceAbove(v, side) {
-    var step = Math.pow(10, Math.floor(Math.log10(v)) - 2);
-    return side > 0 ? Math.ceil(v / step) * step : Math.floor(v / step) * step;
-  }
-
-  function findFixes(s) {
-    var list = [];
-    var lowEnough = function (a) {
-      var r = simulate(ratios, a);
-      return !r.liquidated && r.distance >= LOW;
-    };
-
-    // 1. Add margin until risk is Low
-    if (adj.deposit > 0) {
-      list.push({ id: 'deposit', on: true, name: 'Added ' + usd(adj.deposit, 0) + ' margin', effect: 'Undo' });
-    } else if (s.distance < LOW) {
-      var x = bisect(0, 100000, function (v) { return lowEnough(withAdj(function (a) { a.deposit = v; })); });
-      if (x !== null) {
-        x = Math.ceil(x / 10) * 10;
-        list.push({ id: 'deposit', name: 'Add ' + usd(x, 0) + ' margin', effect: '→ Low risk', value: x });
+  // Button text for a fix from the model
+  function fixLabel(f) {
+    var p = POSITIONS.filter(function (q) { return q.id === f.target; })[0];
+    var out = { name: '', effect: 'Undo' };
+    if (f.id === 'deposit') {
+      out.name = (f.on ? 'Added ' : 'Add ') + usd(f.value, 0) + ' margin';
+      if (!f.on) out.effect = '→ Low risk';
+    } else if (f.id === 'cut') {
+      if (f.on) out.name = (f.value >= 1 ? 'Closed ' : 'Cut ' + Math.round(f.value * 100) + '% of ') + p.ticker;
+      else {
+        out.name = f.value >= 1 ? 'Close ' + p.ticker : 'Cut ' + p.ticker + ' by ' + Math.round(f.value * 100) + '%';
+        out.effect = f.liqAfter === null ? '→ Low risk' : 'liq. ' + usd(f.liqAfter, p.dp);
       }
+    } else if (f.id === 'sl') {
+      out.name = (f.on ? 'SL moved to ' : 'Move SL to ') + usd(f.value, p.dp);
+      if (!f.on) out.effect = 'fires before liq.';
     }
-
-    // 2. Cut the position closest to liquidation
-    var cutId = Object.keys(adj.cut)[0];
-    if (cutId) {
-      var cp = POSITIONS.filter(function (p) { return p.id === cutId; })[0];
-      list.push({ id: 'cut', target: cutId, on: true,
-        name: (adj.cut[cutId] >= 1 ? 'Closed ' : 'Cut ' + Math.round(adj.cut[cutId] * 100) + '% of ') + cp.ticker, effect: 'Undo' });
-    } else if (s.distance < LOW && s.riskiest) {
-      var p = POSITIONS.filter(function (q) { return q.id === s.riskiest; })[0];
-      var f = bisect(0, 1, function (v) { return lowEnough(withAdj(function (a) { a.cut[p.id] = v; })); });
-      if (f !== null) {
-        f = Math.min(1, Math.ceil(f * 20) / 20); // 5% steps
-        var after = simulate(ratios, withAdj(function (a) { a.cut[p.id] = f; }));
-        var row = after.rows[p.id];
-        list.push({ id: 'cut', target: p.id, value: f,
-          name: f >= 1 ? 'Close ' + p.ticker : 'Cut ' + p.ticker + ' by ' + Math.round(f * 100) + '%',
-          effect: f >= 1 || !row || row.liq === null ? '→ Low risk' : 'liq. ' + usd(row.liq, p.dp) });
-      }
-    }
-
-    // 3. A stop the liquidation would beat: move it in front
-    var slId = Object.keys(adj.sl)[0];
-    if (slId) {
-      var sp = POSITIONS.filter(function (q) { return q.id === slId; })[0];
-      list.push({ id: 'sl', target: slId, on: true, name: 'SL moved to ' + usd(adj.sl[slId], sp.dp), effect: 'Undo' });
-    } else {
-      POSITIONS.some(function (q) {
-        var r = s.rows[q.id];
-        if (!r || !r.sl || r.liq === null) return false;
-        var beaten = q.side > 0 ? r.liq >= r.sl : r.liq <= r.sl;
-        if (!beaten) return false;
-        var to = niceAbove(r.liq * (1 + q.side * 0.01), q.side);
-        if (q.side > 0 ? to >= r.price : to <= r.price) return false;
-        list.push({ id: 'sl', target: q.id, value: to, name: 'Move SL to ' + usd(to, q.dp), effect: 'fires before liq.' });
-        return true;
-      });
-    }
-    return list;
-  }
-
-  function applyFix(fix) {
-    if (fix.id === 'deposit') adj.deposit = fix.on ? 0 : fix.value;
-    if (fix.id === 'cut') { if (fix.on) delete adj.cut[fix.target]; else adj.cut[fix.target] = fix.value; }
-    if (fix.id === 'sl') { if (fix.on) delete adj.sl[fix.target]; else adj.sl[fix.target] = fix.value; }
+    return Object.assign({}, f, out);
   }
 
   // ---------- Rendering ----------
@@ -493,7 +253,7 @@
     else {
       var bv = num(row.buffer, 1) + '%';
       var bb = simulated && base.buffer !== null ? num(base.buffer, 1) + '%' : null;
-      buffer = stat('Price Buffer', bv, row.buffer < 7.5 ? 'is-red' : '', bb);
+      buffer = stat('Price Buffer', bv, row.buffer < HIGH ? 'is-red' : '', bb);
     }
 
     var side = (cut > 0 && cut < 1 ? Math.round((1 - cut) * 100) + '% · ' : '') + p.lev + 'x ' + (p.side > 0 ? 'Long' : 'Short');
@@ -536,15 +296,15 @@
   }
 
   function render() {
-    var s = simulate(ratios, adj);
+    var s = M.simulate(ACCOUNT, ratios, adj);
     var moved = POSITIONS.some(function (p) { return Math.abs(ratios[p.id] - 1) > 1e-9; });
-    var simulated = moved || hasAdjustments();
+    var simulated = moved || M.hasAdjustments(adj);
     var b = simulated ? BASE : null;
     // Mid-animation prices are passing through; fixes settle when it lands
-    if (!tween) fixes = findFixes(s);
+    if (!tween) fixes = M.findFixes(ACCOUNT, ratios, adj, s).map(fixLabel);
 
     var account =
-      '<div class="sim-cmr ' + s.level + '">' +
+      '<div class="sim-cmr ' + LEVEL_CLASS[s.level] + '">' +
         '<div class="sim-cmr-head"><p class="is-white">Cross Margin Ratio</p><p>' + was(b && cmrText(b), cmrText(s)) + cmrText(s) + '</p></div>' +
         '<div class="sim-cmr-bar"><div class="sim-cmr-fill" style="width:' + Math.min(100, s.cmr) + '%"></div></div>' +
         '<p class="t11 is-muted">Your cross positions will be liquidated at 100%</p>' +
@@ -743,7 +503,7 @@
     if (sc) {
       var id = sc.getAttribute('data-scenario');
       var preset = PRESETS.filter(function (s) { return s.id === id; })[0];
-      var target = marketRatios();
+      var target = M.marketRatios(ACCOUNT);
       if (scenario === id) {
         scenario = null;
       } else {
@@ -758,15 +518,15 @@
     if (fx) {
       var fix = fixes[+fx.getAttribute('data-fix')];
       if (fix) {
-        applyFix(fix);
+        adj = M.applyFix(adj, fix);
         render();
       }
       return;
     }
     if (e.target.closest('[data-reset]')) {
       scenario = null;
-      adj = noAdjustments();
-      animateTo(marketRatios());
+      adj = M.noAdjustments();
+      animateTo(M.marketRatios(ACCOUNT));
     }
   });
 

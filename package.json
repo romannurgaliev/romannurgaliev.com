@@ -2,7 +2,16 @@
   "name": "roman-nurgaliev-website",
   "version": "1.0.0",
   "scripts": {
-    "build": "echo 'No build required'"
+    "build": "echo 'No build required'",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=risk-model.js --test-coverage-lines=99 --test-coverage-branches=95 --test-coverage-functions=100 \"tests/**/*.test.js\"",
+    "mutation": "stryker run",
+    "test:ui": "playwright test"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "1.64.1",
+    "@stryker-mutator/core": "^10.0.0",
+    "fast-check": "^4.10.2"
+  }
 }

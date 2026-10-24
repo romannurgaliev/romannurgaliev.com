@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Mutation testing: Stryker makes small changes to risk-model.js (flips a sign, swaps < for <=, ...) and checks that npm test fails for each. Run: npm run mutation. Report: reports/mutation/index.html",
+  "mutate": ["risk-model.js"],
+  "testRunner": "command",
+  "commandRunner": { "command": "npm test" },
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": { "fileName": "reports/mutation/index.html" },
+  "jsonReporter": { "fileName": "reports/mutation/mutation.json" },
+  "thresholds": { "high": 90, "low": 85, "break": 85 },
+  "concurrency": 6,
+  "timeoutMS": 20000
+}

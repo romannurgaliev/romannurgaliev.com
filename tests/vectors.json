@@ -1,0 +1,5646 @@
+{
+ "about": "Input → expected output examples for the Entry.fi liquidation risk model (romannurgaliev.com/risk-model.js). Formulas and terms: docs/risk-model.md.",
+ "generated": "2026-10-24",
+ "conventions": {
+  "side": "1 = long, -1 = short",
+  "mmr": "not an input: maintenance margin rate = 1 / (2 × maxLev)",
+  "ratios": "simulated price / mark price, per position id; prices move along a straight line from mark to mark × ratio",
+  "adjustments": "fixes applied at mark prices before the move: deposit (USD), cut (share 0–1 of a position, 1 = close), sl (new stop price)",
+  "infinity": "written as the string \"inf\"",
+  "null": "no value: no liquidation price, equity reserve and leverage when liquidated, and so on",
+  "riskLevel": "high below 7.5% distance to liquidation, medium below 15%, low from 15%",
+  "tolerance": "compare numbers with relative tolerance 1e-9 (absolute 1e-9 near zero); fix values exactly"
+ },
+ "cases": [
+  {
+   "id": "demo-market",
+   "description": "Demo account at market prices",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1293.2500000000002,
+    "maintenanceMargin": 239.23750000000004,
+    "totalPnl": -1206.7499999999998,
+    "equityReserve": 1054.0125000000003,
+    "crossMarginRatio": 18.498936787164123,
+    "effectiveLeverage": 10.109607577807846,
+    "marketMoveToLiq": -0.1196380254852079,
+    "withdrawable": 0,
+    "distanceToLiq": 11.893853692664894,
+    "riskLevel": "medium",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -1126,
+      "liqPrice": 79066.45569620252,
+      "priceBuffer": 11.893853692664894
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 858.9540816326526,
+      "priceBuffer": 71.46331954708796
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 131.2,
+      "pnl": -27.99999999999983,
+      "liqPrice": 234.03048780487808,
+      "priceBuffer": 78.37689619274245
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 56.81071428571429,
+      "priceBuffer": 143.30070357907618
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 280
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.2,
+      "position": "btc",
+      "liqPriceAfter": 76114.08227848102
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-btc-down-8",
+   "description": "BTC −8%: ETH liq. moves to $2,305.78 (case page, slide 1)",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 0.92,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 575.3300000000004,
+    "maintenanceMargin": 230.26350000000005,
+    "totalPnl": -1924.6699999999996,
+    "equityReserve": 345.06650000000036,
+    "crossMarginRatio": 40.022856447603964,
+    "effectiveLeverage": 21.476943667112774,
+    "marketMoveToLiq": -0.042595194101912426,
+    "withdrawable": 0,
+    "distanceToLiq": 4.232449665940089,
+    "riskLevel": "high",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 82560.8,
+      "pnl": -1843.9199999999998,
+      "liqPrice": 79066.45569620254,
+      "priceBuffer": 4.232449665940089
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 2305.7826530612238,
+      "priceBuffer": 23.39592514746765
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": 146.34807017543832,
+      "priceBuffer": 62.329969066811245
+     },
+     "sol": {
+      "price": 131.2,
+      "pnl": -27.99999999999983,
+      "liqPrice": 164.86502439024395,
+      "priceBuffer": 25.659317370612772
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 34.30449206349208,
+      "priceBuffer": 46.91431290574764
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 880
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.45,
+      "position": "btc",
+      "liqPriceAfter": 69404.14269275029
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-sol-up-15",
+   "description": "SOL +15%: BTC liq. $81,109 comes before its $81,000 stop (slide 2)",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1.15,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1096.4500000000003,
+    "maintenanceMargin": 244.15750000000003,
+    "totalPnl": -1403.5499999999997,
+    "equityReserve": 852.2925000000002,
+    "crossMarginRatio": 22.268001276848008,
+    "effectiveLeverage": 12.103652697341417,
+    "marketMoveToLiq": -0.09900831088162956,
+    "withdrawable": 0,
+    "distanceToLiq": 9.617573129688296,
+    "riskLevel": "medium",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -1126,
+      "liqPrice": 81109.18987341772,
+      "priceBuffer": 9.617573129688296
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 1270.6275510204077,
+      "priceBuffer": 57.78646009898978
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 150.87999999999997,
+      "pnl": -224.7999999999996,
+      "liqPrice": 234.03048780487805,
+      "priceBuffer": 55.110344515428224
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 50.40690476190477,
+      "priceBuffer": 115.87539512593048
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 480
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.35,
+      "position": "btc",
+      "liqPriceAfter": 75850.16553067186
+     },
+     {
+      "type": "moveStop",
+      "value": 82000,
+      "position": "btc"
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-sol-up-15-add-margin",
+   "description": "SOL +15% with the offered $480 added",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1.15,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 480,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1576.4500000000003,
+    "maintenanceMargin": 244.15750000000003,
+    "totalPnl": -1403.5499999999997,
+    "equityReserve": 1332.2925000000002,
+    "crossMarginRatio": 15.487804878048781,
+    "effectiveLeverage": 8.418313298867707,
+    "marketMoveToLiq": -0.1547684979338237,
+    "withdrawable": 40.57000000000039,
+    "distanceToLiq": 15.034064653725396,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -1126,
+      "liqPrice": 76248.43037974683,
+      "priceBuffer": 15.034064653725396
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 291.03571428571377,
+      "priceBuffer": 90.3310393925012
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 150.87999999999997,
+      "pnl": -224.7999999999996,
+      "liqPrice": 280.859756097561,
+      "priceBuffer": 86.14777047823506
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 65.64500000000001,
+      "priceBuffer": 181.134903640257
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 480,
+      "applied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-sol-up-15-cut-btc",
+   "description": "SOL +15% with BTC cut by 35%",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1.15,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {
+      "btc": 0.35
+     },
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1096.4500000000003,
+    "maintenanceMargin": 204.89625,
+    "totalPnl": -1403.5499999999995,
+    "equityReserve": 891.5537500000003,
+    "crossMarginRatio": 18.68724064024807,
+    "effectiveLeverage": 9.239044188061468,
+    "marketMoveToLiq": -0.16190481379004446,
+    "withdrawable": 0,
+    "distanceToLiq": 15.477863237495141,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -731.9,
+      "liqPrice": 75850.16553067186,
+      "priceBuffer": 15.477863237495141
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 1190.5025510204075,
+      "priceBuffer": 60.44842023188015
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 150.87999999999997,
+      "pnl": -224.7999999999996,
+      "liqPrice": 237.8608536585366,
+      "priceBuffer": 57.649028140599576
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 51.65329365079366,
+      "priceBuffer": 121.21324903980151
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "cutPosition",
+      "value": 0.35,
+      "position": "btc",
+      "applied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-sol-up-15-move-stop",
+   "description": "SOL +15% with BTC’s stop moved to $82,000",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1.15,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {
+      "btc": 82000
+     }
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1096.4500000000003,
+    "maintenanceMargin": 244.15750000000003,
+    "totalPnl": -1403.5499999999997,
+    "equityReserve": 852.2925000000002,
+    "crossMarginRatio": 22.268001276848008,
+    "effectiveLeverage": 12.103652697341417,
+    "marketMoveToLiq": -0.09900831088162956,
+    "withdrawable": 0,
+    "distanceToLiq": 9.617573129688296,
+    "riskLevel": "medium",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -1126,
+      "liqPrice": 81109.18987341772,
+      "priceBuffer": 9.617573129688296
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 1270.6275510204077,
+      "priceBuffer": 57.78646009898978
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 150.87999999999997,
+      "pnl": -224.7999999999996,
+      "liqPrice": 234.03048780487805,
+      "priceBuffer": 55.110344515428224
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 50.40690476190477,
+      "priceBuffer": 115.87539512593048
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 480
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.35,
+      "position": "btc",
+      "liqPriceAfter": 75850.16553067186
+     },
+     {
+      "type": "moveStop",
+      "value": 82000,
+      "position": "btc",
+      "applied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-sol-up-15-all-fixes",
+   "description": "SOL +15% with all three fixes applied",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1.15,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 480,
+     "cut": {
+      "btc": 0.35
+     },
+     "sl": {
+      "btc": 82000
+     }
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1576.4500000000003,
+    "maintenanceMargin": 204.89625,
+    "totalPnl": -1403.5499999999995,
+    "equityReserve": 1371.5537500000003,
+    "crossMarginRatio": 12.997319927685622,
+    "effectiveLeverage": 6.425925338577182,
+    "marketMoveToLiq": -0.2490720884711518,
+    "withdrawable": 354.6600000000003,
+    "distanceToLiq": 23.81092712062913,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 89740,
+      "pnl": -731.9,
+      "liqPrice": 68372.07400194742,
+      "priceBuffer": 23.81092712062913
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": 210.91071428571377,
+      "priceBuffer": 92.99299952539157
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 150.87999999999997,
+      "pnl": -224.7999999999996,
+      "liqPrice": 284.6901219512195,
+      "priceBuffer": 88.6864541034064
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 66.8913888888889,
+      "priceBuffer": 186.472757554128
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 480,
+      "applied": true
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.35,
+      "position": "btc",
+      "applied": true
+     },
+     {
+      "type": "moveStop",
+      "value": 82000,
+      "position": "btc",
+      "applied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-liquidated",
+   "description": "BTC and ETH −20%: the account is liquidated",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 0.8,
+     "eth": 0.8,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": 118.25000000000017,
+    "maintenanceMargin": 121.04250000000002,
+    "totalPnl": -2381.75,
+    "equityReserve": null,
+    "crossMarginRatio": 102.36152219873136,
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "eth": {
+      "price": 2408,
+      "pnl": -356,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 131.2,
+      "pnl": -27.99999999999983,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "btc": {
+      "by": "stop",
+      "price": 81000,
+      "pnl": -2000
+     }
+    },
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 210
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-all-closed",
+   "description": "Every position closed by a fix",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {
+      "btc": 1,
+      "eth": 1,
+      "zec": 1,
+      "sol": 1,
+      "hype": 1
+     },
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1293.2500000000002,
+    "maintenanceMargin": 0,
+    "totalPnl": -1206.7499999999998,
+    "equityReserve": 1293.2500000000002,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 1293.2500000000002,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "btc": {
+      "by": "fix",
+      "price": 89740,
+      "pnl": -1126
+     },
+     "eth": {
+      "by": "fix",
+      "price": 3010,
+      "pnl": -55
+     },
+     "zec": {
+      "by": "fix",
+      "price": 388.5,
+      "pnl": -20.25
+     },
+     "sol": {
+      "by": "fix",
+      "price": 131.2,
+      "pnl": -27.99999999999983
+     },
+     "hype": {
+      "by": "fix",
+      "price": 23.35,
+      "pnl": 22.5
+     }
+    },
+    "fixes": [
+     {
+      "type": "cutPosition",
+      "value": 1,
+      "position": "btc",
+      "applied": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "demo-preset-crash",
+   "description": "Preset \"crash\"",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 0.7,
+     "eth": 0.7,
+     "zec": 0.7,
+     "sol": 0.7,
+     "hype": 0.7
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 396.6750000000002,
+    "maintenanceMargin": 88.94375,
+    "totalPnl": -2103.3249999999994,
+    "equityReserve": 307.73125000000016,
+    "crossMarginRatio": 22.422323060439894,
+    "effectiveLeverage": 7.235583286065415,
+    "marketMoveToLiq": 8.48474926762023,
+    "withdrawable": 0,
+    "distanceToLiq": 29.806500198560688,
+    "riskLevel": "low",
+    "riskiest": "eth",
+    "positions": {
+     "eth": {
+      "price": 2107,
+      "pnl": -506.5,
+      "liqPrice": 1478.9770408163263,
+      "priceBuffer": 29.806500198560688
+     },
+     "zec": {
+      "price": 271.95,
+      "pnl": -195.07500000000002,
+      "liqPrice": 55.99824561403494,
+      "priceBuffer": 79.40862452140652
+     },
+     "sol": {
+      "price": 91.83999999999999,
+      "pnl": 365.60000000000014,
+      "liqPrice": 121.86256097560977,
+      "priceBuffer": 32.69007074870403
+     },
+     "hype": {
+      "price": 16.345,
+      "pnl": 232.6500000000001,
+      "liqPrice": 26.114246031746035,
+      "priceBuffer": 59.76901824255758
+     }
+    },
+    "closed": {
+     "btc": {
+      "by": "stop",
+      "price": 81000,
+      "pnl": -2000
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "demo-preset-boom",
+   "description": "Preset \"boom\"",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1.15,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2639.3499999999985,
+    "maintenanceMargin": 256.06374999999997,
+    "totalPnl": 139.34999999999872,
+    "equityReserve": 2383.2862499999987,
+    "crossMarginRatio": 9.701773163847163,
+    "effectiveLeverage": 5.463598992176107,
+    "marketMoveToLiq": -0.2350546371052498,
+    "withdrawable": 988.5399999999988,
+    "distanceToLiq": 23.385959732752056,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 103200.99999999999,
+      "pnl": 220.09999999999854,
+      "liqPrice": 79066.45569620254,
+      "priceBuffer": 23.385959732752056
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 131.2,
+      "pnl": -27.99999999999983,
+      "liqPrice": 363.715731707317,
+      "priceBuffer": 177.22235648423555
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 99.00988095238091,
+      "priceBuffer": 324.0251860915671
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "demo-preset-recovery",
+   "description": "Preset \"recovery\"",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1.1,
+     "eth": 1.1,
+     "zec": 1.1,
+     "sol": 1.1,
+     "hype": 1.1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2198.1750000000015,
+    "maintenanceMargin": 263.16125,
+    "totalPnl": -301.82499999999817,
+    "equityReserve": 1935.0137500000014,
+    "crossMarginRatio": 11.971806157380547,
+    "effectiveLeverage": 6.542552344558549,
+    "marketMoveToLiq": -0.19967093225927995,
+    "withdrawable": 530.3550000000014,
+    "distanceToLiq": 19.850351469261796,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 98714.00000000001,
+      "pnl": -228.59999999999854,
+      "liqPrice": 79118.92405063292,
+      "priceBuffer": 19.850351469261796
+     },
+     "eth": {
+      "price": 3311.0000000000005,
+      "pnl": 95.50000000000023,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "zec": {
+      "price": 427.35,
+      "pnl": 38.025000000000034,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 144.32,
+      "pnl": -159.19999999999987,
+      "liqPrice": 333.1018292682928,
+      "priceBuffer": 130.80780852847343
+     },
+     "hype": {
+      "price": 25.685000000000002,
+      "pnl": -47.550000000000026,
+      "liqPrice": 87.11400793650799,
+      "priceBuffer": 239.1629664648938
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "demo-preset-oct10",
+   "description": "Preset \"oct10\": Oct 10, 2025, daily open to low on Hyperliquid",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 0.8291493647987501,
+     "eth": 0.7418291678110409,
+     "zec": 0.5820103334899013,
+     "sol": 0.6221608904171567,
+     "hype": 0.7231217027469529
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 476.7975783953065,
+    "maintenanceMargin": 85.0215988875691,
+    "totalPnl": -2023.2024216046932,
+    "equityReserve": 391.7759795077374,
+    "crossMarginRatio": 17.831801741467494,
+    "effectiveLeverage": 5.8272973402034305,
+    "marketMoveToLiq": -8.200271005313244,
+    "withdrawable": 53.39151041578015,
+    "distanceToLiq": 35.807279334060915,
+    "riskLevel": "low",
+    "riskiest": "eth",
+    "positions": {
+     "eth": {
+      "price": 2232.905795111233,
+      "pnl": -443.5471024443834,
+      "liqPrice": 1433.36297978932,
+      "priceBuffer": 35.807279334060915
+     },
+     "zec": {
+      "price": 226.11101456082665,
+      "pnl": -263.83347815876004,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 81.62750882273096,
+      "pnl": 467.72491177269046,
+      "liqPrice": 119.84955560397364,
+      "priceBuffer": 46.82495807173147
+     },
+     "hype": {
+      "price": 16.88489175914135,
+      "pnl": 216.45324722575953,
+      "liqPrice": 29.322224441926664,
+      "priceBuffer": 73.65953457209365
+     }
+    },
+    "closed": {
+     "btc": {
+      "by": "stop",
+      "price": 81000,
+      "pnl": -2000
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "demo-preset-apr25",
+   "description": "Preset \"apr25\": Apr 2–7, 2025, daily open to low on Hyperliquid",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 0.8745227494331732,
+     "eth": 0.7430551908837894,
+     "zec": 0.6866699458927694,
+     "sol": 0.752727990525069,
+     "hype": 0.6982891873639979
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 385.7242739317435,
+    "maintenanceMargin": 91.52086367069892,
+    "totalPnl": -2114.275726068256,
+    "equityReserve": 294.20341026104455,
+    "crossMarginRatio": 23.727016901947465,
+    "effectiveLeverage": 7.7650951080576895,
+    "marketMoveToLiq": 5.908103583063075,
+    "withdrawable": 0,
+    "distanceToLiq": 26.845039942103373,
+    "riskLevel": "low",
+    "riskiest": "eth",
+    "positions": {
+     "eth": {
+      "price": 2236.596124560206,
+      "pnl": -441.70193771989693,
+      "liqPrice": 1636.1810015784827,
+      "priceBuffer": 26.845039942103373
+     },
+     "zec": {
+      "price": 266.77127397934095,
+      "pnl": -202.84308903098858,
+      "liqPrice": 60.312740462818454,
+      "priceBuffer": 77.39159109481588
+     },
+     "sol": {
+      "price": 98.75791235688905,
+      "pnl": 296.42087643110955,
+      "liqPrice": 127.46068408967389,
+      "priceBuffer": 29.063769218874768
+     },
+     "hype": {
+      "price": 16.305052524949353,
+      "pnl": 233.84842425151945,
+      "liqPrice": 25.644843326887276,
+      "priceBuffer": 57.281574454584195
+     }
+    },
+    "closed": {
+     "btc": {
+      "by": "stop",
+      "price": 81000,
+      "pnl": -2000
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "edge-long-no-liq",
+   "description": "A long that can fall to zero has no liquidation price",
+   "input": {
+    "collateral": 1000,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1000,
+    "maintenanceMargin": 2.5,
+    "totalPnl": 0,
+    "equityReserve": 997.5,
+    "crossMarginRatio": 0.25,
+    "effectiveLeverage": 0.1,
+    "marketMoveToLiq": -10.23076923076923,
+    "withdrawable": 990,
+    "distanceToLiq": 1023.076923076923,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "edge-short-always-liq",
+   "description": "A short always has a liquidation price",
+   "input": {
+    "collateral": 1000000000,
+    "positions": [
+     {
+      "id": "x",
+      "side": -1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1000000000,
+    "maintenanceMargin": 2.5,
+    "totalPnl": 0,
+    "equityReserve": 999999997.5,
+    "crossMarginRatio": 2.5e-7,
+    "effectiveLeverage": 1e-7,
+    "marketMoveToLiq": 9756097.536585366,
+    "withdrawable": 999999990,
+    "distanceToLiq": 975609753.6585367,
+    "riskLevel": "low",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 975609853.6585367,
+      "priceBuffer": 975609753.6585367
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "edge-liquidated-at-market",
+   "description": "Equity below maintenance margin before any move",
+   "input": {
+    "collateral": 100,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 10,
+      "entry": 100,
+      "mark": 90,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": 0,
+    "maintenanceMargin": 22.5,
+    "totalPnl": -100,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 90,
+      "pnl": -100,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 160
+     }
+    ]
+   }
+  },
+  {
+   "id": "edge-liquidated-stays",
+   "description": "Liquidated at the start stays liquidated even if the move would recover it",
+   "input": {
+    "collateral": 2,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "x": 1.2
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": 22,
+    "maintenanceMargin": 3,
+    "totalPnl": 20,
+    "equityReserve": null,
+    "crossMarginRatio": 13.636363636363635,
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 120,
+      "pnl": 20,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "edge-negative-equity",
+   "description": "Account value below zero",
+   "input": {
+    "collateral": 400,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 10,
+      "entry": 100,
+      "mark": 50,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": -100,
+    "maintenanceMargin": 12.5,
+    "totalPnl": -500,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 50,
+      "pnl": -500,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 190
+     }
+    ]
+   }
+  },
+  {
+   "id": "edge-hedged",
+   "description": "Net exposure equals maintenance margin: no uniform move liquidates",
+   "input": {
+    "collateral": 1000,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     },
+     {
+      "id": "b",
+      "side": -1,
+      "size": 0.9047619047619047,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "a": 1,
+     "b": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 1000,
+    "maintenanceMargin": 9.523809523809524,
+    "totalPnl": 0,
+    "equityReserve": 990.4761904761905,
+    "crossMarginRatio": 0.9523809523809523,
+    "effectiveLeverage": 0.1904761904761905,
+    "marketMoveToLiq": "inf",
+    "withdrawable": 980.952380952381,
+    "distanceToLiq": 1042.6065162907269,
+    "riskLevel": "low",
+    "riskiest": "b",
+    "positions": {
+     "a": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "b": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 1142.6065162907269,
+      "priceBuffer": 1042.6065162907269
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "edge-move-before-buffers",
+   "description": "Two equal longs: the uniform move comes before either position’s buffer",
+   "input": {
+    "collateral": 40,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "a": 1,
+     "b": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 40,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 35,
+    "crossMarginRatio": 12.5,
+    "effectiveLeverage": 5,
+    "marketMoveToLiq": -0.1794871794871795,
+    "withdrawable": 20,
+    "distanceToLiq": 17.94871794871795,
+    "riskLevel": "low",
+    "riskiest": "a",
+    "positions": {
+     "a": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 64.1025641025641,
+      "priceBuffer": 35.8974358974359
+     },
+     "b": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 64.1025641025641,
+      "priceBuffer": 35.8974358974359
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "risk-level-7_45",
+   "description": "Distance to liquidation 7.45%",
+   "input": {
+    "collateral": 12.0775,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 12.0775,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 7.077500000000001,
+    "crossMarginRatio": 41.39929621196439,
+    "effectiveLeverage": 8.27985924239288,
+    "marketMoveToLiq": -0.07450000000000001,
+    "withdrawable": 2.0775000000000006,
+    "distanceToLiq": 7.450000000000001,
+    "riskLevel": "high",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 92.55,
+      "priceBuffer": 7.450000000000003
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.4,
+      "position": "x",
+      "liqPriceAfter": 84.07456140350877
+     }
+    ]
+   }
+  },
+  {
+   "id": "risk-level-7_55",
+   "description": "Distance to liquidation 7.55%",
+   "input": {
+    "collateral": 12.1725,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 12.1725,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 7.172499999999999,
+    "crossMarginRatio": 41.07619634421853,
+    "effectiveLeverage": 8.215239268843705,
+    "marketMoveToLiq": -0.0755,
+    "withdrawable": 2.1724999999999994,
+    "distanceToLiq": 7.549999999999997,
+    "riskLevel": "medium",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 92.45,
+      "priceBuffer": 7.549999999999997
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.4,
+      "position": "x",
+      "liqPriceAfter": 83.90789473684211
+     }
+    ]
+   }
+  },
+  {
+   "id": "risk-level-14_95",
+   "description": "Distance to liquidation 14.95%",
+   "input": {
+    "collateral": 19.2025,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 19.2025,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 14.2025,
+    "crossMarginRatio": 26.038276266111183,
+    "effectiveLeverage": 5.207655253222237,
+    "marketMoveToLiq": -0.1495,
+    "withdrawable": 9.2025,
+    "distanceToLiq": 14.95,
+    "riskLevel": "medium",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 85.05,
+      "priceBuffer": 14.950000000000003
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.05,
+      "position": "x",
+      "liqPriceAfter": 83.98614958448753
+     }
+    ]
+   }
+  },
+  {
+   "id": "risk-level-15_05",
+   "description": "Distance to liquidation 15.05%",
+   "input": {
+    "collateral": 19.2975,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 19.2975,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 14.2975,
+    "crossMarginRatio": 25.910091980826532,
+    "effectiveLeverage": 5.182018396165306,
+    "marketMoveToLiq": -0.1505,
+    "withdrawable": 9.2975,
+    "distanceToLiq": 15.049999999999997,
+    "riskLevel": "low",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 84.95,
+      "priceBuffer": 15.049999999999997
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-take-profit",
+   "description": "Take-profit closes at its price and books the gain",
+   "input": {
+    "collateral": 50,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 2,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "tp": 120
+     }
+    ],
+    "ratios": {
+     "x": 1.3
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 90,
+    "maintenanceMargin": 0,
+    "totalPnl": 40,
+    "equityReserve": 90,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 90,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "x": {
+      "by": "takeProfit",
+      "price": 120,
+      "pnl": 40
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-stop-not-reached",
+   "description": "A stop the move does not reach stays open",
+   "input": {
+    "collateral": 1000,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 80,
+      "tp": 130
+     }
+    ],
+    "ratios": {
+     "x": 0.85
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 985,
+    "maintenanceMargin": 2.125,
+    "totalPnl": -15,
+    "equityReserve": 982.875,
+    "crossMarginRatio": 0.21573604060913706,
+    "effectiveLeverage": 0.08629441624365482,
+    "marketMoveToLiq": -11.85972850678733,
+    "withdrawable": 976.5,
+    "distanceToLiq": 1185.972850678733,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 85,
+      "pnl": -15,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-stop-at-target",
+   "description": "A stop exactly at the simulated price fires",
+   "input": {
+    "collateral": 1000,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 80
+     }
+    ],
+    "ratios": {
+     "x": 0.8
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 980,
+    "maintenanceMargin": 0,
+    "totalPnl": -20,
+    "equityReserve": 980,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 980,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "x": {
+      "by": "stop",
+      "price": 80,
+      "pnl": -20
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-earliest-first",
+   "description": "Of two stops, the one reached first fires first",
+   "input": {
+    "collateral": 1000,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 95
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 90
+     }
+    ],
+    "ratios": {
+     "a": 0.97,
+     "b": 0.8
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 987,
+    "maintenanceMargin": 2.4250000000000003,
+    "totalPnl": -13,
+    "equityReserve": 984.575,
+    "crossMarginRatio": 0.24569402228976697,
+    "effectiveLeverage": 0.09827760891590678,
+    "marketMoveToLiq": -10.410520750726937,
+    "withdrawable": 977.3,
+    "distanceToLiq": 1041.0520750726937,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "a": {
+      "price": 97,
+      "pnl": -3,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "b": {
+      "by": "stop",
+      "price": 90,
+      "pnl": -10
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-simultaneous",
+   "description": "Two stops hit at the same moment both fire",
+   "input": {
+    "collateral": 500,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 5,
+      "maxLev": 20,
+      "sl": 90
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 5,
+      "maxLev": 20,
+      "sl": 90
+     }
+    ],
+    "ratios": {
+     "a": 0.7,
+     "b": 0.7
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 480,
+    "maintenanceMargin": 0,
+    "totalPnl": -20,
+    "equityReserve": 480,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 480,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "a": {
+      "by": "stop",
+      "price": 90,
+      "pnl": -10
+     },
+     "b": {
+      "by": "stop",
+      "price": 90,
+      "pnl": -10
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "events-stop-saves",
+   "description": "A stop that fires first saves the account from a later liquidation",
+   "input": {
+    "collateral": 30,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 95
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20
+     }
+    ],
+    "ratios": {
+     "a": 0.8,
+     "b": 0.88
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 13,
+    "maintenanceMargin": 2.2,
+    "totalPnl": -17,
+    "equityReserve": 10.8,
+    "crossMarginRatio": 16.923076923076923,
+    "effectiveLeverage": 6.769230769230769,
+    "marketMoveToLiq": -0.1258741258741259,
+    "withdrawable": 4.199999999999999,
+    "distanceToLiq": 12.587412587412588,
+    "riskLevel": "medium",
+    "riskiest": "b",
+    "positions": {
+     "b": {
+      "price": 88,
+      "pnl": -12,
+      "liqPrice": 76.92307692307692,
+      "priceBuffer": 12.587412587412592
+     }
+    },
+    "closed": {
+     "a": {
+      "by": "stop",
+      "price": 95,
+      "pnl": -5
+     }
+    },
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.1,
+      "position": "b",
+      "liqPriceAfter": 74.07407407407408
+     }
+    ]
+   }
+  },
+  {
+   "id": "events-liq-after-stop",
+   "description": "After a stop, liquidation comes before the second stop",
+   "input": {
+    "collateral": 33,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 95
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 20,
+      "sl": 64
+     }
+    ],
+    "ratios": {
+     "a": 0.8,
+     "b": 0.6
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": -12,
+    "maintenanceMargin": 1.5,
+    "totalPnl": -45,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "b": {
+      "price": 60,
+      "pnl": -40,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "a": {
+      "by": "stop",
+      "price": 95,
+      "pnl": -5
+     }
+    },
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-margin-round",
+   "description": "Exact margin needed is a hair under $1,000: offered as $1,000",
+   "input": {
+    "collateral": 1500.00000005,
+    "positions": [
+     {
+      "id": "x",
+      "side": -1,
+      "size": 50000,
+      "entry": 1,
+      "mark": 1,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 0.5
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": 26500.00000005,
+    "maintenanceMargin": 1250,
+    "totalPnl": 25000,
+    "equityReserve": null,
+    "crossMarginRatio": 4.7169811320665715,
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "x": {
+      "price": 0.5,
+      "pnl": 25000,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 1000
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-cut-round",
+   "description": "Exact cut is 30%: offered as 30%",
+   "input": {
+    "collateral": 13.475,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 13.475,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 8.475,
+    "crossMarginRatio": 37.10575139146568,
+    "effectiveLeverage": 7.421150278293136,
+    "marketMoveToLiq": -0.08921052631578948,
+    "withdrawable": 3.4749999999999996,
+    "distanceToLiq": 8.921052631578945,
+    "riskLevel": "medium",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 91.07894736842105,
+      "priceBuffer": 8.921052631578945
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.3,
+      "position": "x",
+      "liqPriceAfter": 85
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-cut-full-close",
+   "description": "Only closing all of c1 brings risk to Low",
+   "input": {
+    "collateral": 774.196,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 190446,
+      "entry": 0.01,
+      "mark": 0.01,
+      "lev": 50,
+      "maxLev": 50
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 4002.41,
+      "entry": 1,
+      "mark": 1,
+      "lev": 17,
+      "maxLev": 40
+     }
+    ],
+    "ratios": {
+     "c0": 0.71953,
+     "c1": 1.00763
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 270.59049210000006,
+    "maintenanceMargin": 64.11501589175,
+    "totalPnl": -503.60550789999996,
+    "equityReserve": 206.47547620825006,
+    "crossMarginRatio": 23.694482165343604,
+    "effectiveLeverage": 19.968419622457233,
+    "marketMoveToLiq": -0.03867197896000554,
+    "withdrawable": 5.951911888705979,
+    "distanceToLiq": 3.867197896000554,
+    "riskLevel": "high",
+    "riskiest": "c1",
+    "positions": {
+     "c0": {
+      "price": 0.0071953,
+      "pnl": -534.1438962000001,
+      "liqPrice": 0.006100180716428591,
+      "priceBuffer": 15.219925278604213
+     },
+     "c1": {
+      "price": 1.00763,
+      "pnl": 30.5383883000001,
+      "liqPrice": 0.955389202622635,
+      "priceBuffer": 5.18452183612685
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 600
+     },
+     {
+      "type": "cutPosition",
+      "value": 1,
+      "position": "c1",
+      "liqPriceAfter": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-riskiest-second",
+   "description": "Cut targets the riskiest position even when it is not first",
+   "input": {
+    "collateral": 120,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 0.1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 10,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "a": 1,
+     "b": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 120,
+    "maintenanceMargin": 50.5,
+    "totalPnl": 0,
+    "equityReserve": 69.5,
+    "crossMarginRatio": 42.083333333333336,
+    "effectiveLeverage": 8.416666666666666,
+    "marketMoveToLiq": -0.07243355914538822,
+    "withdrawable": 19,
+    "distanceToLiq": 7.243355914538823,
+    "riskLevel": "high",
+    "riskiest": "b",
+    "positions": {
+     "a": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "b": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 92.6842105263158,
+      "priceBuffer": 7.315789473684204
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 80
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.4,
+      "position": "b",
+      "liqPriceAfter": 84.29824561403508
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-stop-long",
+   "description": "Long stop behind the liq. price: moved 1% in front, 3 significant digits",
+   "input": {
+    "collateral": 20,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10,
+      "sl": 83
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 20,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 15,
+    "crossMarginRatio": 25,
+    "effectiveLeverage": 5,
+    "marketMoveToLiq": -0.15789473684210525,
+    "withdrawable": 10,
+    "distanceToLiq": 15.78947368421052,
+    "riskLevel": "low",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 84.21052631578948,
+      "priceBuffer": 15.78947368421052
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "moveStop",
+      "value": 85.1,
+      "position": "x"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-stop-short",
+   "description": "Short stop behind the liq. price",
+   "input": {
+    "collateral": 20,
+    "positions": [
+     {
+      "id": "x",
+      "side": -1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10,
+      "sl": 118
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 20,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 15,
+    "crossMarginRatio": 25,
+    "effectiveLeverage": 5,
+    "marketMoveToLiq": 0.14285714285714285,
+    "withdrawable": 10,
+    "distanceToLiq": 14.285714285714276,
+    "riskLevel": "medium",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 114.28571428571428,
+      "priceBuffer": 14.285714285714276
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 10
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.05,
+      "position": "x",
+      "liqPriceAfter": 115.28822055137844
+     },
+     {
+      "type": "moveStop",
+      "value": 113,
+      "position": "x"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-stop-no-room",
+   "description": "Liq. price within 1% of the price: no stop fix",
+   "input": {
+    "collateral": 5.475,
+    "positions": [
+     {
+      "id": "x",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10,
+      "sl": 99
+     }
+    ],
+    "ratios": {
+     "x": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 5.475,
+    "maintenanceMargin": 5,
+    "totalPnl": 0,
+    "equityReserve": 0.47499999999999964,
+    "crossMarginRatio": 91.32420091324201,
+    "effectiveLeverage": 18.264840182648403,
+    "marketMoveToLiq": -0.004999999999999997,
+    "withdrawable": 0,
+    "distanceToLiq": 0.49999999999999967,
+    "riskLevel": "high",
+    "riskiest": "x",
+    "positions": {
+     "x": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 99.5,
+      "priceBuffer": 0.5
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 20
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.75,
+      "position": "x",
+      "liqPriceAfter": 82.21052631578948
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-stop-first-beaten",
+   "description": "Two beaten stops: one fix, for the first",
+   "input": {
+    "collateral": 40,
+    "positions": [
+     {
+      "id": "a",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10,
+      "sl": 50
+     },
+     {
+      "id": "b",
+      "side": 1,
+      "size": 1,
+      "entry": 100,
+      "mark": 100,
+      "lev": 10,
+      "maxLev": 10,
+      "sl": 50
+     }
+    ],
+    "ratios": {
+     "a": 1,
+     "b": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 40,
+    "maintenanceMargin": 10,
+    "totalPnl": 0,
+    "equityReserve": 30,
+    "crossMarginRatio": 25,
+    "effectiveLeverage": 5,
+    "marketMoveToLiq": -0.15789473684210525,
+    "withdrawable": 20,
+    "distanceToLiq": 15.789473684210526,
+    "riskLevel": "low",
+    "riskiest": "a",
+    "positions": {
+     "a": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 68.42105263157895,
+      "priceBuffer": 31.578947368421055
+     },
+     "b": {
+      "price": 100,
+      "pnl": 0,
+      "liqPrice": 68.42105263157895,
+      "priceBuffer": 31.578947368421055
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "moveStop",
+      "value": 69.2,
+      "position": "a"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fix-none-when-low",
+   "description": "Risk already Low: nothing offered",
+   "input": {
+    "collateral": 2500,
+    "positions": [
+     {
+      "id": "btc",
+      "side": 1,
+      "size": 0.1,
+      "entry": 101000,
+      "mark": 89740,
+      "lev": 10,
+      "maxLev": 40,
+      "sl": 81000,
+      "tp": 104000
+     },
+     {
+      "id": "eth",
+      "side": 1,
+      "size": 0.5,
+      "entry": 3120,
+      "mark": 3010,
+      "lev": 5,
+      "maxLev": 25
+     },
+     {
+      "id": "zec",
+      "side": 1,
+      "size": 1.5,
+      "entry": 402,
+      "mark": 388.5,
+      "lev": 5,
+      "maxLev": 10
+     },
+     {
+      "id": "sol",
+      "side": -1,
+      "size": 10,
+      "entry": 128.4,
+      "mark": 131.2,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "hype",
+      "side": -1,
+      "size": 30,
+      "entry": 24.1,
+      "mark": 23.35,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "btc": 1.15,
+     "eth": 1,
+     "zec": 1,
+     "sol": 1,
+     "hype": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2639.3499999999985,
+    "maintenanceMargin": 256.06374999999997,
+    "totalPnl": 139.34999999999872,
+    "equityReserve": 2383.2862499999987,
+    "crossMarginRatio": 9.701773163847163,
+    "effectiveLeverage": 5.463598992176107,
+    "marketMoveToLiq": -0.2350546371052498,
+    "withdrawable": 988.5399999999988,
+    "distanceToLiq": 23.385959732752056,
+    "riskLevel": "low",
+    "riskiest": "btc",
+    "positions": {
+     "btc": {
+      "price": 103200.99999999999,
+      "pnl": 220.09999999999854,
+      "liqPrice": 79066.45569620254,
+      "priceBuffer": 23.385959732752056
+     },
+     "eth": {
+      "price": 3010,
+      "pnl": -55,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "zec": {
+      "price": 388.5,
+      "pnl": -20.25,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "sol": {
+      "price": 131.2,
+      "pnl": -27.99999999999983,
+      "liqPrice": 363.715731707317,
+      "priceBuffer": 177.22235648423555
+     },
+     "hype": {
+      "price": 23.35,
+      "pnl": 22.5,
+      "liqPrice": 99.00988095238091,
+      "priceBuffer": 324.0251860915671
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "hyperliquid-acct-04",
+   "description": "Real classic Hyperliquid account (under $20k, 2 positions), snapshot 2026-10-23T17:35:02.622Z",
+   "input": {
+    "collateral": 2231.728457,
+    "positions": [
+     {
+      "id": "BTC",
+      "side": 1,
+      "size": 0.80594,
+      "entry": 81954,
+      "mark": 81654,
+      "lev": 40,
+      "maxLev": 40
+     },
+     {
+      "id": "ENA",
+      "side": 1,
+      "size": 22249,
+      "entry": 0.20153898242617643,
+      "mark": 0.21202,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "BTC": 1,
+     "ENA": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2223.1386170000005,
+    "maintenanceMargin": 1058.4644585,
+    "totalPnl": -8.589839999999782,
+    "equityReserve": 1164.6741585000004,
+    "crossMarginRatio": 47.61126681017929,
+    "effectiveLeverage": 31.723373972591105,
+    "marketMoveToLiq": -0.016765863951825437,
+    "withdrawable": 106.2097000000008,
+    "distanceToLiq": 1.6765863951825437,
+    "riskLevel": "high",
+    "riskiest": "BTC",
+    "positions": {
+     "BTC": {
+      "price": 81654,
+      "pnl": -241.782,
+      "liqPrice": 80190.594697661,
+      "priceBuffer": 1.7922028343241
+     },
+     "ENA": {
+      "price": 0.21202,
+      "pnl": 233.19216000000023,
+      "liqPrice": 0.1569176224360172,
+      "priceBuffer": 25.989235715490423
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 9260
+     },
+     {
+      "type": "cutPosition",
+      "value": 0.9,
+      "position": "BTC",
+      "liqPriceAfter": 57717.59254623031
+     }
+    ]
+   },
+   "exchange": {
+    "maintenanceMargin": 1058.464458,
+    "accountValue": 2223.138617,
+    "liqPrice": {
+     "BTC": 80190.594697661,
+     "ENA": 0.1569176224
+    }
+   }
+  },
+  {
+   "id": "hyperliquid-acct-10",
+   "description": "Real classic Hyperliquid account ($20k–200k, 6 positions), snapshot 2026-10-23T17:36:17.153Z",
+   "input": {
+    "collateral": 32904.856391,
+    "positions": [
+     {
+      "id": "BTC",
+      "side": -1,
+      "size": 0.04172,
+      "entry": 84044.57468839885,
+      "mark": 81643,
+      "lev": 20,
+      "maxLev": 40
+     },
+     {
+      "id": "ETH",
+      "side": -1,
+      "size": 1.1208,
+      "entry": 2481.203203069236,
+      "mark": 2407,
+      "lev": 20,
+      "maxLev": 25
+     },
+     {
+      "id": "NEAR",
+      "side": 1,
+      "size": 709.3,
+      "entry": 4.8598213337092915,
+      "mark": 4.8615,
+      "lev": 10,
+      "maxLev": 10
+     },
+     {
+      "id": "HYPE",
+      "side": -1,
+      "size": 154.99,
+      "entry": 77.7788465707465,
+      "mark": 78.371,
+      "lev": 10,
+      "maxLev": 10
+     },
+     {
+      "id": "PUMP",
+      "side": -1,
+      "size": 5656327,
+      "entry": 0.004555081386030193,
+      "mark": 0.004564,
+      "lev": 10,
+      "maxLev": 10
+     },
+     {
+      "id": "ZEC",
+      "side": -1,
+      "size": 11.32,
+      "entry": 1233.7751348056538,
+      "mark": 1253.6413,
+      "lev": 10,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "BTC": 1,
+     "ETH": 1,
+     "NEAR": 1,
+     "HYPE": 1,
+     "PUMP": 1,
+     "ZEC": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 32722.298268,
+    "maintenanceMargin": 2876.6160957,
+    "totalPnl": -182.55812299999803,
+    "equityReserve": 29845.6821723,
+    "crossMarginRatio": 8.790996500735156,
+    "effectiveLeverage": 1.8857352328562915,
+    "marketMoveToLiq": 0.5173845684291939,
+    "withdrawable": 26856.934771599997,
+    "distanceToLiq": 51.73845684291939,
+    "riskLevel": "low",
+    "riskiest": "PUMP",
+    "positions": {
+     "BTC": {
+      "price": 81643,
+      "pnl": 100.19369599999989,
+      "liqPrice": 788191.824551685,
+      "priceBuffer": 865.4126190263526
+     },
+     "ETH": {
+      "price": 2407,
+      "pnl": 83.16694999999996,
+      "liqPrice": 28513.774373609187,
+      "priceBuffer": 1084.6187940843035
+     },
+     "NEAR": {
+      "price": 4.8615,
+      "pnl": 1.1906779999998203,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "HYPE": {
+      "price": 78.371,
+      "pnl": -91.77785999999998,
+      "liqPrice": 261.7664397813683,
+      "priceBuffer": 234.0093143909971
+     },
+     "PUMP": {
+      "price": 0.004564,
+      "pnl": -50.44659699999882,
+      "liqPrice": 0.009589250345624339,
+      "priceBuffer": 110.1062740057918
+     },
+     "ZEC": {
+      "price": 1253.6413,
+      "pnl": -224.88498999999894,
+      "liqPrice": 3764.6359300100958,
+      "priceBuffer": 200.29609985010032
+     }
+    },
+    "closed": {},
+    "fixes": []
+   },
+   "exchange": {
+    "maintenanceMargin": 2876.616093,
+    "accountValue": 32722.298268,
+    "liqPrice": {
+     "BTC": 788191.8246037664,
+     "ETH": 28513.7743759709,
+     "NEAR": null,
+     "HYPE": 261.7664397949,
+     "PUMP": 0.0095892503,
+     "ZEC": 3764.6359301699
+    }
+   }
+  },
+  {
+   "id": "hyperliquid-acct-19",
+   "description": "Real classic Hyperliquid account ($2M–20M, 5 positions), snapshot 2026-10-23T17:36:49.523Z",
+   "input": {
+    "collateral": 2356606.877755,
+    "positions": [
+     {
+      "id": "BTC",
+      "side": 1,
+      "size": 6.53423,
+      "entry": 81661.38277486406,
+      "mark": 81650,
+      "lev": 20,
+      "maxLev": 40
+     },
+     {
+      "id": "ETH",
+      "side": -1,
+      "size": 2.2804,
+      "entry": 2411.3551613751974,
+      "mark": 2407,
+      "lev": 20,
+      "maxLev": 25
+     },
+     {
+      "id": "SOL",
+      "side": -1,
+      "size": 2668.18,
+      "entry": 104.7903204873734,
+      "mark": 104.49,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "XRP",
+      "side": -1,
+      "size": 23399,
+      "entry": 1.3110949563229197,
+      "mark": 1.3102,
+      "lev": 10,
+      "maxLev": 20
+     },
+     {
+      "id": "HYPE",
+      "side": -1,
+      "size": 896.2,
+      "entry": 78.5270228799375,
+      "mark": 78.39299999999999,
+      "lev": 3,
+      "maxLev": 10
+     }
+    ],
+    "ratios": {
+     "BTC": 1,
+     "ETH": 1,
+     "SOL": 1,
+     "XRP": 1,
+     "HYPE": 1
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2357484.7931019994,
+    "maintenanceMargin": 18027.954729750003,
+    "totalPnl": 877.9153469999958,
+    "equityReserve": 2339456.8383722496,
+    "crossMarginRatio": 0.7647113899737465,
+    "effectiveLeverage": 0.389703513502261,
+    "marketMoveToLiq": -17.95553274376504,
+    "withdrawable": 2276170.2009869996,
+    "distanceToLiq": 818.6557528993919,
+    "riskLevel": "low",
+    "riskiest": "SOL",
+    "positions": {
+     "BTC": {
+      "price": 81650,
+      "pnl": -74.37766899999659,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "ETH": {
+      "price": 2407,
+      "pnl": 9.931510000000243,
+      "liqPrice": 1008188.9398610191,
+      "priceBuffer": 41785.70585214039
+     },
+     "SOL": {
+      "price": 104.49,
+      "pnl": 801.3091179999903,
+      "liqPrice": 959.9033962045746,
+      "priceBuffer": 818.6557528993919
+     },
+     "XRP": {
+      "price": 1.3102,
+      "pnl": 20.941082999997903,
+      "liqPrice": 98.85269820441565,
+      "priceBuffer": 7444.85561016758
+     },
+     "HYPE": {
+      "price": 78.39299999999999,
+      "pnl": 120.11130500000388,
+      "liqPrice": 2564.505621940521,
+      "priceBuffer": 3171.345173600349
+     }
+    },
+    "closed": {},
+    "fixes": []
+   },
+   "exchange": {
+    "maintenanceMargin": 18027.954729,
+    "accountValue": 2357484.793102,
+    "liqPrice": {
+     "BTC": null,
+     "ETH": 1008188.9398613416,
+     "SOL": 959.9033962048,
+     "XRP": 98.8526982044,
+     "HYPE": 2564.5056219413
+    }
+   }
+  },
+  {
+   "id": "random-01",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 3620.7080492095015,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 10.000000000000002,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 10,
+      "sl": 1.05190800593678,
+      "tp": 0.98
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 91.52356856199152,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 0.98,
+      "tp": 1.02
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 300.82460809526447,
+      "entry": 1,
+      "mark": 1,
+      "lev": 13,
+      "maxLev": 40,
+      "sl": 1.0263609734895542,
+      "tp": 0.55
+     },
+     {
+      "id": "c3",
+      "side": -1,
+      "size": 34414.542801459436,
+      "entry": 1,
+      "mark": 1,
+      "lev": 50,
+      "maxLev": 50,
+      "sl": 1.0513071165016032,
+      "tp": 0.98
+     },
+     {
+      "id": "c4",
+      "side": -1,
+      "size": 0.004852803713179284,
+      "entry": 99999.99999999789,
+      "mark": 99999.99999999789,
+      "lev": 2,
+      "maxLev": 3,
+      "sl": 124487.1263065803
+     },
+     {
+      "id": "c5",
+      "side": 1,
+      "size": 234.43973884394416,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 20,
+      "sl": 0.7588030159628226,
+      "tp": 1.02
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000006,
+     "c1": 1.3883943128220324,
+     "c2": 0.6406362018193066,
+     "c3": 0.5000000000000002,
+     "c4": 1.499999999999998,
+     "c5": 1.499999999999998
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 4304.99242767247,
+    "maintenanceMargin": 2.408989179299146,
+    "totalPnl": 684.2843784629675,
+    "equityReserve": 4302.58343849317,
+    "crossMarginRatio": 0.05595803522938102,
+    "effectiveLeverage": 0.04476642818350481,
+    "marketMoveToLiq": 22.050042612032453,
+    "withdrawable": 4290.167878876782,
+    "distanceToLiq": 2205.004261203245,
+    "riskLevel": "low",
+    "riskiest": "c2",
+    "positions": {
+     "c2": {
+      "price": 0.6406362018193066,
+      "pnl": 108.10547375133281,
+      "liqPrice": 14.766691750745638,
+      "priceBuffer": 2205.004261203245
+     }
+    },
+    "closed": {
+     "c3": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 688.2908560291893
+     },
+     "c0": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 0.2000000000000002
+     },
+     "c5": {
+      "by": "takeProfit",
+      "price": 1.02,
+      "pnl": 4.688794776878887
+     },
+     "c1": {
+      "by": "takeProfit",
+      "price": 1.02,
+      "pnl": 1.8304713712398322
+     },
+     "c4": {
+      "by": "stop",
+      "price": 124487.1263065803,
+      "pnl": -118.83121746567328
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-02",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 20360.343606617353,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 3670.8929699263563,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 0.7909324429452336,
+      "tp": 1.02
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 23.483709279153867,
+      "entry": 1.0000000000000018,
+      "mark": 1,
+      "lev": 40,
+      "maxLev": 40,
+      "sl": 1.4499999999999993,
+      "tp": 0.7929037173883444
+     },
+     {
+      "id": "c2",
+      "side": 1,
+      "size": 1180988.7392604137,
+      "entry": 0.010000000000000085,
+      "mark": 0.010000000000000085,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 0.005500000000000047,
+      "tp": 0.010200000000000087
+     },
+     {
+      "id": "c3",
+      "side": -1,
+      "size": 27359.762606958808,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 40,
+      "sl": 1.4499999999999993,
+      "tp": 0.9426150227129974
+     },
+     {
+      "id": "c4",
+      "side": 1,
+      "size": 6597.197628545867,
+      "entry": 1.2999999999999992,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 5,
+      "tp": 1.02
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000013,
+     "c1": 1.5,
+     "c2": 0.5000000000000002,
+     "c3": 0.500000000000001,
+     "c4": 0.7973304239559927
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 12521.690806096249,
+    "maintenanceMargin": 526.0146382089946,
+    "totalPnl": -7838.652800521105,
+    "equityReserve": 11995.676167887254,
+    "crossMarginRatio": 4.200827558790237,
+    "effectiveLeverage": 0.4200827558790237,
+    "marketMoveToLiq": -2.533870373039814,
+    "withdrawable": 7261.5444240063025,
+    "distanceToLiq": 253.3870373039814,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "c4": {
+      "price": 0.7973304239559927,
+      "pnl": -3316.2105350196753,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "c3": {
+      "by": "takeProfit",
+      "price": 0.9426150227129974,
+      "pnl": 1570.0393557781156
+     },
+     "c0": {
+      "by": "stop",
+      "price": 0.7909324429452336,
+      "pnl": -767.4646254320195
+     },
+     "c1": {
+      "by": "stop",
+      "price": 1.4499999999999993,
+      "pnl": -10.567669175619182
+     },
+     "c2": {
+      "by": "stop",
+      "price": 0.005500000000000047,
+      "pnl": -5314.449326671906
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-03",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 17186.58661864615,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 10.00000000000002,
+      "entry": 1,
+      "mark": 1,
+      "lev": 32,
+      "maxLev": 50,
+      "sl": 0.5500000000000007,
+      "tp": 1.2149663720785702
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 10.000000000000002,
+      "entry": 1,
+      "mark": 1,
+      "lev": 3,
+      "maxLev": 25,
+      "sl": 0.9452890432268329,
+      "tp": 1.02
+     },
+     {
+      "id": "c2",
+      "side": 1,
+      "size": 10.000000000000025,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 20,
+      "sl": 0.98
+     },
+     {
+      "id": "c3",
+      "side": -1,
+      "size": 50000.000001017565,
+      "entry": 0.9999999999796467,
+      "mark": 0.9999999999796467,
+      "lev": 5,
+      "maxLev": 50
+     },
+     {
+      "id": "c4",
+      "side": -1,
+      "size": 49999.99999999991,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 10,
+      "sl": 1.0208657633520142,
+      "tp": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 1.0689999914669095,
+     "c1": 0.5,
+     "c2": 1.4999999999999987,
+     "c3": 0.7218029019957578,
+     "c4": 0.9076537136770849
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 32101.58440920517,
+    "maintenanceMargin": 361.38335099702493,
+    "totalPnl": 14914.997790559017,
+    "equityReserve": 31740.201058208146,
+    "crossMarginRatio": 1.1257492664237403,
+    "effectiveLeverage": 1.1250483664397022,
+    "marketMoveToLiq": 0.871365009237005,
+    "withdrawable": 24879.471326750274,
+    "distanceToLiq": 87.07624077126526,
+    "riskLevel": "low",
+    "riskiest": "c3",
+    "positions": {
+     "c0": {
+      "price": 1.0689999914669095,
+      "pnl": 0.6899999146690963,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "c2": {
+      "price": 1.4999999999999987,
+      "pnl": 4.999999999999999,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "c3": {
+      "price": 0.7218029019810668,
+      "pnl": 13909.85490021208,
+      "liqPrice": 1.3503217348040804,
+      "priceBuffer": 87.07624077126526
+     }
+    },
+    "closed": {
+     "c1": {
+      "by": "stop",
+      "price": 0.9452890432268329,
+      "pnl": -0.5471095677316707
+     },
+     "c4": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 999.9999999999991
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-04",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 48632.3934895412,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 49851.16842708654,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 20,
+      "sl": 0.98,
+      "tp": 1.0590661368656442
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 2961.3623843726814,
+      "entry": 1.2999999999999996,
+      "mark": 1,
+      "lev": 3,
+      "maxLev": 25,
+      "sl": 0.98,
+      "tp": 1.449999999999999
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000002,
+     "c1": 0.7545711540145621
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 46687.73415800021,
+    "maintenanceMargin": 0,
+    "totalPnl": -1944.6593315409887,
+    "equityReserve": 46687.73415800021,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 46687.73415800021,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c0": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": -997.0233685417317
+     },
+     "c1": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": -947.6359629992569
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-05",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 8759.89038563287,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 2866.9814763087725,
+      "entry": 0.9999999999999994,
+      "mark": 0.9999999999999994,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 1.0269690308775485
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 10667.938136412968,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 0.9380007858779896
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 10.000000000000016,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 1.2959909549514463,
+      "tp": 0.98
+     },
+     {
+      "id": "c3",
+      "side": 1,
+      "size": 10.000000000000012,
+      "entry": 0.7000000000000011,
+      "mark": 1,
+      "lev": 50,
+      "maxLev": 50,
+      "sl": 0.665265077489132,
+      "tp": 1.0424394830424055
+     },
+     {
+      "id": "c4",
+      "side": 1,
+      "size": 10.000000000000007,
+      "entry": 1,
+      "mark": 1,
+      "lev": 5,
+      "maxLev": 25,
+      "sl": 0.700585720792072,
+      "tp": 1.45
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000004,
+     "c1": 0.9437637318706019,
+     "c2": 0.9720364641668051,
+     "c3": 0.5000000000000017,
+     "c4": 0.6568453184113606
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 9590.314602342918,
+    "maintenanceMargin": 1245.7164337243128,
+    "totalPnl": 830.4242167100456,
+    "equityReserve": 8344.598168618606,
+    "crossMarginRatio": 12.989317716646998,
+    "effectiveLeverage": 1.1992832688022956,
+    "marketMoveToLiq": -1.1293567921401408,
+    "withdrawable": 0,
+    "distanceToLiq": 92.09141510231274,
+    "riskLevel": "low",
+    "riskiest": "c1",
+    "positions": {
+     "c0": {
+      "price": 0.5000000000000001,
+      "pnl": 1433.4907381543844,
+      "liqPrice": 2.9947886043434218,
+      "priceBuffer": 498.95772086868425
+     },
+     "c1": {
+      "price": 0.9437637318706019,
+      "pnl": -599.9250294271509,
+      "liqPrice": 0.07463835596856816,
+      "priceBuffer": 92.09141510231274
+     }
+    },
+    "closed": {
+     "c3": {
+      "by": "stop",
+      "price": 0.665265077489132,
+      "pnl": -0.34734922510869115
+     },
+     "c2": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 0.2000000000000005
+     },
+     "c4": {
+      "by": "stop",
+      "price": 0.700585720792072,
+      "pnl": -2.994142792079282
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-06",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 11532.476567277543,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 101.43966038733585,
+      "entry": 1,
+      "mark": 1,
+      "lev": 40,
+      "maxLev": 40,
+      "sl": 0.9114310557702091,
+      "tp": 1.023238581240205
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 19.121425507239948,
+      "entry": 1,
+      "mark": 1,
+      "lev": 27,
+      "maxLev": 50,
+      "sl": 1.046973429506333,
+      "tp": 0.5500000000000005
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 49999.999999999985,
+      "entry": 1,
+      "mark": 1,
+      "lev": 10,
+      "maxLev": 10,
+      "tp": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000007,
+     "c1": 1.3829887381649268,
+     "c2": 1.4643846745618483
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": -11696.639763371524,
+    "maintenanceMargin": 3660.96168640462,
+    "totalPnl": -23229.116330649067,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "c2": {
+      "price": 1.4643846745618483,
+      "pnl": -23219.233728092408,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "c1": {
+      "by": "stop",
+      "price": 1.046973429506333,
+      "pnl": -0.8981989331249353
+     },
+     "c0": {
+      "by": "stop",
+      "price": 0.9114310557702091,
+      "pnl": -8.984403623534877
+     }
+    },
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 26890
+     }
+    ]
+   }
+  },
+  {
+   "id": "random-07",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 0.8124342044458267,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 10.000000000000021,
+      "entry": 1,
+      "mark": 1,
+      "lev": 5,
+      "maxLev": 50,
+      "sl": 0.5500000000000005,
+      "tp": 1.4499999999999995
+     }
+    ],
+    "ratios": {
+     "c0": 1.159980925994388
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2.412243464389711,
+    "maintenanceMargin": 0.11599809259943905,
+    "totalPnl": 1.599809259943884,
+    "equityReserve": 2.2962453717902718,
+    "crossMarginRatio": 4.8087224325338225,
+    "effectiveLeverage": 4.8087224325338225,
+    "marketMoveToLiq": -0.1999549921475467,
+    "withdrawable": 0.0922816124009298,
+    "distanceToLiq": 19.99549921475467,
+    "riskLevel": "low",
+    "riskiest": "c0",
+    "positions": {
+     "c0": {
+      "price": 1.159980925994388,
+      "pnl": 1.599809259943884,
+      "liqPrice": 0.9280369490458762,
+      "priceBuffer": 19.995499214754673
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "moveStop",
+      "value": 0.938,
+      "position": "c0"
+     }
+    ]
+   }
+  },
+  {
+   "id": "random-08",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 34894.62704431184,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 41.0321972247964,
+      "entry": 0.7,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 10
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 8092.75935450895,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 20,
+      "sl": 0.5500000000000009,
+      "tp": 1.02
+     },
+     {
+      "id": "c2",
+      "side": 1,
+      "size": 0.00010000000000000116,
+      "entry": 99999.99999999913,
+      "mark": 99999.99999999913,
+      "lev": 4,
+      "maxLev": 40,
+      "tp": 112859.67664206022
+     },
+     {
+      "id": "c3",
+      "side": 1,
+      "size": 50.09262401365978,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 20,
+      "sl": 0.98,
+      "tp": 1.0976817960200302
+     },
+     {
+      "id": "c4",
+      "side": 1,
+      "size": 33206.670772153266,
+      "entry": 1,
+      "mark": 1,
+      "lev": 5,
+      "maxLev": 40,
+      "sl": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 0.5753912358127748,
+     "c1": 1.1792186798832367,
+     "c2": 0.5,
+     "c3": 1.2133107393731108,
+     "c4": 0.5067044336434237
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 34397.35492482803,
+    "maintenanceMargin": 1.2429783334644557,
+    "totalPnl": -497.27211948380807,
+    "equityReserve": 34396.111946494566,
+    "crossMarginRatio": 0.0036135869638257365,
+    "effectiveLeverage": 0.0008317374034082696,
+    "marketMoveToLiq": 1732.5794723912636,
+    "withdrawable": 34372.49535815874,
+    "distanceToLiq": 138749.6954631345,
+    "riskLevel": "low",
+    "riskiest": "c0",
+    "positions": {
+     "c0": {
+      "price": 0.5753912358127748,
+      "pnl": 5.112971388068367,
+      "liqPrice": 798.9289786476039,
+      "priceBuffer": 138749.6954631345
+     },
+     "c2": {
+      "price": 49999.99999999956,
+      "pnl": -5.000000000000014,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "c4": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": -664.1334154430659
+     },
+     "c1": {
+      "by": "takeProfit",
+      "price": 1.02,
+      "pnl": 161.85518709017916
+     },
+     "c3": {
+      "by": "takeProfit",
+      "price": 1.0976817960200302,
+      "pnl": 4.893137481010383
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-09",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 8306.119567688667,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 13435.326128144368,
+      "entry": 1,
+      "mark": 1,
+      "lev": 5,
+      "maxLev": 50,
+      "sl": 1.0452450844728494,
+      "tp": 0.8807363899211745
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 49999.99999999988,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 20,
+      "sl": 1.4499999999999993,
+      "tp": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 0.5000000000000001,
+     "c1": 0.5000000000000012
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 10908.465064317532,
+    "maintenanceMargin": 0,
+    "totalPnl": 2602.345496628864,
+    "equityReserve": 10908.465064317532,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 10908.465064317532,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c1": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 999.9999999999985
+     },
+     "c0": {
+      "by": "takeProfit",
+      "price": 0.8807363899211745,
+      "pnl": 1602.3454966288657
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-10",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 52112.87031283959,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 1689478.9941124937,
+      "entry": 0.010000000000000085,
+      "mark": 0.010000000000000085,
+      "lev": 1,
+      "maxLev": 5,
+      "tp": 0.014500000000000117
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 380.89944459772414,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 10,
+      "sl": 1.449999999999999,
+      "tp": 0.98
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 49999.99999999992,
+      "entry": 0.7000000000000011,
+      "mark": 1,
+      "lev": 19,
+      "maxLev": 40,
+      "sl": 1.02,
+      "tp": 0.7594898603718098
+     },
+     {
+      "id": "c3",
+      "side": 1,
+      "size": 10.00000000000002,
+      "entry": 1,
+      "mark": 1,
+      "lev": 43,
+      "maxLev": 50,
+      "tp": 1.02
+     },
+     {
+      "id": "c4",
+      "side": 1,
+      "size": 7.239858369913865,
+      "entry": 1.381242489708951,
+      "mark": 1.381242489708951,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 1.1777682914963024,
+      "tp": 1.4088673395031301
+     }
+    ],
+    "ratios": {
+     "c0": 0.5913711292417577,
+     "c1": 1.376467194670421,
+     "c2": 0.9847692825214793,
+     "c3": 0.7775833900694432,
+     "c4": 0.8648791088142074
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 30823.735731055654,
+    "maintenanceMargin": 1641.7473191001352,
+    "totalPnl": -21289.134581783936,
+    "equityReserve": 29181.98841195552,
+    "crossMarginRatio": 5.3262438188049845,
+    "effectiveLeverage": 1.9390990069573273,
+    "marketMoveToLiq": 0.7049301754060404,
+    "withdrawable": 17708.02139897998,
+    "distanceToLiq": 58.53496339017037,
+    "riskLevel": "low",
+    "riskiest": "c2",
+    "positions": {
+     "c0": {
+      "price": 0.005913711292417628,
+      "pnl": -6903.698935339652,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "c1": {
+      "price": 1.376467194670421,
+      "pnl": -143.39614535922667,
+      "liqPrice": 74.3415773052935,
+      "priceBuffer": 5300.897136752592
+     },
+     "c2": {
+      "price": 0.9847692825214793,
+      "pnl": -14238.46412607389,
+      "liqPrice": 1.5612036215230707,
+      "priceBuffer": 58.53496339017037
+     },
+     "c3": {
+      "price": 0.7775833900694432,
+      "pnl": -2.224166099305572,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "c4": {
+      "price": 1.1946077735557945,
+      "pnl": -1.3512089118579287,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-11",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 34562.36801204474,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 109.14388808351049,
+      "entry": 1,
+      "mark": 1,
+      "lev": 10,
+      "maxLev": 50,
+      "sl": 1.02,
+      "tp": 0.792035022942599
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 49999.99999999994,
+      "entry": 1,
+      "mark": 1,
+      "lev": 3,
+      "maxLev": 25,
+      "sl": 1.4499999999999993,
+      "tp": 0.98
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 234.01043228191568,
+      "entry": 1,
+      "mark": 1,
+      "lev": 18,
+      "maxLev": 40,
+      "sl": 1.4321866289769412,
+      "tp": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 1.1773824749834345,
+     "c1": 1.4999999999999987,
+     "c2": 0.8497939414709208
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 12064.86534292877,
+    "maintenanceMargin": 0,
+    "totalPnl": -22497.502669115973,
+    "equityReserve": 12064.86534292877,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 12064.86534292877,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c0": {
+      "by": "stop",
+      "price": 1.02,
+      "pnl": -2.1828777616702117
+     },
+     "c2": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 4.680208645638317
+     },
+     "c1": {
+      "by": "stop",
+      "price": 1.4499999999999993,
+      "pnl": -22499.999999999938
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-12",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 3392.1952241187473,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 19.021705145810557,
+      "entry": 0.7000000000000007,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 20,
+      "sl": 0.98,
+      "tp": 1.1170927396745356
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 11823.252206920486,
+      "entry": 0.010000000000000057,
+      "mark": 0.010000000000000057,
+      "lev": 34,
+      "maxLev": 40,
+      "sl": 0.009442000103778244,
+      "tp": 0.0136966791819703
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 3611.9672915354577,
+      "entry": 1,
+      "mark": 1,
+      "lev": 3,
+      "maxLev": 3,
+      "sl": 1.0915949288490518,
+      "tp": 0.7835374202123205
+     },
+     {
+      "id": "c3",
+      "side": -1,
+      "size": 15.429040079731045,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 20,
+      "sl": 1.02,
+      "tp": 0.6700369531430943
+     }
+    ],
+    "ratios": {
+     "c0": 0.8236953592989132,
+     "c1": 0.5000000000000004,
+     "c2": 0.6474202142084486,
+     "c3": 1.0723946114907106
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 4172.471105287997,
+    "maintenanceMargin": 0,
+    "totalPnl": 780.2758811692488,
+    "equityReserve": 4172.471105287997,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 4172.471105287997,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c1": {
+      "by": "stop",
+      "price": 0.009442000103778244,
+      "pnl": -6.597373504465962
+     },
+     "c0": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": 5.326077440826942
+     },
+     "c3": {
+      "by": "stop",
+      "price": 1.02,
+      "pnl": -0.3085808015946212
+     },
+     "c2": {
+      "by": "takeProfit",
+      "price": 0.7835374202123205,
+      "pnl": 781.8557580344825
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-13",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 143005.12084094182,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 31579.613543568812,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 0.98,
+      "tp": 1.4328522838387545
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 49999.99999999992,
+      "entry": 1,
+      "mark": 1,
+      "lev": 12,
+      "maxLev": 50,
+      "sl": 1.4499999999999997,
+      "tp": 0.8186252352885728
+     },
+     {
+      "id": "c2",
+      "side": 1,
+      "size": 10.000000000000009,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 3,
+      "sl": 0.6494617578131934,
+      "tp": 1.2677819977437634
+     }
+    ],
+    "ratios": {
+     "c0": 0.8406027940967375,
+     "c1": 1.4668619119885666,
+     "c2": 0.5232412604545007
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 119870.02318764865,
+    "maintenanceMargin": 0,
+    "totalPnl": -23135.097653293193,
+    "equityReserve": 119870.02318764865,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 119870.02318764865,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c0": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": -631.5922708713769
+     },
+     "c2": {
+      "by": "stop",
+      "price": 0.6494617578131934,
+      "pnl": -3.5053824218680694
+     },
+     "c1": {
+      "by": "stop",
+      "price": 1.4499999999999997,
+      "pnl": -22499.99999999995
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-14",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 4060.2245987812107,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 5141.451561694589,
+      "entry": 0.7000000000000002,
+      "mark": 1,
+      "lev": 18,
+      "maxLev": 25,
+      "sl": 1.1082784805303507,
+      "tp": 0.98
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 1375.2443387851524,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 10,
+      "sl": 1.223103465542679,
+      "tp": 0.5904148398393338
+     }
+    ],
+    "ratios": {
+     "c0": 1.29987584415981,
+     "c1": 0.5000000000000008
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 2524.360240213512,
+    "maintenanceMargin": 0,
+    "totalPnl": -1535.8643585676984,
+    "equityReserve": 2524.360240213512,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 2524.360240213512,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c0": {
+      "by": "stop",
+      "price": 1.1082784805303507,
+      "pnl": -2099.1440313290645
+     },
+     "c1": {
+      "by": "takeProfit",
+      "price": 0.5904148398393338,
+      "pnl": 563.2796727613661
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-15",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 3.8937963629182732,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 144.68981814591322,
+      "entry": 1,
+      "mark": 1,
+      "lev": 15,
+      "maxLev": 40,
+      "sl": 0.940033194352615,
+      "tp": 1.4499999999999993
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 10.000000000000007,
+      "entry": 1,
+      "mark": 1,
+      "lev": 3,
+      "maxLev": 10,
+      "tp": 1.1205431254681928
+     }
+    ],
+    "ratios": {
+     "c0": 0.6856737366156641,
+     "c1": 0.5012004763996751
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": -46.57400876064896,
+    "maintenanceMargin": 1.4907253414292032,
+    "totalPnl": -50.46780512356723,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "c0": {
+      "price": 0.6856737366156641,
+      "pnl": -45.47980988756398,
+      "liqPrice": null,
+      "priceBuffer": null
+     },
+     "c1": {
+      "price": 0.5012004763996751,
+      "pnl": -4.987995236003252,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 20
+     }
+    ]
+   }
+  },
+  {
+   "id": "random-16",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 1.039490850852851,
+    "positions": [
+     {
+      "id": "c0",
+      "side": -1,
+      "size": 135.13381061087054,
+      "entry": 1,
+      "mark": 1,
+      "lev": 39,
+      "maxLev": 50,
+      "sl": 1.2881776499402022,
+      "tp": 0.98
+     }
+    ],
+    "ratios": {
+     "c0": 1.0558861795868826
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": true,
+    "accountValue": -6.512621557206039,
+    "maintenanceMargin": 1.4268592301892944,
+    "totalPnl": -7.55211240805889,
+    "equityReserve": null,
+    "crossMarginRatio": "inf",
+    "effectiveLeverage": null,
+    "marketMoveToLiq": null,
+    "withdrawable": 0,
+    "distanceToLiq": 0,
+    "riskLevel": "high",
+    "riskiest": null,
+    "positions": {
+     "c0": {
+      "price": 1.0558861795868826,
+      "pnl": -7.55211240805889,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {},
+    "fixes": [
+     {
+      "type": "addMargin",
+      "value": 30
+     }
+    ]
+   }
+  },
+  {
+   "id": "random-17",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 1479.0126704856082,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 888.9187558129596,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 0.9284230294930309,
+      "tp": 1.0572876028861489
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 1228.5091266656534,
+      "entry": 1,
+      "mark": 1,
+      "lev": 7,
+      "maxLev": 40
+     }
+    ],
+    "ratios": {
+     "c0": 1.4003801428161302,
+     "c1": 0.5544226053934623
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 982.5407992566356,
+    "maintenanceMargin": 8.513915384445232,
+    "totalPnl": -496.4718712289725,
+    "equityReserve": 974.0268838721904,
+    "crossMarginRatio": 0.8665202901382452,
+    "effectiveLeverage": 0.6932162321105961,
+    "marketMoveToLiq": -1.4481532490628162,
+    "withdrawable": 885.2389091486901,
+    "distanceToLiq": 144.8153249062816,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "c1": {
+      "price": 0.5544226053934623,
+      "pnl": -547.3958959100348,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "c0": {
+      "by": "takeProfit",
+      "price": 1.0572876028861489,
+      "pnl": 50.92402468106237
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-18",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 2691.2898871766292,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 22392.91215810352,
+      "entry": 1,
+      "mark": 1,
+      "lev": 48,
+      "maxLev": 50,
+      "sl": 0.98,
+      "tp": 1.4499999999999997
+     },
+     {
+      "id": "c1",
+      "side": -1,
+      "size": 2678.121561092588,
+      "entry": 1,
+      "mark": 1,
+      "lev": 13,
+      "maxLev": 40,
+      "sl": 1.0433028774740494,
+      "tp": 0.98
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 10.000000000000025,
+      "entry": 1,
+      "mark": 1,
+      "lev": 34,
+      "maxLev": 50,
+      "tp": 0.9669344506475038
+     }
+    ],
+    "ratios": {
+     "c0": 1.499999999999998,
+     "c1": 0.5000000000000002,
+     "c2": 1.4999999999999971
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 12816.66278954506,
+    "maintenanceMargin": 0.1500000000000001,
+    "totalPnl": 10125.37290236843,
+    "equityReserve": 12816.51278954506,
+    "crossMarginRatio": 0.0011703514593702164,
+    "effectiveLeverage": 0.0011703514593702164,
+    "marketMoveToLiq": 845.9744415541289,
+    "withdrawable": 12816.221613074473,
+    "distanceToLiq": 84597.44415541289,
+    "riskLevel": "low",
+    "riskiest": "c2",
+    "positions": {
+     "c2": {
+      "price": 1.4999999999999971,
+      "pnl": -4.999999999999983,
+      "liqPrice": 1270.461662331191,
+      "priceBuffer": 84597.4441554129
+     }
+    },
+    "closed": {
+     "c1": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": 53.5624312218518
+     },
+     "c0": {
+      "by": "takeProfit",
+      "price": 1.4499999999999997,
+      "pnl": 10076.810471146578
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-19",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 425.9349239630948,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 1228.705528983747,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 0.98,
+      "tp": 1.0462884661893668
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 10.000000000000025,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 0.8667797933294693,
+      "tp": 1.1222893722356568
+     }
+    ],
+    "ratios": {
+     "c0": 0.5452659439915564,
+     "c1": 0.6127361461271154
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 400.02861131671455,
+    "maintenanceMargin": 0,
+    "totalPnl": -25.90631264638027,
+    "equityReserve": 400.02861131671455,
+    "crossMarginRatio": 0,
+    "effectiveLeverage": 0,
+    "marketMoveToLiq": null,
+    "withdrawable": 400.02861131671455,
+    "distanceToLiq": "inf",
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {},
+    "closed": {
+     "c0": {
+      "by": "stop",
+      "price": 0.98,
+      "pnl": -24.57411057967496
+     },
+     "c1": {
+      "by": "stop",
+      "price": 0.8667797933294693,
+      "pnl": -1.3322020667053103
+     }
+    },
+    "fixes": []
+   }
+  },
+  {
+   "id": "random-20",
+   "description": "Random account and move (fast-check, seed 42)",
+   "input": {
+    "collateral": 21997.35988463619,
+    "positions": [
+     {
+      "id": "c0",
+      "side": 1,
+      "size": 3323.0328484419424,
+      "entry": 1,
+      "mark": 1,
+      "lev": 2,
+      "maxLev": 5,
+      "sl": 0.8709428848769515,
+      "tp": 1.4426810552523919
+     },
+     {
+      "id": "c1",
+      "side": 1,
+      "size": 49999.999999999956,
+      "entry": 1,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 0.9744857820436043
+     },
+     {
+      "id": "c2",
+      "side": -1,
+      "size": 10.000000000000004,
+      "entry": 0.7000000000000005,
+      "mark": 1,
+      "lev": 1,
+      "maxLev": 3,
+      "sl": 1.4499999999999997,
+      "tp": 0.98
+     },
+     {
+      "id": "c3",
+      "side": 1,
+      "size": 0.01571760301606894,
+      "entry": 99999.99999999984,
+      "mark": 99999.99999999984,
+      "lev": 1,
+      "maxLev": 5,
+      "sl": 86345.92353000204,
+      "tp": 102772.79858039449
+     },
+     {
+      "id": "c4",
+      "side": 1,
+      "size": 10.000000000000018,
+      "entry": 1,
+      "mark": 1,
+      "lev": 4,
+      "maxLev": 10,
+      "tp": 1.1125286655900601
+     }
+    ],
+    "ratios": {
+     "c0": 0.5059818948339772,
+     "c1": 0.7708486355127524,
+     "c2": 0.7805384936884783,
+     "c3": 0.7251494417360361,
+     "c4": 0.9146969111889918
+    },
+    "adjustments": {
+     "deposit": 0,
+     "cut": {},
+     "sl": {}
+    }
+   },
+   "expected": {
+    "liquidated": false,
+    "accountValue": 20074.52556954278,
+    "maintenanceMargin": 0.4573484555944967,
+    "totalPnl": -1922.8343150934136,
+    "equityReserve": 20074.068221087186,
+    "crossMarginRatio": 0.002278252873325132,
+    "effectiveLeverage": 0.0004556505746650264,
+    "marketMoveToLiq": -2310.1202014548207,
+    "withdrawable": 20072.23882726481,
+    "distanceToLiq": 231012.02014548206,
+    "riskLevel": "low",
+    "riskiest": null,
+    "positions": {
+     "c4": {
+      "price": 0.9146969111889918,
+      "pnl": -0.8530308881100839,
+      "liqPrice": null,
+      "priceBuffer": null
+     }
+    },
+    "closed": {
+     "c2": {
+      "by": "takeProfit",
+      "price": 0.98,
+      "pnl": -2.799999999999996
+     },
+     "c1": {
+      "by": "stop",
+      "price": 0.9744857820436043,
+      "pnl": -1275.7108978197862
+     },
+     "c0": {
+      "by": "stop",
+      "price": 0.8709428848769515,
+      "pnl": -428.8610328790436
+     },
+     "c3": {
+      "by": "stop",
+      "price": 86345.92353000204,
+      "pnl": -214.60935350647344
+     }
+    },
+    "fixes": []
+   }
+  }
+ ]
+}

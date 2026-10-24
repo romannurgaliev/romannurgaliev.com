@@ -1,0 +1,91 @@
+# Tests for the risk simulator, on every push and pull request.
+# The site deploys through Netlify on its own; a red run here doesn't stop a
+# deploy, it says something in the simulator broke.
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      mutation:
+        description: Also run mutation testing (about 3 minutes)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the older run
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  model:
+    name: Model (npm test, coverage)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Model tests
+        run: npm test
+      - name: Coverage (fails below 99% lines, 95% branches, 100% functions)
+        run: npm run coverage
+
+  browser:
+    name: Browser (Playwright)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # The same image records the Linux screenshots (update-screenshots.yml),
+    # so fonts render identically and the tight pixel limits hold
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm ci
+      - name: Browser tests
+        run: |
+          if ls tests/ui/screenshots/*-linux.png > /dev/null 2>&1; then
+            npx playwright test
+          else
+            echo "::warning title=No Linux screenshots yet::Screenshot tests skipped. Run the 'Update Linux screenshots' workflow once (Actions tab) to record them."
+            npx playwright test --grep-invert @visual
+          fi
+      - name: Keep the report when something fails
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            reports/ui
+            reports/ui-results
+          retention-days: 14
+
+  mutation:
+    name: Mutation testing (Stryker)
+    if: github.event_name == 'workflow_dispatch' && inputs.mutation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Stryker (fails below 85%)
+        run: npm run mutation
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mutation-report
+          path: reports/mutation
+          retention-days: 14
