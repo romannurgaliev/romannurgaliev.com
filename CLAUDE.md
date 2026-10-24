@@ -1,7 +1,7 @@
 # CLAUDE.md — romannurgaliev.com
 
 Portfolio and CV of Roman Nurgaliev, product designer. Audience: recruiters and hiring managers.
-Plain HTML + CSS + vanilla JS. No framework, no build step. Deployed by Netlify from `main`.
+Plain HTML + CSS + vanilla JS. No framework, no build step. Deployed by Netlify from `master` (the old `main` branch on GitHub is stale; don't push there).
 
 Repo: `github.com/romannurgaliev/romannurgaliev.com` · local: `~/romannurgaliev.com`
 
@@ -89,7 +89,7 @@ No `text-transform: uppercase` and no decorative `letter-spacing` anywhere in st
 
 ## Content
 
-Home cards, in this order (the order is deliberate — fintech and B2B first):
+Home cards, in this order (the order is deliberate — fintech and B2B first). Years are shown on case pages only, not on cards:
 
 1. Brighty — Trading Terminal & B2B Onboarding · 2025–2026 → work/brighty.html
 2. donuts.tg — Crypto Payment Gateway · 2024 → work/donuts.html
@@ -100,7 +100,7 @@ Home cards, in this order (the order is deliberate — fintech and B2B first):
 
 The case pager (Previous / Up next) must follow the same order. The VPN company is not named anywhere on the site.
 
-Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title` + `.case-year`) + `p.case-desc`. No tags on cards.
+Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards.
 
 Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`, `--dialog`), `.case-carousel`, `.case-gallery`, `.case-embed`.
 

@@ -19,6 +19,9 @@
   --line: rgba(17, 17, 17, 0.1);
   --fill: rgba(17, 17, 17, 0.05);
   --fill-hover: rgba(17, 17, 17, 0.09);
+  --bar-bg: rgba(255, 255, 255, 0.92);   /* sticky bars, under a blur */
+  --edge: rgba(17, 17, 17, 0.06);        /* hairline around a screenshot */
+  --shadow: rgba(17, 17, 17, 0.08);      /* toast */
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   /* Type scale: six sizes, two weights (400 / 500). Nothing else.
@@ -721,7 +724,7 @@ body.case-page {
   z-index: 10;
   height: auto;
   padding: 20px max(var(--case-gutter), (100% - var(--case-wide)) / 2);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bar-bg);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   transition: translate 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -794,7 +797,9 @@ body.case-page {
 }
 
 @media (min-width: 1240px) {
-  :root {
+  /* Case pages only: the 404 reuses .case without a contents list,
+     and these wide margins would push it past the window */
+  .case-page {
     --case-frame: 1760px;
     --case-edge: max(var(--case-gutter), (100vw - var(--case-frame)) / 2);
     --case-margin: calc(var(--case-edge) + var(--toc-w) + var(--toc-gap));
@@ -1101,7 +1106,7 @@ body.case-page {
   max-width: 100%;
   max-height: min(78vh, 880px);
   border-radius: 6px;
-  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.06);
+  box-shadow: 0 0 0 1px var(--edge);
 }
 
 /* Phone screens side by side. The screens carry their own rounded
@@ -1633,7 +1638,7 @@ body.case-page {
   color: var(--text);
   border: 1px solid var(--line);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(17, 17, 17, 0.08);
+  box-shadow: 0 4px 16px var(--shadow);
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -1698,7 +1703,7 @@ body.case-page {
     z-index: 10;
     height: auto;
     padding: 14px 20px;
-    background: rgba(255, 255, 255, 0.92);
+    background: var(--bar-bg);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
   }
