@@ -170,11 +170,13 @@ Later:
 
 ## Deploy
 
-Claude Code can't push (auth fails in its environment). End every task with the commit command; Roman runs it in his own terminal:
+Claude Code can push (it uses the same Keychain token). Commit and push only when Roman asks. Otherwise end every task with the commit command so he can run it himself:
 
 ```bash
 git add -A && git commit -m "description" && git push
 ```
+
+If a push fails on auth, give Roman that command to run in his own terminal.
 
 Remote: HTTPS with a Personal Access Token in macOS Keychain. Pushing changes to `.github/workflows/` needs a token with the `workflow` scope.
 
