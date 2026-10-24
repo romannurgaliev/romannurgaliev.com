@@ -226,6 +226,16 @@ test.describe('motion', () => {
 });
 
 test.describe('page layout', () => {
+  test('the simulator is set in the self-hosted Inter, not a fallback font', async ({ page }) => {
+    // Screenshots recorded with a fallback font would pass forever while
+    // looking wrong, so check the font itself loaded
+    await openSimulator(page);
+    const inter = await page.evaluate(() => [...document.fonts]
+      .filter(f => f.family.replace(/["']/g, '') === 'Inter').map(f => f.status));
+    expect(inter).toContain('loaded');
+    expect(await page.locator('.sim-title').evaluate(el => getComputedStyle(el).fontFamily)).toMatch(/^"?Inter"?/);
+  });
+
   test('from 960px the live simulator replaces the carousel', async ({ page }) => {
     await page.setViewportSize({ width: 960, height: 900 });
     await openSimulator(page);
