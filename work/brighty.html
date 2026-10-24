@@ -141,53 +141,28 @@
 
       <div class="case-section">
         <h2>Brighty Business</h2>
-        <p>Brighty Business gives companies multi-currency accounts, cards, and transfers. Before a company can use its account, it has to pass KYB, and many never finished it.</p>
+        <p>Brighty Business gives companies multi-currency accounts, cards, and transfers. Before a company can use its account, it has to pass KYB, and business onboarding is where most of the friction was.</p>
         <ul>
-          <li>Redesigned KYB onboarding and ran the decision session with the CTO and Compliance</li>
+          <li>Redesigned KYB onboarding and took the proposal through review with engineering and compliance</li>
           <li>Benchmarked Brighty Business against six B2B finance products (Slash, Finom, Brex, Ramp, Deel, Papaya) on approvals, roles, and audit</li>
         </ul>
-
-        <figure class="case-figure">
-          <div class="case-figure-frame">
-            <video data-loop role="img" muted loop playsinline preload="none" poster="images/brighty/business-demo-1184-poster.webp" width="1184" height="742" aria-label="Brighty Business UI proposal, animated: the home page with the total balance, earnings, and accounts and cards, then the Accounts and Cards page">
-              <source src="images/brighty/business-demo-1184-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"'>
-              <source src="images/brighty/business-demo-1184-h264.mp4" type="video/mp4">
-            </video>
-          </div>
-          <figcaption>UI proposal for Brighty Business: home with the total balance and earnings, then accounts and cards</figcaption>
-        </figure>
       </div>
 
       <div class="case-section">
         <h2>KYB Onboarding</h2>
-        <p>Business onboarding took about 40 minutes on average, per analytics, across seven steps with no point to pause. Businesses entered the same data more than once and had to download, sign, and re-upload provider documents. Support kept hearing that customers were surprised by how much they had to provide just to see the product.</p>
-        <p>Each iteration pulled in more people while compliance questions stayed open. I mapped every field and document, about 80 across seven steps, marked each one as ask, pre-fill, reuse, or remove, and proposed three changes:</p>
+        <p>Business onboarding was long and had no point to pause. Companies entered the same data more than once and had to download, sign, and re-upload provider documents.</p>
+        <p>I mapped every field and document in the flow, marked each one as ask, pre-fill, reuse, or remove, and proposed three changes:</p>
         <ul>
-          <li>A two-stage flow: about 20 fields before the home page, the rest after the first login, with more features unlocking as the company provides more data</li>
-          <li>Pre-fill for data already collected, such as offering the legal address as the operational one</li>
-          <li>Provider documents filled in by Brighty from data it already has, instead of download, sign, and re-upload</li>
+          <li>A two-stage flow: a short set of fields before the home page, the rest after the first login, with more features unlocking as the company provides more data</li>
+          <li>Pre-fill for data the company has already given, such as offering the legal address as the operational one</li>
+          <li>Provider documents prepared from data already collected, instead of download, sign, and re-upload</li>
         </ul>
-        <p>I prepared and ran a decision meeting with the CTO and Compliance to turn the open questions into decisions, each with an owner.</p>
-
-        <figure class="case-figure">
-          <div class="case-figure-frame">
-            <img src="images/brighty/kyb-field-map-1184.webp" srcset="images/brighty/kyb-field-map-700.webp 700w, images/brighty/kyb-field-map-1184.webp 1184w" sizes="(max-width: 640px) 100vw, 1072px" width="1184" height="843" alt="Part of the KYB field matrix: company and contact fields against the seven onboarding steps, each cell marked as asked, reused, pre-filled, or removed" loading="lazy" decoding="async">
-          </div>
-          <figcaption>Part of the field map: yellow is asked for the first time, green is reused from an earlier step, blue is pre-filled, red is removed</figcaption>
-        </figure>
-
-        <figure class="case-figure">
-          <div class="case-figure-frame">
-            <img src="images/brighty/kyb-two-stage-flow-1184.webp" srcset="images/brighty/kyb-two-stage-flow-700.webp 700w, images/brighty/kyb-two-stage-flow-1184.webp 1184w" sizes="(max-width: 640px) 100vw, 1072px" width="1184" height="932" alt="Proposed KYB restructure from the decision meeting: pre-onboarding, general info, and legal address before home page access, then operational address, company info, documents, UBOs, and PEP after it" loading="lazy" decoding="async">
-          </div>
-          <figcaption>The two-stage flow from the decision meeting: about 20 fields before the home page, the rest after the first login</figcaption>
-        </figure>
       </div>
 
       <div class="case-section">
         <h2>Outcome</h2>
-        <p>The terminal shipped to public release, and the risk simulator reached a complete prototype. For Brighty Business, I handed the CTO and Compliance a map of every KYB field and a two-stage proposal to decide on.</p>
-        <p>A note on the simulator: the original prototype was built in React with Gemini, and the Figma files were lost. In October 2026 I rebuilt the mockups from work-in-progress exports, recalculated every number with Hyperliquid's published liquidation formulas, and built the live prototype on this page. The rebuild settled a few open questions: risk levels by distance to liquidation, the market move to liquidation, and stops that fire before or after liquidation. It also adds what the original didn't have: before-and-after values, suggested fixes, and two real crashes replayed from Hyperliquid prices.</p>
+        <p>The terminal shipped to public release, and the risk simulator reached a complete prototype. For Brighty Business, I delivered a field map and a two-stage onboarding proposal.</p>
+        <p>A note on the simulator: in October 2026 I rebuilt the mockups from work-in-progress exports, recalculated every number with Hyperliquid's published liquidation formulas, and built the live prototype on this page. The rebuild settled a few open questions: risk levels by distance to liquidation, the market move to liquidation, and stops that fire before or after liquidation. It also adds what the original didn't have: before-and-after values, suggested fixes, and two real crashes replayed from Hyperliquid prices.</p>
       </div>
 
       <nav class="case-pager" aria-label="More work">
