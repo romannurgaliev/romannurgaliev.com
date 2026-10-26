@@ -65,14 +65,15 @@ Colors — never hardcode a color in style.css outside `:root`:
 
 Font: Inter Variable, self-hosted and preloaded. No Google Fonts, no other typefaces.
 
-Type scale — six steps, two weights (400 and 500). Nothing else in style.css (one exception: `.home-bio` uses line-height 1.45):
+Type scale — seven steps, two weights (400 and 500). Nothing else in style.css (one exception: `.home-bio` uses line-height 1.45):
 
 | Step | Size | Line height | Tracking | Used for |
 |---|---|---|---|---|
 | S | 13px | 1.4 | 0 | meta, years, labels, chips (weight 500) |
 | M | 16px | 1.5 | −0.011em | body, CV entries |
-| L | 20px | 1.3 | −0.017em | bio, nav, card titles, case copy |
-| H | 28px (24 on phones) | 1.25 | −0.021em | h2 inside a case |
+| Body | clamp(17px, 15px + 0.25vw, 20px) | 1.55 | −0.014em | case copy (paragraphs and lists in `.case-section`); fluid, ~18.5px on a 1440 laptop |
+| L | 20px | 1.3 | −0.017em | bio, nav, card titles, case lead |
+| H | clamp(24px, 23px + 0.26vw, 28px) | 1.25 | −0.021em | h2 inside a case, pull quotes; fluid, ~1.4 × Body |
 | XL | 44px (32 on phones) | 1.15 | −0.028em | section titles |
 | Display | clamp(40px, 4.6vw, 64px) | 1.02 | −0.03em | case page h1 |
 

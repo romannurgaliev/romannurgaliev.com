@@ -24,7 +24,7 @@
   --shadow: rgba(17, 17, 17, 0.08);      /* toast */
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
-  /* Type scale: six sizes, two weights (400 / 500). Nothing else.
+  /* Type scale: seven sizes, two weights (400 / 500). Nothing else.
      Small text is set in 500 so meta stays crisp, not thin.
      Tracking follows Inter's dynamic metrics, a touch tighter on large sizes;
      opsz switches to the Display cut automatically from 32px up. */
@@ -40,9 +40,17 @@
   --lh-l: 1.3;
   --ls-l: -0.017em;
 
-  /* H — headings inside long text (case sections): 1.4 × the L body,
-     enough to lead a section without competing with the screens */
-  --fs-h: 28px;
+  /* Body — long reading text in cases. Fluid: grows with the window
+     instead of jumping at breakpoints, about 18.5px on a 1440 laptop,
+     20px on a large monitor, never below 17px on phones */
+  --fs-body: clamp(17px, 15px + 0.25vw, 20px);
+  --lh-body: 1.55;
+  --ls-body: -0.014em;
+
+  /* H — headings inside long text (case sections) and pull quotes:
+     fluid like the body, so they stay about 1.4 × the body on every
+     screen. 24px on phones, about 26.7px on a 1440 laptop, 28px max */
+  --fs-h: clamp(24px, 23px + 0.26vw, 28px);
   --lh-h: 1.25;
   --ls-h: -0.021em;
 
@@ -206,12 +214,18 @@ button {
 .contact-link-label,
 .contact-link-value,
 .case-card .case-title,
-.case-pager-title,
-.case-section p,
-.case-section li {
+.case-pager-title {
   font-size: var(--fs-l);
   line-height: var(--lh-l);
   letter-spacing: var(--ls-l);
+}
+
+/* Body — case copy, fluid between 17 and 20px */
+.case-section p,
+.case-section li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
 }
 
 /* S, regular weight — captions under carousels and galleries */
@@ -941,11 +955,6 @@ body.case-page {
 .case-section h2 {
   color: var(--text);
   margin-bottom: 16px;
-}
-
-.case-section p,
-.case-section li {
-  line-height: 1.5;
 }
 
 .case-section p + p,
@@ -1727,7 +1736,6 @@ body.case-page {
 
 @media (max-width: 640px) {
   :root {
-    --fs-h: 24px;
     --fs-xl: 32px;
   }
 
