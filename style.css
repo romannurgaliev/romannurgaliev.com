@@ -169,7 +169,8 @@ button {
 .cv-section-label,
 .cv-entry-period,
 .case-period,
-.case-chips {
+.case-chips,
+.zoom-caption {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -1318,6 +1319,77 @@ body.case-page {
 
 .case-gallery-slide:not(.is-active) .case-gallery-caption {
   opacity: 0;
+}
+
+/* ---------- Full-screen view (case-media.js, img[data-zoom]) ---------- */
+[data-zoom] {
+  cursor: zoom-in;
+}
+
+/* A neighbour slide scrolls into place on click instead of opening */
+.case-gallery-slide:not(.is-active) [data-zoom] {
+  cursor: pointer;
+}
+
+.zoom {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 72px 24px 24px;
+  border: 0;
+  /* The frame grey (fill over the white backdrop), so white screens keep
+     their edges and the grey baked into gallery screens blends in */
+  background: var(--fill);
+  color: var(--text);
+  cursor: zoom-out;
+}
+
+.zoom[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  animation: zoom-fade 0.2s ease-out;
+}
+
+.zoom::backdrop {
+  background: var(--bg);
+}
+
+/* The picture shrinks to fit the window and keeps its proportions */
+.zoom-img {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.zoom-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.zoom-caption {
+  flex: none;
+  max-width: var(--case-text);
+  text-align: center;
+  text-wrap: balance;
+  color: var(--text-muted);
+}
+
+/* The page behind doesn't scroll while the view is open */
+html:has(.zoom[open]) {
+  overflow: hidden;
+}
+
+@keyframes zoom-fade {
+  from { opacity: 0; }
 }
 
 /* Dialogs stay at dialog size instead of filling the frame */
