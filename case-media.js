@@ -141,12 +141,12 @@
       if (next) next.disabled = index === slides.length - 1;
     }
 
-    function goTo(i) {
+    function goTo(i, instant) {
       var slide = slides[i];
       if (!slide) return;
       track.scrollTo({
         left: centreOf(slide) - track.clientWidth / 2,
-        behavior: reduceMotion.matches ? 'auto' : 'smooth'
+        behavior: instant ? 'instant' : reduceMotion.matches ? 'auto' : 'smooth'
       });
     }
 
@@ -156,6 +156,12 @@
 
     if (prev) prev.addEventListener('click', function () { go(-1); });
     if (next) next.addEventListener('click', function () { go(1); });
+    // After the full-screen view closes, the gallery jumps to the screen
+    // seen last
+    figure.addEventListener('gallery-go', function (event) {
+      goTo(event.detail, true);
+      update();
+    });
 
     // Clicking a neighbour peeking at the edge brings it to the centre
     slides.forEach(function (slide, i) {
@@ -339,7 +345,8 @@
   // ---------- Full-screen view ----------
   // Any img[data-zoom] opens full screen on click, Enter or Space.
   // One shared <dialog>: showModal() traps focus, Esc closes it, and the
-  // page behind becomes inert. A click anywhere closes it.
+  // page behind becomes inert. A click anywhere but the arrows closes it;
+  // in a gallery, the arrows and arrow keys step through its screens.
   function largestSource(img) {
     var best = img.currentSrc || img.src;
     var bestW = 0;
@@ -359,52 +366,242 @@
     return el ? el.textContent.trim() : '';
   }
 
+  function ownSource(img) {
+    var own = img.getAttribute('data-zoom');
+    return own ? new URL(own, document.baseURI).href : '';
+  }
+
   function initZoom() {
     var images = document.querySelectorAll('img[data-zoom]');
     if (!images.length || typeof HTMLDialogElement !== 'function') return;
 
+    var arrow = function (cls, label, path) {
+      return '<button type="button" class="case-arrow ' + cls + '" aria-label="' + label + '">' +
+        '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="' + path + '" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '</button>';
+    };
+
     var dialog = document.createElement('dialog');
     dialog.className = 'zoom';
+    dialog.tabIndex = -1;
     dialog.setAttribute('aria-label', 'Full-screen view');
     dialog.innerHTML =
-      '<button type="button" class="case-arrow zoom-close" aria-label="Close full-screen view">' +
-        '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
-      '</button>' +
-      '<img class="zoom-img" alt="" decoding="async">' +
+      arrow('zoom-close', 'Close full-screen view', 'M5 5l10 10M15 5L5 15') +
+      arrow('zoom-prev', 'Previous screen', 'M16 10H4M9 5l-5 5 5 5') +
+      arrow('zoom-next', 'Next screen', 'M4 10h12M11 5l5 5-5 5') +
+      '<div class="zoom-stage"><img class="zoom-img" alt="" decoding="async"></div>' +
       '<p class="zoom-caption"></p>';
     document.body.appendChild(dialog);
 
-    var big = dialog.querySelector('.zoom-img');
+    var stage = dialog.querySelector('.zoom-stage');
+    var big = dialog.querySelector('.zoom-img');   // the screen in view
     var caption = dialog.querySelector('.zoom-caption');
-    var opener = null;
+    var prev = dialog.querySelector('.zoom-prev');
+    var next = dialog.querySelector('.zoom-next');
+    var opener = null;   // the picture on the page now shown full screen
+    var moving = false;  // a slide transition is running
+    var set = [];        // its gallery's pictures, or just itself
+    var pos = 0;
 
-    function open(img) {
+    function fitMode() {
+      return dialog.classList.contains('zoom--fit');
+    }
+
+    // Room for a gallery screen: the window minus padding and the caption
+    function room() {
+      var style = getComputedStyle(dialog);
+      var h = dialog.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+      if (!caption.hidden) h -= caption.offsetHeight + parseFloat(style.rowGap || 0);
+      return {
+        w: dialog.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight),
+        h: h
+      };
+    }
+
+    // Own pictures differ in width; one scale (1.5 file pixels per screen
+    // pixel) keeps neighbouring slides the same size
+    function widest(el, own) {
+      return own ? el.naturalWidth / 1.5 : 1600;
+    }
+
+    function fitWidth(el, own) {
+      var r = room();
+      return Math.floor(Math.min(widest(el, own), r.w, r.h * el.naturalWidth / el.naturalHeight));
+    }
+
+    // Gallery screens fit the window whole: no scrolling, and the arrows
+    // step through them. The stage takes all the height, so the caption
+    // stays put whatever the screen's proportions. A single tall screen
+    // fills the width and scrolls.
+    function layout() {
+      var own = opener && ownSource(opener);
+      stage.style.height = '';
+      big.style.width = big.style.maxWidth = '';
+      if (!fitMode()) {
+        if (big.naturalWidth) big.style.maxWidth = Math.round(widest(big, own)) + 'px';
+        return;
+      }
+      stage.style.height = room().h + 'px';
+      if (!big.naturalWidth) return;
+      big.style.width = fitWidth(big, own) + 'px';
+      big.style.maxWidth = 'none';
+    }
+
+    function setArrows() {
+      prev.disabled = pos === 0;
+      next.disabled = pos === set.length - 1;
+    }
+
+    function setCaption(img) {
+      caption.textContent = captionFor(img);
+      caption.hidden = !caption.textContent;
+    }
+
+    function show(img) {
       opener = img;
-      // Show the copy already on the page at once, then swap in the
-      // largest one when it has loaded, so there's never an empty frame
-      var large = largestSource(img);
-      big.src = img.currentSrc || img.src;
-      if (large !== big.src) {
-        var loader = new Image();
-        loader.onload = function () {
-          if (opener === img) big.src = large;
-        };
-        loader.src = large;
+      // data-zoom="file" names a picture just for this view: the gallery
+      // screens bake in a grey frame that the dark scrim makes redundant,
+      // so they open as the white card alone
+      var own = ownSource(img);
+      if (own) {
+        big.src = own;
+      } else {
+        // Show the copy already on the page at once, then swap in the
+        // largest one when it has loaded, so there's never an empty frame
+        var large = largestSource(img);
+        big.src = img.currentSrc || img.src;
+        if (large !== big.src) {
+          var loader = new Image();
+          loader.onload = function () {
+            if (opener === img) big.src = large;
+          };
+          loader.src = large;
+        }
       }
       // Alt text only once the picture is in, so a slow load shows an empty
       // space of the right size rather than a line of text
       big.alt = '';
-      big.onload = function () { big.alt = img.alt; };
-      caption.textContent = captionFor(img);
-      caption.hidden = !caption.textContent;
-      dialog.showModal();
+      big.onload = function () {
+        big.alt = img.alt;
+        layout();
+      };
+      setCaption(img);
+      setArrows();
+      if (big.complete) layout();
     }
 
-    // Any click closes: on the picture, the backdrop, or the close button
+    function open(img) {
+      var gallery = img.closest('.case-gallery');
+      set = gallery ? Array.prototype.slice.call(gallery.querySelectorAll('img[data-zoom]')) : [img];
+      pos = Math.max(set.indexOf(img), 0);
+      dialog.classList.toggle('zoom--fit', !!gallery);
+      prev.hidden = next.hidden = set.length < 2;
+      show(img);
+      dialog.showModal();
+      // Focus the view itself, not the close button, so no focus ring
+      // appears around a button nobody pressed; Tab still reaches them
+      dialog.focus();
+      layout();
+    }
+
+    // Like a carousel: the next screen is loaded and decoded off-screen
+    // first, then both move together, the current one out the far side
+    // and the next one in from the near side, with no fade and no gap.
+    // The caption cross-fades. With reduced motion it simply swaps.
+    function step(by) {
+      var to = pos + by;
+      if (to < 0 || to >= set.length || moving) return;
+      var img = set[to];
+      pos = to;
+      setArrows();
+      if (reduceMotion.matches || !big.animate || typeof Promise !== 'function') {
+        show(img);
+        return;
+      }
+      moving = true;
+      var own = !!ownSource(img);
+      var incoming = document.createElement('img');
+      incoming.className = 'zoom-img zoom-img--incoming';
+      incoming.alt = img.alt;
+      var ready = new Promise(function (done) {
+        incoming.onload = incoming.onerror = done;
+        incoming.src = ownSource(img) || largestSource(img);
+      }).then(function () {
+        // decode() keeps the first frame from stuttering; capped, since it
+        // never settles in a background tab
+        if (!incoming.decode) return null;
+        return Promise.race([
+          incoming.decode().catch(function () {}),
+          new Promise(function (done) { setTimeout(done, 250); })
+        ]);
+      });
+      var capOut = caption.animate([{ opacity: 1 }, { opacity: 0 }],
+        { duration: 160, easing: 'ease-in', fill: 'forwards' });
+
+      ready.then(function () {
+        if (!dialog.open) { moving = false; return; }
+        var old = big;
+        var w = fitWidth(incoming, own);
+        var h = w * incoming.naturalHeight / incoming.naturalWidth;
+        incoming.style.width = w + 'px';
+        incoming.style.maxWidth = 'none';
+        incoming.style.marginLeft = -w / 2 + 'px';
+        incoming.style.marginTop = -h / 2 + 'px';
+        // Far enough that each screen is fully outside the window at its end
+        var far = (dialog.clientWidth + Math.max(w, old.offsetWidth)) / 2 + 24;
+        var timing = { duration: 560, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
+        stage.appendChild(incoming);
+        old.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(' + -by * far + 'px)' }
+        ], { duration: timing.duration, easing: timing.easing, fill: 'forwards' });
+        var slide = incoming.animate([
+          { transform: 'translateX(' + by * far + 'px)' },
+          { transform: 'translateX(0)' }
+        ], timing);
+
+        setCaption(img);
+        capOut.cancel();
+        caption.animate([{ opacity: 0 }, { opacity: 1 }],
+          { duration: 280, delay: 140, easing: 'ease-out', fill: 'backwards' });
+
+        slide.finished.then(function () {
+          // The incoming screen stays the same element and takes the old
+          // one's place in the layout, so nothing is redrawn at the end
+          old.remove();
+          incoming.classList.remove('zoom-img--incoming');
+          incoming.style.marginLeft = incoming.style.marginTop = '';
+          big = incoming;
+          opener = img;
+          moving = false;
+          layout();
+        });
+      });
+    }
+
+    prev.addEventListener('click', function (event) { event.stopPropagation(); step(-1); });
+    next.addEventListener('click', function (event) { event.stopPropagation(); step(1); });
+    dialog.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+    });
+    window.addEventListener('resize', function () { if (dialog.open && !moving) layout(); });
+
+    // Any other click closes: on the picture, the backdrop, or the close button
     dialog.addEventListener('click', function () { dialog.close(); });
     dialog.addEventListener('close', function () {
+      // The gallery on the page catches up only now, in one jump, so
+      // nothing moves behind the scrim while the view is open
+      var gallery = opener && opener.closest('.case-gallery');
+      if (gallery) gallery.dispatchEvent(new CustomEvent('gallery-go', { detail: pos }));
+      // Stop a transition halfway: drop the incoming screen, reset the old
+      moving = false;
+      Array.prototype.forEach.call(stage.querySelectorAll('.zoom-img--incoming'), function (el) { el.remove(); });
+      big.getAnimations().forEach(function (a) { a.cancel(); });
       big.removeAttribute('src');
-      // Back to the picture that opened it, without jumping the page
+      big.style.width = big.style.maxWidth = '';
+      stage.style.height = '';
+      // Back to the picture shown last, without jumping the page
       if (opener) opener.focus({ preventScroll: true });
       opener = null;
     });
@@ -418,6 +615,14 @@
         if (slide && !slide.classList.contains('is-active')) return;
         open(img);
       });
+      // Fetch the gallery's own pictures on hover, so they're ready by the click
+      img.addEventListener('pointerenter', function () {
+        var gallery = img.closest('.case-gallery');
+        var all = gallery ? gallery.querySelectorAll('img[data-zoom]') : [img];
+        Array.prototype.forEach.call(all, function (each) {
+          if (ownSource(each)) new Image().src = ownSource(each);
+        });
+      }, { once: true });
       img.addEventListener('keydown', function (event) {
         if (event.key !== 'Enter' && event.key !== ' ') return;
         event.preventDefault();

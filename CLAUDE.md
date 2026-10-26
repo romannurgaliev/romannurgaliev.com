@@ -106,6 +106,8 @@ Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-
 
 Images: webp, always with `width`, `height`, `alt`, and `srcset`/`sizes` when there are several widths. `loading="lazy"` on all images except the first on a page, which gets `fetchpriority="high"`.
 
+Full-screen view (case-media.js): `data-zoom` on an `img` opens it over a dark scrim, at the largest srcset size. `data-zoom="images/x/name-card-<width>.webp"` opens a separate file instead — used for gallery screens with a grey frame baked in, cropped to the white card.
+
 Animations (screen recordings, UI loops) are never animated webp or GIF — they are looping videos, 5–10× lighter. One size per animation, AV1 first with an H.264 fallback (Safari on devices without AV1), poster = the first frame:
 
 ```html

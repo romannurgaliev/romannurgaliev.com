@@ -22,6 +22,9 @@
   --bar-bg: rgba(255, 255, 255, 0.92);   /* sticky bars, under a blur */
   --edge: rgba(17, 17, 17, 0.06);        /* hairline around a screenshot */
   --shadow: rgba(17, 17, 17, 0.08);      /* toast */
+  --scrim: rgba(17, 17, 17, 0.86);       /* behind the full-screen view */
+  --on-scrim: #FFFFFF;
+  --on-scrim-muted: rgba(255, 255, 255, 0.64);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   /* Type scale: six sizes, two weights (400 / 500). Nothing else.
@@ -1323,11 +1326,6 @@ body.case-page {
 
 /* ---------- Full-screen view (case-media.js, img[data-zoom]) ---------- */
 [data-zoom] {
-  cursor: zoom-in;
-}
-
-/* A neighbour slide scrolls into place on click instead of opening */
-.case-gallery-slide:not(.is-active) [data-zoom] {
   cursor: pointer;
 }
 
@@ -1337,50 +1335,142 @@ body.case-page {
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: 72px 24px 24px;
+  padding: 72px 32px 40px;
   border: 0;
-  /* The frame grey (fill over the white backdrop), so white screens keep
-     their edges and the grey baked into gallery screens blends in */
-  background: var(--fill);
-  color: var(--text);
-  cursor: zoom-out;
+  background: transparent;
+  color: var(--on-scrim);
+  /* Tall screens are bigger than the window: scroll inside the view */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .zoom[open] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 16px;
   animation: zoom-fade 0.2s ease-out;
 }
 
 .zoom::backdrop {
-  background: var(--bg);
+  background: var(--scrim);
+  animation: zoom-fade 0.2s ease-out;
 }
 
-/* The picture shrinks to fit the window and keeps its proportions */
+/* Wider than on the page: the window width, up to 1600px (the 2400px
+   source stays sharp). Auto margins centre a short picture vertically
+   without cutting off the top of a tall one. */
+.zoom-stage {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+}
+
 .zoom-img {
-  flex: 0 1 auto;
-  min-height: 0;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 6px;
+  flex: none;
+  display: block;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* The next gallery screen, centred on the stage while it slides in */
+.zoom-img--incoming {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 .zoom-close {
-  position: absolute;
+  position: fixed;
   top: 16px;
   right: 16px;
+  z-index: 1;
+}
+
+.zoom-prev,
+.zoom-next {
+  position: fixed;
+  top: 50%;
+  z-index: 1;
+  margin-top: -20px;
+}
+
+.zoom-prev { left: 16px; }
+.zoom-next { right: 16px; }
+
+/* Bare icons on the scrim: no circle, no outline */
+.zoom-close,
+.zoom-prev,
+.zoom-next {
+  color: var(--on-scrim);
+  background: none;
+  box-shadow: none;
+  opacity: 0.72;
+}
+
+:is(.zoom-close, .zoom-prev, .zoom-next):hover:not(:disabled) {
+  background: none;
+  opacity: 1;
+}
+
+:is(.zoom-close, .zoom-prev, .zoom-next):disabled {
+  opacity: 0.24;
+}
+
+:is(.zoom-close, .zoom-prev, .zoom-next) svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* The view itself takes focus on open (case-media.js) */
+.zoom:focus-visible {
+  outline: none;
+}
+
+.zoom :focus-visible {
+  outline-color: var(--on-scrim);
+}
+
+.zoom .case-arrow[hidden] {
+  display: none;
+}
+
+/* A gallery screen fits the window whole (width set in case-media.js),
+   with room at the sides for the arrows */
+.zoom--fit {
+  padding: 72px 72px 32px;
+  overflow: hidden;
 }
 
 .zoom-caption {
   flex: none;
   max-width: var(--case-text);
+  margin-bottom: auto;
   text-align: center;
   text-wrap: balance;
-  color: var(--text-muted);
+  color: var(--on-scrim-muted);
+}
+
+@media (max-width: 640px) {
+  .zoom,
+  .zoom--fit {
+    padding: 64px 16px 32px;
+  }
+
+  /* No room at the sides on a phone: the arrows sit top left */
+  .zoom-prev,
+  .zoom-next {
+    top: 16px;
+    margin-top: 0;
+  }
+
+  .zoom-next { right: auto; left: 64px; }
 }
 
 /* The page behind doesn't scroll while the view is open */
