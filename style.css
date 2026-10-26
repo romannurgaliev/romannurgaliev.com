@@ -1774,10 +1774,19 @@ body.case-page {
     margin-bottom: 56px;
   }
 
+  /* Phones: the first screen is set in M, like the top bar — L reads
+     too large on a narrow screen */
+  .home-bio,
+  .home-index-name {
+    font-size: var(--fs-m);
+    line-height: var(--lh-m);
+    letter-spacing: var(--ls-m);
+  }
+
   .home-index {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     margin-top: auto;
     padding-top: 40px;
   }
