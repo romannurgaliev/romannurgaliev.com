@@ -506,22 +506,30 @@
   left: 0;
   width: 100%;
   border-radius: 2px;
-  background: var(--w10);
+  background: #2c2c2c; /* --w10 on the panel */
 }
+
+/* Track layers are solid colors, not translucent ones: translucent layers
+   add up where they overlap (range over base, the market tick over the
+   track) and leave brighter patches. Each value is what the old rgba
+   looked like on the #141414 panel, so the look doesn't change. */
 
 /* Liquidated account: every track turns red */
 .sim-base.is-liquidated {
-  background: rgba(246, 90, 76, 0.5);
+  background: #853730;
 }
 
 .sim-zone {
   border-radius: 2px;
-  background: rgba(246, 90, 76, 0.5);
+  background: #91433c;
 }
 
 .sim-range {
-  background: var(--w20);
+  background: #565656;
 }
+
+.sim-base.is-liquidated ~ .sim-zone { background: #be493e; }
+.sim-base.is-liquidated ~ .sim-range { background: #9d5f59; }
 
 .sim-tick {
   top: 3px;
@@ -536,7 +544,8 @@
 .sim-tick--market {
   top: 0;
   height: 16px;
-  background: var(--w25);
+  /* A step lighter than the range so the center stays visible where it crosses the track */
+  background: #8c8c8c;
 }
 
 .sim-liq-marker {
@@ -549,7 +558,7 @@
 
 /* Where the liquidation price was before the simulation */
 .sim-liq-marker.is-ghost {
-  opacity: 0.3;
+  background: #683935; /* --red at 30% on the track */
 }
 
 /* Market value before the simulated one, struck through */
@@ -580,13 +589,13 @@
 .sim-track:hover .sim-thumb,
 .sim-thumb:focus-visible,
 .sim-thumb.is-hint {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25), 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 3px #4f4f4f, 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .sim-thumb.is-dragging,
 .sim-thumb.is-dragging:focus-visible {
   cursor: grabbing;
-  box-shadow: 0 0 0 4px rgba(190, 255, 20, 0.35), 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 4px #50660d, 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .sim-tip {
@@ -641,22 +650,22 @@
 }
 
 .sim-chip--liq {
-  background: rgba(0, 0, 0, 0.5);
+  background: #0a0a0a;
   color: var(--red);
 }
 
 .sim-chip--sl {
-  background: rgba(246, 90, 76, 0.1);
+  background: #2b1b1a;
   color: var(--soft-red);
 }
 
 .sim-chip--tp {
-  background: rgba(0, 122, 255, 0.1);
+  background: #121e2c;
   color: var(--blue-text);
 }
 
 .sim-chip--warn {
-  background: rgba(255, 149, 0, 0.1);
+  background: #2c2112;
   color: var(--orange);
 }
 
