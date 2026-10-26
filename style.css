@@ -180,7 +180,8 @@ button {
 .case-chips,
 .case-carousel-count,
 .case-quote figcaption,
-.toast {
+.toast,
+.home-index-label {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -214,7 +215,8 @@ button {
 .contact-link-label,
 .contact-link-value,
 .case-card .case-title,
-.case-pager-title {
+.case-pager-title,
+.home-index-name {
   font-size: var(--fs-l);
   line-height: var(--lh-l);
   letter-spacing: var(--ls-l);
@@ -411,8 +413,12 @@ a.case-card .case-title {
   transition: text-decoration-color 0.15s ease;
 }
 
-a.case-card:hover .case-title {
-  text-decoration-color: currentColor;
+/* Only on devices with a mouse: on a phone the hover state sticks after
+   a tap and leaves the title underlined */
+@media (hover: hover) {
+  a.case-card:hover .case-title {
+    text-decoration-color: currentColor;
+  }
 }
 
 .case-thumb {
@@ -549,6 +555,12 @@ a.case-card:hover .case-title {
   max-width: 28em;
 }
 
+/* Index of cases: phones only (see the 640px block), built like the
+   contact rows — muted label over a dark name */
+.home-index {
+  display: none;
+}
+
 /* ============================================================
    Contact
    ============================================================ */
@@ -604,8 +616,10 @@ a.contact-link {
   transition: text-decoration-color 0.15s ease;
 }
 
-.contact-link:hover .contact-link-value {
-  text-decoration-color: currentColor;
+@media (hover: hover) {
+  .contact-link:hover .contact-link-value {
+    text-decoration-color: currentColor;
+  }
 }
 
 /* ============================================================
@@ -1749,8 +1763,60 @@ body.case-page {
     display: none;
   }
 
+  /* First screen: the bio on top, the index of cases at the bottom,
+     the case cards start below the fold. svh = the screen with Safari's
+     toolbars shown, so the index never hides under them; 52px bar + 24px
+     content padding */
   .intro {
+    min-height: calc(100svh - 76px);
+    display: flex;
+    flex-direction: column;
     margin-bottom: 56px;
+  }
+
+  .home-index {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    padding-top: 48px;
+  }
+
+  /* One row per case: name left, short label right, so all six fit
+     under the bio even on a 6.1" iPhone */
+  .home-index-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+
+  .home-index-link:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .home-index-label {
+    order: 1;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .home-index-name {
+    color: var(--text);
+    flex-shrink: 0;
+  }
+
+  /* A tap on the index lands the card just below the top bar */
+  .case-card {
+    scroll-margin-top: 72px;
+  }
+
+  /* Card screenshots use the full width on phones */
+  .case-thumb-single {
+    padding: 0;
   }
 
   /* VPN cover: one phone in a square frame instead of three tiny ones */
