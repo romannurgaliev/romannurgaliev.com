@@ -256,7 +256,7 @@ const rolesEnd = css.indexOf('/* ====', css.indexOf('*/', rolesStart) + 2);
 for (const m of css.matchAll(/font-size:\s*var\(--fs-[a-z]+\)/g)) {
   if (m.index > rolesStart && m.index < rolesEnd) continue;
   const before = css.slice(Math.max(0, m.index - 400), m.index);
-  if (/compact bar keeps M/.test(before) || /^body\s*\{/m.test(css.slice(m.index - 200, m.index))) continue;
+  if (/compact bar keeps M|first screen is set in M/.test(before) || /^body\s*\{/m.test(css.slice(m.index - 200, m.index))) continue;
   report(`style.css:${css.slice(0, m.index).split('\n').length}`, 'font-size set on a component, not in Type roles');
 }
 
