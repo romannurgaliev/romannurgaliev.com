@@ -180,8 +180,7 @@ button {
 .case-chips,
 .case-carousel-count,
 .case-quote figcaption,
-.toast,
-.home-index-label {
+.toast {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -200,7 +199,8 @@ button {
 .case-section .case-details li,
 .case-figure figcaption,
 .case-stats dt,
-.site-footer-link {
+.site-footer-link,
+.home-index-label {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
@@ -1777,36 +1777,24 @@ body.case-page {
   .home-index {
     display: flex;
     flex-direction: column;
+    gap: 12px;
     margin-top: auto;
-    padding-top: 48px;
+    padding-top: 40px;
   }
 
-  /* One row per case: name left, short label right, so all six fit
-     under the bio even on a 6.1" iPhone */
+  /* Name over a muted one-line description, no dividers */
   .home-index-link {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
+    flex-direction: column;
     text-decoration: none;
-  }
-
-  .home-index-link:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .home-index-label {
-    order: 1;
-    color: var(--text-muted);
-    text-align: right;
   }
 
   .home-index-name {
     color: var(--text);
-    flex-shrink: 0;
+  }
+
+  .home-index-label {
+    color: var(--text-muted);
   }
 
   /* A tap on the index lands the card just below the top bar */
