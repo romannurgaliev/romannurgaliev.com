@@ -165,6 +165,7 @@ Later:
 - [ ] Remove dead CSS (`.delay-2`…`.delay-6`, `.case-thumb--placeholder`) and duplicate selectors (`.case-stats dd`, `.contact-link-value`); check `.case-thumb-strip--2` has no styles
 - [ ] Sidebar `<aside>` → `<header>`
 - [ ] Templating for the shared shell — only once there are ~10 cases
+- [ ] Full-screen image view: removed, kept on the local branch `archive/fullscreen-view` (dark scrim, fit-to-window gallery, slide between screens)
 
 ---
 

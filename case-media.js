@@ -1,7 +1,7 @@
 // Case pages: two kinds of carousels (styles in style.css).
 // .case-carousel — half-size screens in a deck, with a counter and arrows.
 // .case-gallery  — full-width screens on a scroll-snap track, arrows above.
-// Also: smooth open / close for .case-details, and full-screen view for img[data-zoom].
+// Also: smooth open / close for .case-details.
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -336,99 +336,8 @@
     });
   }
 
-  // ---------- Full-screen view ----------
-  // Any img[data-zoom] opens full screen on click, Enter or Space.
-  // One shared <dialog>: showModal() traps focus, Esc closes it, and the
-  // page behind becomes inert. A click anywhere closes it.
-  function largestSource(img) {
-    var best = img.currentSrc || img.src;
-    var bestW = 0;
-    (img.getAttribute('srcset') || '').split(',').forEach(function (part) {
-      var bits = part.trim().split(/\s+/);
-      var w = parseInt(bits[1], 10);
-      if (bits[0] && w > bestW) { best = bits[0]; bestW = w; }
-    });
-    // srcset paths are relative to the page; resolve them the same way
-    return new URL(best, document.baseURI).href;
-  }
-
-  function captionFor(img) {
-    var slide = img.closest('.case-gallery-slide');
-    var el = slide ? slide.querySelector('.case-gallery-caption')
-                   : img.closest('figure') && img.closest('figure').querySelector('figcaption');
-    return el ? el.textContent.trim() : '';
-  }
-
-  function initZoom() {
-    var images = document.querySelectorAll('img[data-zoom]');
-    if (!images.length || typeof HTMLDialogElement !== 'function') return;
-
-    var dialog = document.createElement('dialog');
-    dialog.className = 'zoom';
-    dialog.setAttribute('aria-label', 'Full-screen view');
-    dialog.innerHTML =
-      '<button type="button" class="case-arrow zoom-close" aria-label="Close full-screen view">' +
-        '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
-      '</button>' +
-      '<img class="zoom-img" alt="" decoding="async">' +
-      '<p class="zoom-caption"></p>';
-    document.body.appendChild(dialog);
-
-    var big = dialog.querySelector('.zoom-img');
-    var caption = dialog.querySelector('.zoom-caption');
-    var opener = null;
-
-    function open(img) {
-      opener = img;
-      // Show the copy already on the page at once, then swap in the
-      // largest one when it has loaded, so there's never an empty frame
-      var large = largestSource(img);
-      big.src = img.currentSrc || img.src;
-      if (large !== big.src) {
-        var loader = new Image();
-        loader.onload = function () {
-          if (opener === img) big.src = large;
-        };
-        loader.src = large;
-      }
-      // Alt text only once the picture is in, so a slow load shows an empty
-      // space of the right size rather than a line of text
-      big.alt = '';
-      big.onload = function () { big.alt = img.alt; };
-      caption.textContent = captionFor(img);
-      caption.hidden = !caption.textContent;
-      dialog.showModal();
-    }
-
-    // Any click closes: on the picture, the backdrop, or the close button
-    dialog.addEventListener('click', function () { dialog.close(); });
-    dialog.addEventListener('close', function () {
-      big.removeAttribute('src');
-      // Back to the picture that opened it, without jumping the page
-      if (opener) opener.focus({ preventScroll: true });
-      opener = null;
-    });
-
-    Array.prototype.forEach.call(images, function (img) {
-      img.tabIndex = 0;
-      img.setAttribute('aria-haspopup', 'dialog');
-      img.addEventListener('click', function () {
-        // A neighbour peeking at the gallery edge scrolls into place first
-        var slide = img.closest('.case-gallery-slide');
-        if (slide && !slide.classList.contains('is-active')) return;
-        open(img);
-      });
-      img.addEventListener('keydown', function (event) {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        open(img);
-      });
-    });
-  }
-
   Array.prototype.forEach.call(document.querySelectorAll('.case-carousel'), initCarousel);
   Array.prototype.forEach.call(document.querySelectorAll('.case-gallery'), initGallery);
   Array.prototype.forEach.call(document.querySelectorAll('.case-details'), initDetails);
   initLoops();
-  initZoom();
 })();
