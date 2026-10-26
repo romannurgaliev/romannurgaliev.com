@@ -3,7 +3,7 @@
 Portfolio and CV of Roman Nurgaliev, product designer. Audience: recruiters and hiring managers.
 Plain HTML + CSS + vanilla JS. No framework, no build step. Deployed by Netlify from `master` (the old `main` branch on GitHub is stale; don't push there).
 
-Repo: `github.com/romannurgaliev/romannurgaliev.com` · local: `~/romannurgaliev.com`
+Repo: `github.com/romannurgaliev/romannurgaliev.com` · local: `~/Documents/romannurgaliev.com`
 
 Roman is a designer, not a developer. Explain changes in plain terms; don't assume he can debug code.
 
@@ -23,7 +23,7 @@ Roman is a designer, not a developer. Explain changes in plain terms; don't assu
 ```
 index.html            — the one main page: #home (bio + case cards, #work) → #cv → #contact
 work/<slug>.html      — case pages: brighty, donuts, vpn, dedust, antara-health, podcast
-work/images/<project>/ — stills: webp, <what>-<width>.webp (e.g. terminal-700.webp);
+work/images/<project>/ — stills (DeDust uses work/images/questhub/): webp, <what>-<width>.webp (e.g. terminal-700.webp);
                         animations: <what>-<width>-av1.mp4 + -h264.mp4 + -poster.webp
 _redirects, _headers  — Netlify: 301s for old URLs (/cv, /work, /contact), cache headers
 404.html
@@ -37,6 +37,8 @@ case-nav.js           — case pages: hiding top bar, contents list (≥1240px)
 case-media.js         — case pages: carousels (.case-carousel), galleries (.case-gallery), looping videos (video[data-loop])
 copy-email.js         — any [data-copy] element copies its value and shows a toast
 scripts/cv-pdf.js     — builds cv.pdf from the #cv section of index.html (Playwright)
+scripts/audit.js      — mechanical site checks for the periodic audit (`node scripts/audit.js`)
+.claude/skills/audit/  — the /audit procedure; .claude/hooks/audit-reminder.js reminds every 6 sessions
 cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
 fonts/InterVariable.woff2
 ```
@@ -56,11 +58,14 @@ Colors — never hardcode a color in style.css outside `:root`:
 --line: rgba(17,17,17,0.1);
 --fill: rgba(17,17,17,0.05);
 --fill-hover: rgba(17,17,17,0.09);
+--bar-bg: rgba(255,255,255,0.92);  /* sticky bars, under a blur */
+--edge: rgba(17,17,17,0.06);       /* hairline around a screenshot */
+--shadow: rgba(17,17,17,0.08);     /* toast */
 ```
 
 Font: Inter Variable, self-hosted and preloaded. No Google Fonts, no other typefaces.
 
-Type scale — six steps, two weights (400 and 500). Nothing else in style.css:
+Type scale — six steps, two weights (400 and 500). Nothing else in style.css (one exception: `.home-bio` uses line-height 1.45):
 
 | Step | Size | Line height | Tracking | Used for |
 |---|---|---|---|---|
@@ -93,7 +98,7 @@ Home cards, in this order (the order is deliberate — fintech and B2B first). Y
 
 1. Brighty — Trading Terminal & B2B Onboarding · 2025–2026 → work/brighty.html
 2. donuts.tg — Crypto Payment Gateway · 2024 → work/donuts.html
-3. VPN service — Apps & Web Account · 2026–now → work/vpn.html
+3. VPN service — Apps & Web Account · May 2026–Present → work/vpn.html
 4. DeDust.io — TON Explorer & Quest Hub · 2025 → work/dedust.html
 5. Antara Health — Virtual Primary Care · 2021–2024 → work/antara-health.html
 6. Дизайн Такой — Podcast · 2018–2022 → work/podcast.html
@@ -102,7 +107,7 @@ The case pager (Previous / Up next) must follow the same order. The VPN company 
 
 Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards.
 
-Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`, `--dialog`), `.case-carousel`, `.case-gallery`, `.case-embed`.
+Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`.
 
 Images: webp, always with `width`, `height`, `alt`, and `srcset`/`sizes` when there are several widths. `loading="lazy"` on all images except the first on a page, which gets `fetchpriority="high"`.
 
@@ -162,12 +167,17 @@ Later:
 - [ ] Spacing and radius tokens (now ~30 spacing values, 13 radii)
 - [ ] Media queries: keep them next to their component, drop the separate "Responsive" block at the end
 - [ ] One JS dialect; move index scroll-spy into a shared file with case-nav.js
-- [ ] Remove dead CSS (`.delay-2`…`.delay-6`, `.case-thumb--placeholder`) and duplicate selectors (`.case-stats dd`, `.contact-link-value`); check `.case-thumb-strip--2` has no styles
+- [x] Remove dead CSS (`.delay-2`…`.delay-6`, `.case-thumb--placeholder`, `.case-figure-frame--dialog`) and duplicate selectors (`.case-stats dd`, `.contact-link-value`); `.case-thumb-strip--2` removed from the HTML
+- [x] Type set on components (captions, quote, stats, toast, footer, contents list) moved into Type roles
 - [ ] Sidebar `<aside>` → `<header>`
 - [ ] Templating for the shared shell — only once there are ~10 cases
 - [ ] Full-screen image view: removed, kept on the local branch `archive/fullscreen-view` (dark scrim, fit-to-window gallery, slide between screens)
 
 ---
+
+## Audit
+
+After every 5–8 sessions, run `/audit` (.claude/skills/audit/SKILL.md): mechanical checks with `node scripts/audit.js`, then a read-through for facts that disagree between pages, leftovers and CLAUDE.md drift. A SessionStart hook counts sessions and reminds from the 6th; if its reminder shows up in context, mention it to Roman in one line. The audit resets the counter with `node .claude/hooks/audit-reminder.js --reset`.
 
 ## Deploy
 

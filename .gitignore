@@ -187,3 +187,6 @@ work/images/vpn/src/
 node_modules/
 reports/
 .stryker-tmp/
+
+# Audit reminder counter (per machine)
+.claude/audit-state.json

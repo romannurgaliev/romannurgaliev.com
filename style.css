@@ -169,7 +169,10 @@ button {
 .cv-section-label,
 .cv-entry-period,
 .case-period,
-.case-chips {
+.case-chips,
+.case-carousel-count,
+.case-quote figcaption,
+.toast {
   font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-s);
@@ -182,7 +185,13 @@ button {
 .cv-entry-role,
 .cv-entry-list li,
 .cv-entry-note,
-.case-pager-label {
+.case-pager-label,
+.case-toc a,
+.case-details summary,
+.case-section .case-details li,
+.case-figure figcaption,
+.case-stats dt,
+.site-footer-link {
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   letter-spacing: var(--ls-m);
@@ -205,15 +214,26 @@ button {
   letter-spacing: var(--ls-l);
 }
 
-/* H — section headings inside a case */
-.case-section h2 {
+/* S, regular weight — captions under carousels and galleries */
+.case-carousel figcaption,
+.case-gallery .case-gallery-caption {
+  font-size: var(--fs-s);
+  font-weight: 400;
+  line-height: var(--lh-s);
+  letter-spacing: var(--ls-s);
+}
+
+/* H — section headings inside a case, pull quotes */
+.case-section h2,
+.case-section .case-quote p {
   font-size: var(--fs-h);
   line-height: var(--lh-h);
   letter-spacing: var(--ls-h);
 }
 
-/* XL — section and page titles */
-.section-title {
+/* XL — section and page titles, big numbers */
+.section-title,
+.case-stats dd {
   font-size: var(--fs-xl);
   line-height: var(--lh-xl);
   letter-spacing: var(--ls-xl);
@@ -393,12 +413,6 @@ a.case-card:hover .case-title {
   border-radius: 6px;
 }
 
-/* Temporary grey placeholder until the real preview is ready */
-.case-thumb--placeholder {
-  background: var(--fill);
-  color: var(--text-muted);
-}
-
 /* Single image */
 .case-thumb-single {
   display: flex;
@@ -563,9 +577,6 @@ a.case-card:hover .case-title {
   flex-shrink: 0;
 }
 
-.contact-link-value {
-  color: var(--text);
-}
 
 /* Contact rows: only the value gets the underline */
 a.contact-link {
@@ -573,6 +584,7 @@ a.contact-link {
 }
 
 .contact-link-value {
+  color: var(--text);
   text-decoration: underline 1px transparent;
   text-underline-offset: 0.25em;
   transition: text-decoration-color 0.15s ease;
@@ -855,9 +867,7 @@ body.case-page {
   .case-toc a {
     display: block;
     color: var(--text-muted);
-    font-size: var(--fs-m);
     line-height: 1.35;
-    letter-spacing: var(--ls-m);
     text-wrap: balance;
     text-decoration: none;
     transition: color 0.15s ease;
@@ -990,9 +1000,6 @@ body.case-page {
   align-items: center;
   gap: 16px;
   padding: 24px 28px;
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
   font-weight: 500;
   color: var(--text);
   cursor: pointer;
@@ -1031,12 +1038,6 @@ body.case-page {
 .case-section .case-details ul {
   padding: 0 28px 28px;
   gap: 12px;
-}
-
-.case-section .case-details li {
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
 }
 
 @media (max-width: 640px) {
@@ -1212,9 +1213,7 @@ body.case-page {
 
 .case-carousel-count {
   color: var(--text-muted);
-  font-size: var(--fs-s);
   font-weight: 500;
-  line-height: var(--lh-s);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1310,20 +1309,11 @@ body.case-page {
   text-align: center;
   text-wrap: balance;
   color: var(--text-muted);
-  font-size: var(--fs-s);
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
   transition: opacity 0.3s ease;
 }
 
 .case-gallery-slide:not(.is-active) .case-gallery-caption {
   opacity: 0;
-}
-
-/* Dialogs stay at dialog size instead of filling the frame */
-.case-figure-frame--dialog img {
-  max-width: min(100%, 420px);
-  border-radius: 21px;
 }
 
 .case-figure figcaption {
@@ -1332,18 +1322,9 @@ body.case-page {
   text-align: center;
   text-wrap: balance;
   color: var(--text-muted);
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
 }
 
 /* Carousel captions sit smaller than regular figure captions */
-.case-carousel figcaption {
-  font-size: var(--fs-s);
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
-}
-
 /* ---------- Callout: a grey panel for a key fact and its source ---------- */
 .case-callout {
   padding: clamp(24px, 5vw, 56px);
@@ -1365,20 +1346,14 @@ body.case-page {
 
 .case-section .case-quote p {
   color: var(--text);
-  font-size: var(--fs-h);
   font-weight: 500;
-  line-height: var(--lh-h);
-  letter-spacing: var(--ls-h);
   text-wrap: balance;
 }
 
 .case-quote figcaption {
   margin-top: 24px;
   color: var(--text-muted);
-  font-size: var(--fs-s);
   font-weight: 500;
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
 }
 
 /* ---------- Numbers: a row of figures with labels ---------- */
@@ -1398,22 +1373,13 @@ body.case-page {
 
 .case-stats dd {
   order: -1;
-}
-
-.case-stats dd {
   color: var(--text);
-  font-size: var(--fs-xl);
   font-weight: 500;
-  line-height: var(--lh-xl);
-  letter-spacing: var(--ls-xl);
   font-variant-numeric: tabular-nums;
 }
 
 .case-stats dt {
   color: var(--text-muted);
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
 }
 
 /* ---------- Embeds: podcast player and video ---------- */
@@ -1606,9 +1572,6 @@ body.case-page {
 .site-footer-link {
   padding: 0;
   color: var(--text);
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  letter-spacing: var(--ls-m);
   text-decoration: underline 1px transparent;
   text-underline-offset: 0.25em;
   transition: text-decoration-color 0.15s ease;
@@ -1639,10 +1602,7 @@ body.case-page {
   border: 1px solid var(--line);
   border-radius: 12px;
   box-shadow: 0 4px 16px var(--shadow);
-  font-size: var(--fs-s);
   font-weight: 500;
-  line-height: var(--lh-s);
-  letter-spacing: var(--ls-s);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
@@ -1682,11 +1642,6 @@ body.case-page {
 }
 
 .delay-1 { animation-delay: 0.05s; }
-.delay-2 { animation-delay: 0.1s; }
-.delay-3 { animation-delay: 0.15s; }
-.delay-4 { animation-delay: 0.2s; }
-.delay-5 { animation-delay: 0.25s; }
-.delay-6 { animation-delay: 0.3s; }
 
 /* ============================================================
    Responsive

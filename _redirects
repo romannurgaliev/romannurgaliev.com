@@ -14,3 +14,7 @@
 /docs/*               /404.html  404!
 /tests/*              /404.html  404!
 /scripts/*            /404.html  404!
+/.claude/*            /404.html  404!
+/.github/*            /404.html  404!
+/.vscode/*            /404.html  404!
+/.gitignore           /404.html  404!
