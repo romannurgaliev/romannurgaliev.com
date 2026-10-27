@@ -213,6 +213,17 @@ order.forEach((href, i) => {
 });
 for (const p of cases) if (!order.includes(p)) report(p, 'has no card on the home page');
 
+// The phone case list (.home-index) is a hand copy of the cards: same links,
+// same order, same "Name — Label" titles
+const plain = t => t.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
+const cardTitles = [...html['index.html'].matchAll(/<h2 class="case-title">([\s\S]*?)<\/h2>/g)].map(m => plain(m[1]));
+const rows = [...html['index.html'].matchAll(/<a class="home-index-link" href="([^"]+)"><span class="home-index-name">([^<]*)<\/span><span class="home-index-label">([^<]*)<\/span>/g)];
+if (rows.map(r => r[1]).join() !== order.join()) report('index.html', `phone case list order ${rows.map(r => r[1]).join(', ')} differs from the cards`);
+rows.forEach((r, i) => {
+  const t = `${plain(r[2])} — ${plain(r[3])}`;
+  if (cardTitles[i] && t !== cardTitles[i]) report('index.html', `phone case list row "${t}" differs from card "${cardTitles[i]}"`);
+});
+
 // ---------- 6. Accessibility and links ----------
 for (const [page, s] of Object.entries(html)) {
   for (const t of tags(s, 'nav')) if (!attr(t, 'aria-label')) report(page, 'a <nav> without aria-label');

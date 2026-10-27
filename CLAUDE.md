@@ -33,7 +33,7 @@ Design decisions are Roman's. When something is unclear, ask; don't fill the gap
 ## File structure
 
 ```
-index.html            — the one main page: #home (bio + case cards, #work) → #cv → #contact
+index.html            — the one main page: #home (bio + case cards, #work) → #cv → #contact; on phones (≤640) the cards and #cv are hidden and a text list of cases (`nav.home-index`) takes their place
 work/<slug>.html      — case pages: brighty, donuts, vpn, dedust, antara-health, podcast
 work/images/<project>/ — stills (DeDust uses work/images/questhub/): webp, <what>-<width>.webp (e.g. terminal-700.webp);
                         animations: <what>-<width>-av1.mp4 + -h264.mp4 + -poster.webp
@@ -102,6 +102,7 @@ No `text-transform: uppercase` and no decorative `letter-spacing` anywhere in st
 
 - **index.html** (`body.two-col`): grid, 320px sticky sidebar + content, max 1200px. On desktop the nav sits in the vertical middle of the sidebar; name, bio and section titles share one baseline (`--baseline`).
 - **Case pages** (`body.case-page`): the sidebar becomes a top bar that hides on scroll down. Text column 680px (`--case-text`), figures 1200px (`--case-wide`), contents list on the left from 1240px.
+- **Phones (≤640):** no menu in the top bar (only the name), on every page. On the home page the case cards and the CV section are hidden; `nav.home-index` lists the cases instead.
 - Breakpoints: 640 (phones), 768/769 (sidebar → top), 960 (risk simulator), 1240 (contents list).
 
 ---
@@ -153,6 +154,7 @@ No templating, so these are copied by hand — update every copy:
 - Sidebar / top bar: index.html, 404.html, all work/*.html
 - Footer (`.site-footer`): all work/*.html
 - Pager: all work/*.html and 404.html
+- Phone case list (`nav.home-index` in index.html): same links, order and titles as the home cards
 - `sitemap.xml` `lastmod`: update by hand when a page changes
 
 ---

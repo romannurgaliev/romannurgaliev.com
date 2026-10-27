@@ -1767,7 +1767,7 @@ body.case-page {
     gap: 0;
   }
 
-  /* Phones: shorter bio, so the first case shows up sooner */
+  /* Phones: shorter bio, so the case list shows up sooner */
   .home-bio-extra {
     display: none;
   }
@@ -1883,15 +1883,6 @@ body.case-page {
   /* Phones: no menu, only the name (it links home), like a personal
      page rather than a site — the home page is two screens anyway */
   .sidebar-nav {
-    display: none;
-  }
-
-  /* VPN cover: one phone in a square frame instead of three tiny ones */
-  .case-thumb--one-phone {
-    aspect-ratio: 1 / 1;
-  }
-
-  .case-thumb--one-phone .case-thumb-strip img:not(:first-child) {
     display: none;
   }
 

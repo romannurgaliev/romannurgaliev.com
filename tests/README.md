@@ -58,7 +58,7 @@ Random tests use a fixed seed, so a failure always reproduces. To look further:
 
 ## Results (Oct 24, 2026)
 
-- 149 model tests: 145 pass, 4 known Hyperliquid gaps marked `todo` (see `fixtures/hyperliquid/README.md`). 33 browser tests pass.
+- 149 model tests: 145 pass, 4 known Hyperliquid gaps marked `todo` (see `fixtures/hyperliquid/README.md`). 34 browser tests pass.
 - Coverage of risk-model.js: 99.7% lines, 98.6% branches, 100% functions. The
   one uncovered line is the browser loader.
 - Mutation score: 93.8% (466 of 497 small code changes caught; the threshold is 85%).
