@@ -49,6 +49,7 @@ case-nav.js           — case pages: hiding top bar, contents list (≥1240px)
 case-media.js         — case pages: carousels (.case-carousel), galleries (.case-gallery), looping videos (video[data-loop])
 copy-email.js         — any [data-copy] element copies its value and shows a toast
 scripts/cv-pdf.js     — builds cv.pdf from the #cv section of index.html (Playwright)
+scripts/risk-sim-shots.js — re-shoots the two simulator stills in the Brighty carousel from the live prototype (`node scripts/risk-sim-shots.js`); run after any visible change to the simulator
 scripts/audit.js      — mechanical site checks for the periodic audit (`node scripts/audit.js`)
 .claude/skills/audit/  — the /audit procedure; .claude/hooks/audit-reminder.js reminds every 6 sessions
 cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
