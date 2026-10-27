@@ -61,7 +61,7 @@
 
       <div class="case-section">
         <h2>Web Account</h2>
-        <p>I pitched a redesign of the web account several times until it was prioritized: the product needed it to scale and to ship new features. After release, both versions ran side by side. 96% of users stayed on the new account, and then everyone moved over.</p>
+        <p>I pitched a redesign of the web account several times until it was prioritized: the product needed it to scale and to ship new features. We released it as an A/B test against the old account. I set the share of users who stayed on the new account as the success metric: 96% stayed, and then everyone moved over.</p>
 
         <figure class="case-figure">
           <div class="case-figure-frame">
@@ -100,11 +100,14 @@
           <li>Moving a key to another device by QR code, with a warning before reissuing a key that stops working everywhere</li>
           <li>Sign-in by magic link, one-time code, password, or social account, with every state specified for engineering: disabled, invalid, rate-limited, and server error</li>
         </ul>
+
+        <p>I specify edge-case states up front, even when review calls them unnecessary. Several of them came back into handoff later at engineering’s request.</p>
       </div>
 
       <div class="case-section">
         <h2>In Progress</h2>
         <ul>
+          <li>An A/B test of the new checkout</li>
           <li>Connection settings for restrictive networks, with warnings wherever a change can break the connection</li>
           <li>Device sessions on desktop and mobile</li>
         </ul>
