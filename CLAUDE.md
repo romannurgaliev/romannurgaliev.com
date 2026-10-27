@@ -65,7 +65,7 @@ Colors — never hardcode a color in style.css outside `:root`:
 
 Font: Inter Variable, self-hosted and preloaded. No Google Fonts, no other typefaces.
 
-Type scale — seven steps, two weights (400 and 500). Nothing else in style.css (one exception: `.home-bio` uses line-height 1.45):
+Type scale — seven steps, two weights (400 and 500). Nothing else in style.css (exceptions: `.home-bio` uses line-height 1.45; on phones the home first screen — bio and case list — is 18px / 1.45 / −0.014em):
 
 | Step | Size | Line height | Tracking | Used for |
 |---|---|---|---|---|
