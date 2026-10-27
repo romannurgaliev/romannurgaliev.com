@@ -47,8 +47,8 @@
   --lh-body: 1.55;
   --ls-body: -0.014em;
 
-  /* Home first screen on phones (bio and case list): off the scale on
-     purpose, between M and L */
+  /* Home page text on phones (bio, case list, contacts): off the scale
+     on purpose, between M and L */
   --fs-home-phone: 18px;
 
   /* H — headings inside long text (case sections) and pull quotes:
@@ -1788,11 +1788,14 @@ body.case-page {
     margin-bottom: 56px;
   }
 
-  /* Phones: the first screen is set in 18px, off the scale on purpose —
-     L (20) reads too large on a narrow screen, M (16) too small */
+  /* Phones: the first screen and contacts are set in 18px, off the scale
+     on purpose — L (20) reads too large on a narrow screen, M (16) too small */
   .home-bio,
   .home-index-name,
-  .home-index-label {
+  .home-index-label,
+  .contact-bio,
+  .contact-link-label,
+  .contact-link-value {
     font-size: var(--fs-home-phone);
     line-height: 1.45;
     letter-spacing: var(--ls-body);
