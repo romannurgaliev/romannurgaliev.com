@@ -32,7 +32,6 @@
       <nav class="sidebar-nav" aria-label="Main">
         <a href="#home" class="active" aria-current="true">Home</a>
         <a href="#cv">CV</a>
-        <a href="/cv.pdf" class="nav-cv-pdf">CV</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -300,16 +299,14 @@
 
   <script>
     // Scroll-spy: the nav item of the section in view is active.
-    // Only links to sections on this page (the phone CV link opens the PDF)
-    const links = [...document.querySelectorAll('.sidebar-nav a')].filter(a => a.hash);
+    const links = [...document.querySelectorAll('.sidebar-nav a')];
     const sections = links.map(a => document.querySelector(a.hash));
 
     function updateNav() {
       const line = window.innerHeight * 0.35;
       let current = 0;
       sections.forEach((s, i) => {
-        // A section hidden on this screen (CV on phones) doesn't count
-        if (s.getClientRects().length && s.getBoundingClientRect().top <= line) current = i;
+        if (s.getBoundingClientRect().top <= line) current = i;
       });
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
       if (atBottom) current = sections.length - 1;

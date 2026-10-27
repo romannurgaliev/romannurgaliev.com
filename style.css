@@ -367,11 +367,6 @@ body.two-col {
   color: var(--text-muted);
 }
 
-/* Phones get CV as the PDF instead of the section (see the 640px block) */
-.sidebar-nav .nav-cv-pdf {
-  display: none;
-}
-
 .sidebar-nav a.active {
   color: var(--text);
 }
@@ -1830,14 +1825,15 @@ body.case-page {
   }
 
   /* No CV section on phones: a wall of text there, and the cases above
-     already tell the same story. The CV link in the top bar opens the PDF */
-  #cv,
-  .sidebar-nav a[href$="#cv"] {
+     already tell the same story */
+  #cv {
     display: none;
   }
 
-  .sidebar-nav .nav-cv-pdf {
-    display: inline;
+  /* Phones: no menu, only the name (it links home), like a personal
+     page rather than a site — the home page is two screens anyway */
+  .sidebar-nav {
+    display: none;
   }
 
   /* VPN cover: one phone in a square frame instead of three tiny ones */
