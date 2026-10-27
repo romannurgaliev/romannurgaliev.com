@@ -602,10 +602,6 @@ a.case-card .case-title {
 }
 
 /* Dividers only between rows; last row sits on the section's bottom edge */
-.contact-link--cv {
-  display: none;
-}
-
 .contact-link:last-child {
   border-bottom: none;
   padding-bottom: 0;
@@ -1828,16 +1824,10 @@ body.case-page {
     display: none;
   }
 
-  /* CV on phones is closed by default: a wall of text, and the cases
-     above tell the same story. The CV row in contacts opens it (index.html
-     script adds .is-open); no PDF on phones */
-  #cv:not(.is-open),
-  .cv-download {
+  /* No CV section on phones: a wall of text there, and the cases above
+     already tell the same story */
+  #cv {
     display: none;
-  }
-
-  .contact-link--cv {
-    display: flex;
   }
 
   /* Phones: no menu, only the name (it links home), like a personal

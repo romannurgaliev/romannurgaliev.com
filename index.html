@@ -280,11 +280,6 @@
       <p class="contact-bio">I’m looking for Design Lead and Senior Product Designer roles in fintech, trading platforms, and crypto infrastructure. Full-time preferred; open to part-time and freelance. Based in Almaty, Kazakhstan, working remotely.</p>
 
         <div class="contact-links">
-          <!-- Phones only: the CV section is closed there until this opens it -->
-          <a class="contact-link contact-link--cv" href="#cv">
-            <span class="contact-link-label">CV</span>
-            <span class="contact-link-value">Read my CV</span>
-          </a>
           <button type="button" class="contact-link" data-copy="romannurgaliev@gmail.com" aria-label="Copy email romannurgaliev@gmail.com">
             <span class="contact-link-label">Email</span>
             <span class="contact-link-value">romannurgaliev@gmail.com</span>
@@ -326,10 +321,6 @@
     addEventListener('resize', updateNav);
     updateNav();
 
-    // Phones: the CV section stays closed until a link to it is followed
-    const openCv = target => { if (target.id === 'cv') target.classList.add('is-open'); };
-    if (location.hash === '#cv') openCv(document.getElementById('cv'));
-
     // Anchor links glide to their section with a soft ease-in-out,
     // slower than the browser's built-in smooth scroll.
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -370,7 +361,6 @@
       const target = document.querySelector(link.hash);
       if (!target) return;
       e.preventDefault();
-      openCv(target);
       if (location.hash !== link.hash) history.pushState(null, '', link.hash);
       // Keep keyboard focus in step with the scroll, as a native jump would
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
