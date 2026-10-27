@@ -47,23 +47,24 @@
 
         <p class="home-bio">I design fintech and B2B products: trading, payments, billing, business onboarding, and internal tools, often as the only designer on the team. <span class="home-bio-extra">I work closely with engineers, compliance, clinicians, and merchants. </span>Now I’m building a VPN for networks where Surfshark doesn’t work.</p>
 
-        <!-- Phones only: an index of the cases at the bottom of the first screen -->
+        <!-- Phones only: the list of cases replaces the cards (hidden on phones);
+             each row opens the case page -->
         <nav class="home-index" aria-label="Case studies">
-          <a class="home-index-link" href="#case-brighty"><span class="home-index-name">Brighty</span><span class="home-index-label">Trading Terminal &amp; B2B Onboarding</span></a>
-          <a class="home-index-link" href="#case-donuts"><span class="home-index-name">donuts.tg</span><span class="home-index-label">Crypto Payment Gateway</span></a>
-          <a class="home-index-link" href="#case-vpn"><span class="home-index-name">VPN service</span><span class="home-index-label">Apps &amp; Web Account</span></a>
-          <a class="home-index-link" href="#case-dedust"><span class="home-index-name">DeDust.io</span><span class="home-index-label">TON Explorer &amp; Quest Hub</span></a>
-          <a class="home-index-link" href="#case-antara-health"><span class="home-index-name">Antara Health</span><span class="home-index-label">Virtual Primary Care</span></a>
-          <a class="home-index-link" href="#case-podcast"><span class="home-index-name">Дизайн Такой</span><span class="home-index-label">Podcast</span></a>
+          <a class="home-index-link" href="work/brighty.html"><img class="home-index-thumb" src="work/images/brighty/thumb-168.webp" width="168" height="168" alt="" fetchpriority="high" decoding="async"><span class="home-index-text"><span class="home-index-name">Brighty</span><span class="home-index-label">Trading Terminal &amp; B2B Onboarding</span></span></a>
+          <a class="home-index-link" href="work/donuts.html"><img class="home-index-thumb" src="work/images/donuts/thumb-168.webp" width="168" height="168" alt="" loading="lazy" decoding="async"><span class="home-index-text"><span class="home-index-name">donuts.tg</span><span class="home-index-label">Crypto Payment Gateway</span></span></a>
+          <a class="home-index-link" href="work/vpn.html"><img class="home-index-thumb" src="work/images/vpn/thumb-168.webp" width="168" height="168" alt="" loading="lazy" decoding="async"><span class="home-index-text"><span class="home-index-name">VPN service</span><span class="home-index-label">Apps &amp; Web Account</span></span></a>
+          <a class="home-index-link" href="work/dedust.html"><img class="home-index-thumb" src="work/images/questhub/thumb-168.webp" width="168" height="168" alt="" loading="lazy" decoding="async"><span class="home-index-text"><span class="home-index-name">DeDust.io</span><span class="home-index-label">TON Explorer &amp; Quest Hub</span></span></a>
+          <a class="home-index-link" href="work/antara-health.html"><img class="home-index-thumb" src="work/images/antara/thumb-168.webp" width="168" height="168" alt="" loading="lazy" decoding="async"><span class="home-index-text"><span class="home-index-name">Antara Health</span><span class="home-index-label">Virtual Primary Care</span></span></a>
+          <a class="home-index-link" href="work/podcast.html"><img class="home-index-thumb" src="work/images/podcast/thumb-168.webp" width="168" height="168" alt="" loading="lazy" decoding="async"><span class="home-index-text"><span class="home-index-name">Дизайн Такой</span><span class="home-index-label">Podcast</span></span></a>
         </nav>
       </div>
 
       <div id="work" class="work">
 
-        <a class="case-card" href="work/brighty.html" id="case-brighty">
+        <a class="case-card" href="work/brighty.html">
           <div class="case-thumb">
             <div class="case-thumb-single">
-              <img fetchpriority="high" src="work/images/brighty/terminal-1536.webp" srcset="work/images/brighty/terminal-700.webp 700w, work/images/brighty/terminal-1536.webp 1536w" sizes="(max-width: 768px) 90vw, 768px" width="1536" height="819" alt="The trading terminal in production: BTC-USDC chart with MACD and RSI, order book, order form with cross leverage and take-profit and stop-loss presets, and the positions table" decoding="async">
+              <picture><source media="(max-width: 640px)" srcset="work/images/brighty/thumb-168.webp"><img fetchpriority="high" src="work/images/brighty/terminal-1536.webp" srcset="work/images/brighty/terminal-700.webp 700w, work/images/brighty/terminal-1536.webp 1536w" sizes="(max-width: 768px) 90vw, 768px" width="1536" height="819" alt="The trading terminal in production: BTC-USDC chart with MACD and RSI, order book, order form with cross leverage and take-profit and stop-loss presets, and the positions table" decoding="async"></picture>
             </div>
           </div>
           <div class="case-meta">
@@ -74,7 +75,7 @@
           </div>
         </a>
 
-        <a class="case-card" href="work/donuts.html" id="case-donuts">
+        <a class="case-card" href="work/donuts.html">
           <div class="case-thumb">
             <div class="case-thumb-single">
               <img src="work/images/donuts/dashboard-overview-1200.webp" srcset="work/images/donuts/dashboard-overview-1200.webp 1200w, work/images/donuts/dashboard-overview-2400.webp 2400w" sizes="(max-width: 768px) 50vw, 400px" width="1200" height="1321" alt="donuts.tg merchant dashboard: store balance with a 48-hour refund reserve, assets by share, and recent activity" loading="lazy" decoding="async">
@@ -88,7 +89,7 @@
           </div>
         </a>
 
-        <a class="case-card" href="work/vpn.html" id="case-vpn">
+        <a class="case-card" href="work/vpn.html">
           <div class="case-thumb case-thumb--one-phone">
             <div class="case-thumb-strip">
               <img src="work/images/vpn/cover-bypass-on-430.webp" width="430" height="880" alt="Split tunneling settings on iPhone with Bypass VPN turned on and two bypassed websites" loading="lazy" decoding="async">
@@ -104,7 +105,7 @@
           </div>
         </a>
 
-        <a class="case-card" href="work/dedust.html" id="case-dedust">
+        <a class="case-card" href="work/dedust.html">
           <div class="case-thumb">
             <div class="case-thumb-strip">
               <img src="work/images/questhub/quest-intro-390.webp" width="390" height="844" alt="Quest Hub quest intro: reward pool in $DUST, soulbound tokens, and extra XP" loading="lazy" decoding="async">
@@ -120,7 +121,7 @@
           </div>
         </a>
 
-        <a class="case-card" href="work/antara-health.html" id="case-antara-health">
+        <a class="case-card" href="work/antara-health.html">
           <div class="case-thumb">
             <div class="case-thumb-single">
               <img src="work/images/antara/patient-app-1078.webp" srcset="work/images/antara/patient-app-700.webp 700w, work/images/antara/patient-app-1078.webp 1078w" sizes="(max-width: 768px) 90vw, 670px" width="1078" height="697" alt="Antara Health patient app listing: booking consultations, tracking progress, and health documents" loading="lazy" decoding="async">
@@ -134,7 +135,7 @@
           </div>
         </a>
 
-        <a class="case-card" href="work/podcast.html" id="case-podcast">
+        <a class="case-card" href="work/podcast.html">
           <div class="case-thumb">
             <div class="case-thumb-strip">
               <img src="work/images/podcast/apple-podcasts-989.webp" srcset="work/images/podcast/apple-podcasts-500.webp 500w, work/images/podcast/apple-podcasts-989.webp 989w" sizes="(max-width: 768px) 45vw, 370px" width="989" height="601" alt="Дизайн Такой in Apple Podcasts with the episode list" loading="lazy" decoding="async">

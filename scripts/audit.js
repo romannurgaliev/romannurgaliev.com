@@ -101,8 +101,12 @@ const isAnimatedWebp = file => {
 };
 
 for (const [page, s] of Object.entries(html)) {
-  const media = strip(s).match(/<(img|video)\b[^>]*>/g) || [];
-  media.forEach((t, i) => {
+  const all = strip(s).match(/<(img|video)\b[^>]*>/g) || [];
+  // The phone-only case list on the home page is the first screen on phones
+  // and hidden on desktop, so its previews are ordered on their own
+  const thumbs = all.filter(t => t.includes('home-index-thumb'));
+  const media = all.filter(t => !t.includes('home-index-thumb'));
+  [thumbs, media].forEach(group => group.forEach((t, i) => {
     const isImg = t.startsWith('<img');
     const name = attr(t, 'src') || attr(t, 'poster') || '(video)';
     for (const a of ['width', 'height']) if (!attr(t, a)) report(page, `${name}: no ${a}`);
@@ -145,7 +149,7 @@ for (const [page, s] of Object.entries(html)) {
       const size = webpSize(uf);
       if (size && size[0] !== parseInt(w)) report(page, `${u}: srcset says ${w}, file is ${size[0]}px wide`);
     }
-  });
+  }));
 
   // Each video source exists in both codecs
   for (const v of strip(s).match(/<video\b[\s\S]*?<\/video>/g) || []) {

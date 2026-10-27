@@ -443,6 +443,11 @@ a.case-card .case-title {
   padding: 24px;
 }
 
+/* The first card's <picture> only swaps the file on phones; layout ignores it */
+.case-thumb-single picture {
+  display: contents;
+}
+
 .case-thumb-single img {
   width: 100%;
   height: auto;
@@ -1763,8 +1768,8 @@ body.case-page {
     display: none;
   }
 
-  /* First screen: the bio on top, the index of cases at the bottom,
-     the case cards start below the fold. svh = the screen with Safari's
+  /* First screen: the bio on top, the list of cases at the bottom.
+     svh = the screen with Safari's
      toolbars shown, so the index never hides under them; 52px bar + 24px
      content padding */
   .intro {
@@ -1791,11 +1796,29 @@ body.case-page {
     padding-top: 40px;
   }
 
-  /* Name over a muted one-line description, no dividers */
+  /* Small square preview, then the name over a muted description;
+     the row opens the case page */
   .home-index-link {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     text-decoration: none;
+  }
+
+  .home-index-thumb {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    outline: 1px solid var(--edge);
+    outline-offset: -1px;
+    object-fit: cover;
+  }
+
+  .home-index-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
 
   .home-index-name {
@@ -1806,22 +1829,8 @@ body.case-page {
     color: var(--text-muted);
   }
 
-  /* A tap on the index lands the card just below the top bar */
-  .case-card {
-    scroll-margin-top: 72px;
-  }
-
-  /* Card screenshots use the full width on phones */
-  .case-thumb-single {
-    padding: 0;
-  }
-
-  /* VPN cover: one phone in a square frame instead of three tiny ones */
-  .case-thumb--one-phone {
-    aspect-ratio: 1 / 1;
-  }
-
-  .case-thumb--one-phone .case-thumb-strip img:not(:first-child) {
+  /* The list above replaces the case cards on phones */
+  .work {
     display: none;
   }
 
