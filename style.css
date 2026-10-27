@@ -1796,29 +1796,11 @@ body.case-page {
     padding-top: 40px;
   }
 
-  /* Small square preview, then the name over a muted description;
-     the row opens the case page */
+  /* Name over a muted one-line description, no dividers */
   .home-index-link {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    text-decoration: none;
-  }
-
-  .home-index-thumb {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    outline: 1px solid var(--edge);
-    outline-offset: -1px;
-    object-fit: cover;
-  }
-
-  .home-index-text {
-    display: flex;
     flex-direction: column;
-    min-width: 0;
+    text-decoration: none;
   }
 
   .home-index-name {
@@ -1831,6 +1813,15 @@ body.case-page {
 
   /* The list above replaces the case cards on phones */
   .work {
+    display: none;
+  }
+
+  /* VPN cover: one phone in a square frame instead of three tiny ones */
+  .case-thumb--one-phone {
+    aspect-ratio: 1 / 1;
+  }
+
+  .case-thumb--one-phone .case-thumb-strip img:not(:first-child) {
     display: none;
   }
 
