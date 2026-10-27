@@ -1764,7 +1764,7 @@ body.case-page {
 
   .contact-link {
     flex-direction: column;
-    gap: 2px;
+    gap: 0;
   }
 
   /* Phones: shorter bio, so the first case shows up sooner */
@@ -1772,22 +1772,38 @@ body.case-page {
     display: none;
   }
 
-  /* First screen: the bio on top, the list of cases at the bottom.
-     svh = the screen with Safari's
-     toolbars shown, so the index never hides under them; 52px bar + 24px
-     content padding */
+  /* Phones copy the system of jakub.kr and emilkowal.ski: one text size,
+     a short dark label over each section, dark title over a muted line in
+     every list, 24px side margins, 64px between sections, 20px from a label
+     to its content and between list rows. No empty screens, no dividers. */
+  .content {
+    padding: 24px 24px 64px;
+  }
+
+  .sidebar {
+    padding-inline: 24px;
+  }
+
   .intro {
-    min-height: calc(100svh - 76px);
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 56px;
+    margin-bottom: 0;
+  }
+
+  .section + .section {
+    margin-top: 64px;
+  }
+
+  #contact {
+    min-height: 0;
   }
 
   /* Phones: the first screen and contacts are set in 18px, off the scale
-     on purpose — L (20) reads too large on a narrow screen, M (16) too small */
+     on purpose — L (20) reads too large on a narrow screen, M (16) too small.
+     Section titles drop to the same size, as in the references */
   .home-bio,
+  .home-index-title,
   .home-index-name,
   .home-index-label,
+  .contact .section-title,
   .contact-bio,
   .contact-link-label,
   .contact-link-value {
@@ -1796,12 +1812,46 @@ body.case-page {
     letter-spacing: var(--ls-body);
   }
 
+  /* Paragraphs get the references' looser leading; list rows stay tight */
+  .home-bio,
+  .contact-bio {
+    line-height: 1.6;
+  }
+
+  .home-index-title {
+    font-weight: 500;
+    color: var(--text);
+  }
+
   .home-index {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: auto;
-    padding-top: 40px;
+    gap: 20px;
+    margin-top: 64px;
+  }
+
+  .contact-bio {
+    margin-top: 20px;
+  }
+
+  /* Contacts read like the case list: dark name over a muted value */
+  .contact-links {
+    gap: 20px;
+    margin-top: 24px;
+    padding-top: 0;
+  }
+
+  .contact-link {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .contact-link-label {
+    color: var(--text);
+  }
+
+  .contact-link-value {
+    color: var(--text-muted);
   }
 
   /* Name over a muted one-line description, no dividers */

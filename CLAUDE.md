@@ -77,7 +77,7 @@ Colors — never hardcode a color in style.css outside `:root`:
 
 Font: Inter Variable, self-hosted and preloaded. No Google Fonts, no other typefaces.
 
-Type scale — seven steps, two weights (400 and 500). Nothing else in style.css (exceptions: `.home-bio` uses line-height 1.45; on phones the home page text — bio, case list, contact text and links — is 18px / 1.45 / −0.014em):
+Type scale — seven steps, two weights (400 and 500). Nothing else in style.css (exceptions: `.home-bio` uses line-height 1.45; on phones the home page text — bio, section labels, case list, contact text and links — is 18px / 1.45 / −0.014em, paragraphs 1.6; phone home layout copies jakub.kr / emilkowal.ski: 24px margins, 64px between sections, 20px label→content and between rows, dark title over muted line, no dividers, no full-screen gaps):
 
 | Step | Size | Line height | Tracking | Used for |
 |---|---|---|---|---|
