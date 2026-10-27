@@ -9,6 +9,18 @@ Roman is a designer, not a developer. Explain changes in plain terms; don't assu
 
 ---
 
+## Working with Roman
+
+Design decisions are Roman's. When something is unclear, ask; don't fill the gap with your own design choice.
+
+1. **References are the spec.** When Roman shows examples (screenshots, other sites), copy what is in them. Anything that isn't there (images, extra rows, new controls), ask first.
+2. **When the agreed solution breaks** (doesn't fit, conflicts with something), show a screenshot and 2 options. Don't pick one yourself.
+3. **Before adding an element, check the whole page** for something it duplicates.
+4. **Do only what was asked.** Mention side issues in one line at the end; don't fix them unasked.
+5. **Keep replies short:** result, screenshot, question if there is one. He reads on a phone.
+
+---
+
 ## Read before editing
 
 - Read the actual file before changing it. Don't guess class names or values — this file describes the system, the code is the source of truth.
