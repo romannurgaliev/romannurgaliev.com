@@ -53,6 +53,7 @@ scripts/risk-sim-shots.js — re-shoots the two simulator stills in the Brighty 
 scripts/audit.js      — mechanical site checks for the periodic audit (`node scripts/audit.js`)
 .claude/skills/audit/  — the /audit procedure; .claude/hooks/audit-reminder.js reminds every 6 sessions
 cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
+google6d318da8ddb4333d.html — Google Search Console ownership file; never delete
 fonts/InterVariable.woff2
 ```
 
