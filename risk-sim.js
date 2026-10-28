@@ -334,8 +334,7 @@
                 '<b>' + f.name + '</b><span>' + f.effect + '</span></button>';
             }).join('')
           : '<p class="sim-fixes-empty t11">Risk is low. Nothing to fix at these prices.</p>') +
-      '</div>' +
-      '<p class="sim-footnote t11">Stop orders are assumed to fill at the trigger price. Gaps are not simulated.</p>';
+      '</div>';
 
     var positions =
       '<div class="sim-pos-head"><b>Active Positions</b><span class="sim-count">' + POSITIONS.length + '</span>' +
@@ -381,7 +380,9 @@
   root.innerHTML =
     '<div class="sim-head"><p class="sim-title">Liquidation Risk Simulator</p>' +
       '<span class="sim-close" aria-hidden="true"><img src="' + ICONS + 'close.svg" alt="" width="20" height="20"></span></div>' +
-    '<div class="sim-body"><div class="sim-account"></div><div class="sim-positions"></div></div>';
+    '<div class="sim-body"><div class="sim-account"></div><div class="sim-positions"></div></div>' +
+    // Window footer: a fixed note that never changes with the prices
+    '<div class="sim-foot"><p class="sim-footnote t11">Stop orders are assumed to fill at the trigger price. Gaps are not simulated.</p></div>';
   var accountEl = root.querySelector('.sim-account');
   var positionsEl = root.querySelector('.sim-positions');
 

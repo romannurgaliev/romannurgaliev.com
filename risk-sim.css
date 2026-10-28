@@ -295,6 +295,12 @@
   color: var(--red);
 }
 
+/* ---------- Footer ---------- */
+.sim-foot {
+  padding: 12px;
+  text-align: center;
+}
+
 .sim-footnote {
   color: var(--w50); /* --w25 was 2.24:1, below WCAG AA */
 }
