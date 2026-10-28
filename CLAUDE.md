@@ -125,6 +125,20 @@ Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` 
 
 Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`.
 
+### Case page meta
+
+The pills under the case lead (`ul.case-chips`) hold the same fields in the same order on every case page except the podcast: Role → Platform → Team → Location. Values only — never print the labels ("Role:", "Platform:") in the UI. One pill per field; omit Team when the page has nothing to say about the team. No pills that repeat a field (e.g. "Web & Mobile" next to a platform pill).
+
+| Page | Role | Platform | Team | Location |
+|---|---|---|---|---|
+| brighty | Sole designer | Web | One frontend engineer, ~20-person company | Switzerland, remote |
+| donuts | Founding designer | Web | — | Remote |
+| vpn | Product designer | Web, iOS, Android, Android TV | — | Remote |
+| dedust | Product designer | Web, Telegram Mini App | — | Dubai, remote |
+| antara-health | Founding designer | iOS, Android, web | — | Nairobi (on-site 2022–2023), remote |
+
+Home card descriptions (`.case-desc`) start with the role, then what was designed, then one result.
+
 Images: webp, always with `width`, `height`, `alt`, and `srcset`/`sizes` when there are several widths. `loading="lazy"` on all images except the first on a page, which gets `fetchpriority="high"`.
 
 Animations (screen recordings, UI loops) are never animated webp or GIF — they are looping videos, 5–10× lighter. One size per animation, AV1 first with an H.264 fallback (Safari on devices without AV1), poster = the first frame:
