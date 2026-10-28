@@ -151,6 +151,7 @@ node scripts/cv-pdf.js
 No templating, so these are copied by hand — update every copy:
 
 - `<head>` (meta, OG, preload, favicon, stylesheet): index.html, 404.html, all work/*.html
+  - Exception: the JSON-LD `<script type="application/ld+json">` (Person + WebSite, for Google) is on index.html only. Add new profiles to its `sameAs` and give the matching contact link `rel="me"`.
 - Sidebar / top bar: index.html, 404.html, all work/*.html
 - Footer (`.site-footer`): all work/*.html
 - Pager: all work/*.html and 404.html

@@ -164,6 +164,8 @@ const sidebarOf = s => normalise(block(s, /<aside class="sidebar[\s\S]*?<\/aside
 const footerOf = s => normalise(block(s, /<footer class="site-footer[\s\S]*?<\/footer>/));
 const headOf = s => normalise(block(s, /<head>[\s\S]*?<\/head>/)
   .replace(/<title>.*?<\/title>/, '')
+  // Person/WebSite structured data belongs on the home page only
+  .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, '')
   .replace(/<meta (name|property)="(description|og:title|og:description|og:url|og:type|robots)"[^>]*>/g, '')
   .replace(/<link rel="canonical"[^>]*>/, '')
   .replace(/<link rel="stylesheet" href="[^"]*risk-sim\.css">/, ''));
