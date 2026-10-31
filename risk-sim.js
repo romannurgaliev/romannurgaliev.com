@@ -367,8 +367,18 @@
   // leaves empty backdrop below the modal instead of shrinking the page
   var stage = root.closest('.sim-stage');
   var stageMin = 0;
+  // Safari can run this script before risk-sim.css is applied; measuring then
+  // locks in the unstyled height (~2900px) and stretches the backdrop. So the
+  // height is only held once the page, with its stylesheets, has loaded.
+  var stageReady = document.readyState === 'complete';
+  if (!stageReady) {
+    window.addEventListener('load', function () {
+      stageReady = true;
+      holdStageHeight();
+    });
+  }
   function holdStageHeight() {
-    if (!stage) return;
+    if (!stage || !stageReady) return;
     var h = stage.offsetHeight;
     if (h > stageMin) {
       stageMin = h;

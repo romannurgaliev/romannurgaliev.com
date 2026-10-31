@@ -327,6 +327,27 @@ try {
   if (+cvChanged > +pdfChanged) report('cv.pdf', 'older than the last CV edit in index.html; run node scripts/cv-pdf.js');
 } catch {}
 
+// ---------- 10. Repo-only files are hidden on the live site ----------
+// Netlify serves every file in the repo, so notes and tooling at the top level
+// must be sent to 404 in _redirects. Anything not listed as part of the site here
+// is treated as repo-only.
+const siteFiles = new Set(['index.html', '404.html', 'work', 'fonts', 'style.css', 'risk-sim.css',
+  'risk-model.js', 'risk-sim.js', 'case-nav.js', 'case-media.js', 'copy-email.js',
+  'cv.pdf', 'og-image.png', 'favicon.svg', 'robots.txt', 'sitemap.xml',
+  '_redirects', '_headers', 'google6d318da8ddb4333d.html']);
+try {
+  const redirects = read('_redirects');
+  const tracked = execSync('git ls-files', { cwd: root }).toString().trim().split('\n');
+  const top = new Set(tracked.map(f => f.split('/')[0]));
+  for (const t of top) {
+    if (siteFiles.has(t)) continue;
+    const isDir = tracked.some(f => f.startsWith(t + '/'));
+    const rule = isDir ? `/${t}/*` : `/${t}`;
+    if (!redirects.split('\n').some(l => l.split(/\s+/)[0] === rule))
+      report('_redirects', `${rule} is repo-only but served on the live site; add it with /404.html 404!`);
+  }
+} catch {}
+
 // ---------- Result ----------
 if (problems.length) {
   console.log(`${problems.length} problem(s):\n`);

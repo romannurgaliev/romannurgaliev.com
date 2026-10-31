@@ -7,6 +7,7 @@
 
 # Repo files that aren't part of the site: tests, notes, tooling
 /CLAUDE.md            /404.html  404!
+/README.md            /404.html  404!
 /package.json         /404.html  404!
 /package-lock.json    /404.html  404!
 /playwright.config.js /404.html  404!

@@ -52,6 +52,7 @@ scripts/cv-pdf.js     — builds cv.pdf from the #cv section of index.html (Play
 scripts/risk-sim-shots.js — re-shoots the two simulator stills in the Brighty carousel from the live prototype (`node scripts/risk-sim-shots.js`); run after any visible change to the simulator
 scripts/audit.js      — mechanical site checks for the periodic audit (`node scripts/audit.js`)
 .claude/skills/audit/  — the /audit procedure; .claude/hooks/audit-reminder.js reminds every 6 sessions
+README.md             — context for other AI models reviewing the site (same facts as here, shorter); update it when cases, periods, headings or declined ideas change
 cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
 google6d318da8ddb4333d.html — Google Search Console ownership file; never delete
 fonts/InterVariable.woff2
@@ -172,6 +173,8 @@ No templating, so these are copied by hand — update every copy:
 - Pager: all work/*.html and 404.html
 - Phone case list (`nav.home-index` in index.html): same links, order and titles as the home cards
 - `sitemap.xml` `lastmod`: update by hand when a page changes
+- `README.md` repeats the case table, section headings and declined ideas: update it when they change
+- `_redirects` hides every repo-only top-level file (`node scripts/audit.js` checks); add new notes and tooling there
 
 ---
 
