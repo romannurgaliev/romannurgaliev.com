@@ -53,7 +53,8 @@ scripts/risk-sim-shots.js — re-shoots the two simulator stills in the Brighty 
 scripts/audit.js      — mechanical site checks for the periodic audit (`node scripts/audit.js`)
 .claude/skills/audit/  — the /audit procedure; .claude/hooks/audit-reminder.js reminds every 6 sessions
 README.md             — context for other AI models reviewing the site (same facts as here, shorter); update it when cases, periods, headings or declined ideas change
-cv.pdf, og-image.png, favicon.svg, robots.txt, sitemap.xml
+cv.pdf, og-image.png, robots.txt, sitemap.xml
+favicon.svg         — the 👨🏻‍💻 emoji; favicon.ico (16/32/48) and apple-touch-icon.png (180) are renders of it for Safari, which shows a letter "R" placeholder without them. Re-render both when the SVG changes
 google6d318da8ddb4333d.html — Google Search Console ownership file; never delete
 fonts/InterVariable.woff2
 ```
@@ -124,7 +125,7 @@ The case pager (Previous / Up next) must follow the same order. The VPN company 
 
 Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards.
 
-Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then `p.case-result` — one line with the outcome, text colour, same type role as the lead; not on the podcast page — then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`. Pull quote from an outside source (podcast, Antara): `figure.case-quote` > `blockquote` > `p`, then `figcaption` with a link to the source.
+Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`. Pull quote from an outside source (podcast, Antara): `figure.case-quote` > `blockquote` > `p`, then `figcaption` with a link to the source.
 
 ### Case page meta
 
@@ -166,7 +167,7 @@ node scripts/cv-pdf.js
 
 No templating, so these are copied by hand — update every copy:
 
-- `<head>` (meta, OG, preload, favicon, stylesheet): index.html, 404.html, all work/*.html
+- `<head>` (meta, OG, preload, three favicon links, stylesheet): index.html, 404.html, all work/*.html
   - Exception: the JSON-LD `<script type="application/ld+json">` (Person + WebSite, for Google) is on index.html only. Add new profiles to its `sameAs` and give the matching contact link `rel="me"`.
 - Sidebar / top bar: index.html, 404.html, all work/*.html
 - Footer (`.site-footer`): all work/*.html

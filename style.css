@@ -219,7 +219,6 @@ button {
 .sidebar-nav a,
 .home-bio,
 .case-lead,
-.case-result,
 .contact-bio,
 .contact-link-label,
 .contact-link-value,
@@ -960,12 +959,6 @@ body.case-page {
 .case-lead {
   color: var(--text-muted);
   margin-top: 16px;
-}
-
-/* One-line outcome under the lead */
-.case-result {
-  color: var(--text);
-  margin-top: 8px;
 }
 
 .case-intro {
