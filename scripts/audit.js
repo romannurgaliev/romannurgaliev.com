@@ -348,7 +348,7 @@ try {
 // is treated as repo-only.
 const siteFiles = new Set(['index.html', '404.html', 'work', 'fonts', 'style.css', 'risk-sim.css',
   'risk-model.js', 'risk-sim.js', 'case-nav.js', 'case-media.js', 'copy-email.js',
-  'cv.pdf', 'og-image.png', 'favicon.svg', 'robots.txt', 'sitemap.xml',
+  'cv.pdf', 'og-image.png', 'favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'robots.txt', 'sitemap.xml',
   '_redirects', '_headers', 'google6d318da8ddb4333d.html']);
 try {
   const redirects = read('_redirects');
