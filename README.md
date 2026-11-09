@@ -70,13 +70,13 @@ Facts that look odd but are intentional:
 - **Years appear on case pages and in the CV, not on home cards.**
 - **The podcast is in Russian** and has a different meta layout from the other cases.
 
-Case page anatomy: title + period → lead paragraph → meta pills (Role → Platform → Team → Location; Team is left out where there's nothing to say) → sections, each with one heading → Previous / Up next. Section headings per page:
+Case page anatomy: title + period → lead paragraph → one-line outcome (not on the podcast) → meta pills (Role → Platform → Team → Location; Team is left out where there's nothing to say) → sections, each with one heading → Previous / Up next. Section headings per page:
 
 - Brighty: Overview · Trading Terminal · Cross-Margin Risk Simulator · Brighty Business · KYB Onboarding · Outcome
 - donuts.tg: Overview · What I Did · Checkout · Merchant Dashboard · Outcome
-- VPN: Overview · Web Account · Pricing and Billing · Apps and Sign-in · In Progress · Outcome
+- VPN: Overview · Web Account · Pricing and Billing · Apps and Sign-In · In Progress · Outcome
 - DeDust: Overview · Explorer · Quest Hub · Outcome
-- Antara Health: Overview · What I Did · Research: My Health · Back Part-time · Outcome
+- Antara Health: Overview · What I Did · Research: My Health · Back Part-Time · Outcome
 - Podcast: Overview · Reach · Listen · Talk
 
 ---
@@ -101,6 +101,7 @@ Case page anatomy: title + period → lead paragraph → meta pills (Role → Pl
 - Adding tags or years to home cards.
 - Changing the case order.
 - Adding a color accent, a second typeface, or more font weights.
+- A dark theme. Declined: 15 of 23 case images have a light background baked in (phones on white or grey, light product screenshots).
 - Naming the VPN company.
 
 ---

@@ -273,6 +273,21 @@ for (const m of css.matchAll(/font-size:\s*var\(--fs-[a-z]+\)/g)) {
   report(`style.css:${css.slice(0, m.index).split('\n').length}`, 'font-size set on a component, not in Type roles');
 }
 
+// Hover styles only for a mouse: on a phone the hover state sticks after a tap.
+// Walk the blocks and check each :hover sits inside @media (hover: hover) and (pointer: fine)
+{
+  const stack = [];
+  let start = 0;
+  for (let i = 0; i < body.length; i++) {
+    if (body[i] === '{') { stack.push(body.slice(start, i).trim()); start = i + 1; }
+    else if (body[i] === '}') { stack.pop(); start = i + 1; }
+    else if (body[i] === ';') start = i + 1;
+    else if (body.startsWith(':hover', i) && !stack.some(h => /hover:\s*hover\)\s*and\s*\(pointer:\s*fine/.test(h))) {
+      report(`style.css:${lineOf(i)}`, ':hover outside @media (hover: hover) and (pointer: fine)');
+    }
+  }
+}
+
 // Class selectors nobody uses
 const code = Object.values(html).join('\n') + ['case-media.js', 'case-nav.js', 'copy-email.js'].map(read).join('\n');
 const classes = new Set([...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/\.([a-zA-Z][\w-]*)(?=[^{}]*\{)/g)].map(m => m[1]));

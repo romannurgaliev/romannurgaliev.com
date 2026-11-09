@@ -124,7 +124,7 @@ The case pager (Previous / Up next) must follow the same order. The VPN company 
 
 Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards.
 
-Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (lead, chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`.
+Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then `p.case-result` — one line with the outcome, text colour, same type role as the lead; not on the podcast page — then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`.
 
 ### Case page meta
 
@@ -153,7 +153,7 @@ Animations (screen recordings, UI loops) are never animated webp or GIF — they
 
 case-media.js plays a `video[data-loop]` only while it is in view and never with reduced motion. Video width and height must be even. Encode (ffmpeg): H.264 `-c:v libx264 -preset slow -crf 26 -tune animation -movflags +faststart`; AV1 `-c:v libsvtav1 -preset 6 -crf 38 -movflags +faststart`; codecs string level from `ffprobe -show_entries stream=level`. Styles: frame rules use `:is(img, video)`.
 
-CV text lives only in the #cv section of index.html. After any CV edit, rebuild the PDF:
+CV text lives only in the #cv section of index.html. Side Projects there lists Wheelie (2026, links to its GitHub repo) above Дизайн Такой. After any CV edit, rebuild the PDF:
 
 ```bash
 npm i --no-save playwright && npx playwright install chromium
@@ -184,6 +184,7 @@ No templating, so these are copied by hand — update every copy:
 - Accessibility that already exists and must not break: skip link, `:focus-visible` outline, `prefers-reduced-motion` (CSS and JS), toast as `role="status"`, `inert` on hidden carousel slides, arrow-key carousel control.
 - JS: no libraries. New code in modern syntax (`const`, arrow functions); existing ES5 files (case-nav, case-media, risk-sim) may stay as they are until rewritten.
 - Comments explain why, in plain English, as in the existing files.
+- Hover styles go inside `@media (hover: hover) and (pointer: fine)`: on a phone a hover state sticks after a tap (`node scripts/audit.js` checks style.css; risk-sim.css is desktop-only).
 
 ---
 

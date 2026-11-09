@@ -113,8 +113,12 @@ a {
   transition: text-decoration-color 0.15s ease;
 }
 
-a:hover {
-  text-decoration-color: currentColor;
+/* Hover effects only for a mouse: on a phone the hover state sticks
+   after a tap and leaves the link underlined */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 /* Keyboard focus is always visible */
@@ -215,6 +219,7 @@ button {
 .sidebar-nav a,
 .home-bio,
 .case-lead,
+.case-result,
 .contact-bio,
 .contact-link-label,
 .contact-link-value,
@@ -381,9 +386,11 @@ body.two-col {
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-.sidebar-email:hover {
-  color: var(--text);
-  text-decoration-color: currentColor;
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-email:hover {
+    color: var(--text);
+    text-decoration-color: currentColor;
+  }
 }
 
 .content {
@@ -419,7 +426,7 @@ a.case-card .case-title {
 
 /* Only on devices with a mouse: on a phone the hover state sticks after
    a tap and leaves the title underlined */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   a.case-card:hover .case-title {
     text-decoration-color: currentColor;
   }
@@ -625,7 +632,7 @@ a.contact-link {
   transition: text-decoration-color 0.15s ease;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .contact-link:hover .contact-link-value {
     text-decoration-color: currentColor;
   }
@@ -651,8 +658,10 @@ a.contact-link {
   transition: background-color 0.25s ease-out;
 }
 
-.cv-download:hover {
-  background-color: color-mix(in srgb, var(--text) 75%, var(--bg));
+@media (hover: hover) and (pointer: fine) {
+  .cv-download:hover {
+    background-color: color-mix(in srgb, var(--text) 75%, var(--bg));
+  }
 }
 
 .cv-section {
@@ -910,8 +919,13 @@ body.case-page {
     transition: color 0.15s ease;
   }
 
-  .case-toc a:hover,
   .case-toc a[aria-current="true"] {
+    color: var(--text);
+  }
+}
+
+@media (min-width: 1240px) and (hover: hover) and (pointer: fine) {
+  .case-toc a:hover {
     color: var(--text);
   }
 }
@@ -946,6 +960,12 @@ body.case-page {
 .case-lead {
   color: var(--text-muted);
   margin-top: 16px;
+}
+
+/* One-line outcome under the lead */
+.case-result {
+  color: var(--text);
+  margin-top: 8px;
 }
 
 .case-intro {
@@ -1022,8 +1042,10 @@ body.case-page {
   transition: background-color 0.15s ease;
 }
 
-.case-details:not([open]):hover {
-  background: var(--fill-hover);
+@media (hover: hover) and (pointer: fine) {
+  .case-details:not([open]):hover {
+    background: var(--fill-hover);
+  }
 }
 
 .case-details summary {
@@ -1087,8 +1109,10 @@ body.case-page {
   text-decoration-color: var(--text-muted);
 }
 
-.case-section a:hover {
-  text-decoration-color: currentColor;
+@media (hover: hover) and (pointer: fine) {
+  .case-section a:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 /* ---------- Figures: wider than the text ---------- */
@@ -1170,8 +1194,10 @@ body.case-page {
   transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
-.case-arrow:hover:not(:disabled) {
-  background: var(--fill);
+@media (hover: hover) and (pointer: fine) {
+  .case-arrow:hover:not(:disabled) {
+    background: var(--fill);
+  }
 }
 
 .case-arrow:disabled {
@@ -1464,8 +1490,10 @@ body.case-page {
   transition: background-color 0.15s ease;
 }
 
-.case-pager-link:hover {
-  background: var(--fill-hover);
+@media (hover: hover) and (pointer: fine) {
+  .case-pager-link:hover {
+    background: var(--fill-hover);
+  }
 }
 
 /* A lone "Up next" card keeps to the right column */
@@ -1609,8 +1637,10 @@ body.case-page {
   transition: text-decoration-color 0.15s ease;
 }
 
-.site-footer-link:hover {
-  text-decoration-color: currentColor;
+@media (hover: hover) and (pointer: fine) {
+  .site-footer-link:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 .site-footer-link span {
