@@ -1402,6 +1402,11 @@ body.case-page {
   text-align: center;
 }
 
+/* When text follows the quote, the gap below matches the gap above */
+.case-section .case-quote + * {
+  margin-top: clamp(40px, 6vw, 64px);
+}
+
 .case-section .case-quote p {
   color: var(--text);
   font-weight: 500;

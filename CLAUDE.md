@@ -124,7 +124,7 @@ The case pager (Previous / Up next) must follow the same order. The VPN company 
 
 Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards.
 
-Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then `p.case-result` — one line with the outcome, text colour, same type role as the lead; not on the podcast page — then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`.
+Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then `p.case-result` — one line with the outcome, text colour, same type role as the lead; not on the podcast page — then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`. Pull quote from an outside source (podcast, Antara): `figure.case-quote` > `blockquote` > `p`, then `figcaption` with a link to the source.
 
 ### Case page meta
 
