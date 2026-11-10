@@ -9,14 +9,15 @@ const os = require('os');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 // No longer shown on the home page, so it lives here
-const LOCATION = 'Almaty, Kazakhstan · Open to remote opportunities';
+const LOCATION = 'Almaty, Kazakhstan · Open to remote work or relocation';
+// Fixed here: the page <title> is now lowercase and no longer holds the job title
+const TITLE = 'Product Designer';
 (async () => {
   const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   const src = await b.newPage();
   await src.goto('file://' + ROOT + '/index.html');
   const data = await src.evaluate(() => {
     const t = (el, s) => (el.querySelector(s)?.textContent || '').trim();
-    const title = document.title.split('—').pop().trim();
     const sections = [...document.querySelectorAll('#cv .cv-section')].map(sec => ({
       label: t(sec, '.cv-section-label'),
       entries: [...sec.querySelectorAll('.cv-entry')].map(e => ({
@@ -26,7 +27,7 @@ const LOCATION = 'Almaty, Kazakhstan · Open to remote opportunities';
         note: t(e, '.cv-entry-note'),
       })),
     }));
-    return { title, sections };
+    return { sections };
   });
   await src.close();
 
@@ -71,7 +72,7 @@ li::before { content: "–"; position: absolute; left: 0; color: #9a9a9a; }
 .inline .period { margin-left: auto; }
 </style></head><body>
 <header>
-  <div><h1>Roman Nurgaliev</h1><div class="title">${esc(data.title)}</div></div>
+  <div><h1>Roman Nurgaliev</h1><div class="title">${esc(TITLE)}</div></div>
   <div class="contacts">
     <a href="mailto:romannurgaliev@gmail.com">romannurgaliev@gmail.com</a><br>
     <a href="https://romannurgaliev.com">romannurgaliev.com</a> · <a href="https://linkedin.com/in/romannurgaliev">linkedin.com/in/romannurgaliev</a> · <a href="https://t.me/romannurgaliev">t.me/romannurgaliev</a><br>

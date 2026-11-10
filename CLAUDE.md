@@ -154,7 +154,7 @@ Animations (screen recordings, UI loops) are never animated webp or GIF — they
 
 case-media.js plays a `video[data-loop]` only while it is in view and never with reduced motion. Video width and height must be even. Encode (ffmpeg): H.264 `-c:v libx264 -preset slow -crf 26 -tune animation -movflags +faststart`; AV1 `-c:v libsvtav1 -preset 6 -crf 38 -movflags +faststart`; codecs string level from `ffprobe -show_entries stream=level`. Styles: frame rules use `:is(img, video)`.
 
-CV text lives only in the #cv section of index.html. Side Projects there lists Wheelie (2026, links to its GitHub repo) above Дизайн Такой. After any CV edit, rebuild the PDF:
+CV text lives only in the #cv section of index.html. Side Projects there lists only Дизайн Такой; Wheelie is an unreleased personal project and stays out of the CV. The Earlier section (pre-2021 jobs) has `hidden`: off the site, still in the PDF. Don't name Brighty Business competitors anywhere. After any CV edit, rebuild the PDF:
 
 ```bash
 npm i --no-save playwright && npx playwright install chromium
