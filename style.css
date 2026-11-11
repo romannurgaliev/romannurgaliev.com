@@ -1628,7 +1628,11 @@ body.case-page {
 }
 
 .site-footer-link {
-  padding: 0;
+  /* 30px tap area on phones (the text line is 20px); the negative margin
+     keeps the layout as it was */
+  display: inline-block;
+  padding: 5px 0;
+  margin: -5px 0;
   color: var(--text);
   text-decoration: underline 1px transparent;
   text-underline-offset: 0.25em;

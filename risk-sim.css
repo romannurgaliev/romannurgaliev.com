@@ -262,10 +262,6 @@
   transition: background-color 0.15s ease;
 }
 
-.sim button.sim-scenario:hover {
-  background: var(--w10);
-}
-
 .sim-scenario b {
   font-weight: 700;
   white-space: nowrap;
@@ -357,10 +353,6 @@
   line-height: 13px;
   letter-spacing: -0.13px;
   transition: background-color 0.15s ease;
-}
-
-.sim button.sim-reset:hover:not(:disabled) {
-  background: var(--w8);
 }
 
 .sim button.sim-reset:disabled {
@@ -592,7 +584,6 @@
   transition: box-shadow 0.15s ease;
 }
 
-.sim-track:hover .sim-thumb,
 .sim-thumb:focus-visible,
 .sim-thumb.is-hint {
   box-shadow: 0 0 0 3px #4f4f4f, 0 1px 4px rgba(0, 0, 0, 0.5);
@@ -620,7 +611,6 @@
   transition: opacity 0.15s ease;
 }
 
-.sim-track:hover .sim-tip,
 .sim-thumb:focus-visible .sim-tip,
 .sim-thumb.is-hint .sim-tip,
 .sim-thumb.is-dragging .sim-tip {
@@ -677,4 +667,24 @@
 
 .sim-chip--muted {
   color: var(--w50);
+}
+
+/* Hover only with a mouse: on an iPad (the simulator shows from 960px)
+   a tapped track kept its price tip open over the P&L above it */
+@media (hover: hover) and (pointer: fine) {
+  .sim button.sim-scenario:hover {
+    background: var(--w10);
+  }
+
+  .sim button.sim-reset:hover:not(:disabled) {
+    background: var(--w8);
+  }
+
+  .sim-track:hover .sim-thumb {
+    box-shadow: 0 0 0 3px #4f4f4f, 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .sim-track:hover .sim-tip {
+    opacity: 1;
+  }
 }
