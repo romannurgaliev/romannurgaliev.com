@@ -123,7 +123,7 @@ Home cards, in this order (the order is deliberate — fintech and B2B first). Y
 
 The case pager (Previous / Up next) must follow the same order. The VPN company is not named anywhere on the site.
 
-Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards. `.case-thumb--fill` gives a card the grey `--fill` background and the 12px radius used by the case-page figures. It is currently used on the VPN and DeDust cards.
+Home card structure: `a.case-card` > `.case-thumb` (image first) > `.case-meta` > `.case-header` (`h2.case-title`) + `p.case-desc`. No tags on cards. `.case-thumb--fill` gives a card the grey `--fill` background and the 12px radius used by the case-page figures. It is currently used on the VPN, DeDust, Antara and podcast cards.
 
 Case page structure: `article.case` > `header.case-head` (h1 + period) > `.case-intro` (`p.case-lead`, then chips) > `.case-section` blocks, each with one `h2` (the contents list is built from these) > `nav.case-pager`. Figures: `.case-figure` with `.case-figure-frame` (`--phones`), `.case-carousel`, `.case-gallery`, `.case-embed`. Pull quote from an outside source (podcast, Antara): `figure.case-quote` > `blockquote` > `p`, then `figcaption` with a link to the source.
 
