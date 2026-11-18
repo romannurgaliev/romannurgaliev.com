@@ -443,6 +443,13 @@ a.case-card .case-title {
   border-radius: 6px;
 }
 
+/* Grey tile, same as the case-page figures, so phone strips read as bento tiles.
+   Unlike .case-figure-frame, the radius stays 12px on phones too. */
+.case-thumb--fill {
+  background: var(--fill);
+  border-radius: 12px;
+}
+
 /* Single image */
 .case-thumb-single {
   display: flex;
