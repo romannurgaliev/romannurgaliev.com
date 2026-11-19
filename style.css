@@ -448,6 +448,43 @@ a.case-card .case-title {
 .case-thumb--fill {
   background: var(--fill);
   border-radius: 12px;
+  /* 16px taller than the 17:10 thumb: the picture area keeps 17:10 and the
+     tile adds 8px above and below it */
+  aspect-ratio: auto;
+  padding-block: 8px;
+  container-type: inline-size;
+}
+
+/* A fixed height from the tile width (cqi), not aspect-ratio: Safari treats
+   an aspect-ratio height as unknown, so the pictures' 100% height fails.
+   Two classes so it beats the later `height: 100%` on .case-thumb-strip
+   and .case-thumb-single. */
+.case-thumb.case-thumb--fill > * {
+  height: calc(100cqi * 10 / 17);
+}
+
+/* Light parallax: while a card crosses the screen, its picture drifts 12px
+   up inside the grey tile, which stays put. Pure CSS (scroll-driven
+   animation); browsers without it, and reduced motion, keep it still.
+   Kept to a minimum: 6px each way, just enough to feel the depth.
+   The timeline is named on the tile itself: the tile clips its overflow, so a
+   plain view() on the picture would track the tile, which never scrolls. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .case-thumb--fill {
+      view-timeline: --thumb;
+    }
+
+    .case-thumb--fill > * {
+      animation: thumbParallax linear both;
+      animation-timeline: --thumb;
+    }
+  }
+}
+
+@keyframes thumbParallax {
+  from { translate: 0 6px; }
+  to { translate: 0 -6px; }
 }
 
 /* Single image */
